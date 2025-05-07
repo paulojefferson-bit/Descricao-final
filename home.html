@@ -1,140 +1,356 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Drip Store - Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        #suggestions li:hover {
-            background-color: #fce4ec;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Store</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f9f7fc;
+    }
+
+    .badge-sale {
+      background-color: #e4ff48;
+      color: #000;
+      font-weight: 600;
+    }
+
+    .product-card img {
+      max-height: 140px;
+      object-fit: contain;
+    }
+
+    footer {
+      background-color: #222;
+      color: #bbb;
+    }
+  </style>
 </head>
 
-<body class="bg-white text-dark">
+<body>
 
-    <!-- Header -->
-    <header class="d-flex align-items-center justify-content-between px-4 py-3 border-bottom">
-        <div class="d-flex align-items-center gap-2">
-            <img src="img/logo.svg" alt="Logo" class="rounded-circle" />
-        </div>
-
-        <div class="position-relative w-100 mx-4" style="max-width: 600px;">
-            <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar produto..."
-                oninput="showSuggestions()">
-            <svg class="position-absolute"
-                style="top: 50%; right: 12px; transform: translateY(-50%); width: 20px; height: 20px; color: gray;"
-                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
-            </svg>
-            <ul id="suggestions" class="list-group position-absolute w-100 mt-1 d-none z-3"></ul>
-        </div>
-
-        <div class="d-flex align-items-center gap-3">
-            <a href="#" class="text-decoration-underline text-muted small">Cadastre-se</a>
-            <button class="btn btn-danger">Entrar</button>
-
-            <div class="position-relative">
-                <svg style="width: 24px; height: 24px; color: #dc3545;" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9m-6-9v9" />
-                </svg>
-                <span id="cartCount"
-                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
-            </div>
-
-        </div>
-    </header>
-
-    <!-- Navigation Menu -->
-    <nav class="nav px-4 border-bottom mt-2">
-        <a class="nav-link text-danger fw-semibold border-bottom border-2 border-danger py-2" href="#">Home</a>
-        <a class="nav-link text-muted py-2" href="#">Produtos</a>
-        <a class="nav-link text-muted py-2" href="#">Categorias</a>
-        <a class="nav-link text-muted py-2" href="#">Meus Pedidos</a>
-    </nav>
-    <!-- Banner Promocional -->
-<section id="banner" class="container my-5">
-    <div class="row align-items-center">
-      <div class="col-md-6 text-center text-md-start">
-        <p class="text-warning fw-semibold mb-1">Melhores ofertas personalizadas</p>
-        <h2 class="fw-bold display-5 mb-2">Queima de <br> estoque Nike 🔥</h2>
-        <p class="text-muted mb-4">Consequat culpa exercitation mollit nisi excepteur do do tempor laboris eiusmod irure consectetur.</p>
-        <a href="#" class="btn btn-danger px-4 py-2">Ver Ofertas</a>
+  <!-- HEADER -->
+  <header class="container-fluid py-3 border-bottom bg-white">
+    <div class="d-flex justify-content-between align-items-center px-4">
+      <div class="d-flex align-items-center gap-2">
+        <img src="img/logo -HEADER.svg" alt="Logo" class="" />
       </div>
-      <div class="col-md-6 text-center mt-4 mt-md-0">
-        <img src="https://i.imgur.com/jXez3T8.png" alt="Tênis Nike" class="img-fluid" style="max-width: 400px;">
+      <!-- <input type="text" class="form-control w-50" placeholder="Pesquisar produtos..."> -->
+      <div class="position-relative w-100 mx-4" style="max-width: 600px;">
+        <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar produto..."
+            oninput="showSuggestions()">
+        <svg class="position-absolute"
+            style="top: 50%; right: 12px; transform: translateY(-50%); width: 20px; height: 20px; color: gray;"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
+        </svg>
+        <ul id="suggestions" class="list-group position-absolute w-100 mt-1 d-none z-3"></ul>
+    </div>
+
+
+
+      <div class="d-flex gap-3">
+        <a href="#" class="text-muted">Cadastre-se</a>
+        <button class="btn btn-danger">Entrar</button>
+        <div class="position-relative">
+          <svg style="width: 24px; height: 24px; color: #dc3545;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9m-6-9v9" />
+          </svg>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">2</span>
+        </div>
       </div>
     </div>
-  </section>
-  
-  <!-- Produtos -->
-  <main class="p-4">
-  
+    <nav class="nav px-4 border-bottom mt-2">
+      <a class="nav-link text-danger fw-semibold border-bottom border-2 border-danger py-2" href="#">Home</a>
+      <a class="nav-link text-muted py-2" href="#">Produtos</a>
+      <a class="nav-link text-muted py-2" href="#">Categorias</a>
+      <a class="nav-link text-muted py-2" href="#">Meus Pedidos</a>
+    </nav>
+  </header>
 
-    <!-- Produtos -->
-    <main class="p-4">
-        <div id="productsContainer" class="row g-4"></div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-dark text-white px-4 py-5 mt-5 m-0">
-        <div class="row row-cols-1 row-cols-md-4 g-4 m-0">
-            <div>
-                <div class="d-flex align-items-center gap-2 mb-3">
-                    <span class="bg-danger text-white d-flex align-items-center justify-content-center rounded-circle"
-                        style="width: 32px; height: 32px;">⌨️</span>
-                    <h2 class="fs-5 fw-bold m-0">Digital Store</h2>
-                </div>
-                <p class="text-secondary small">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore.</p>
-                <div class="d-flex gap-3 mt-3">
-                    <a href="#" class="text-white fs-5">📘</a>
-                    <a href="#" class="text-white fs-5">📸</a>
-                    <a href="#" class="text-white fs-5">🐦</a>
-                </div>
+  <main>
+    <!-- Carrossel -->
+    <div id="promoCarousel" class="carousel slide bg-light py-5" data-bs-ride="carousel">
+      <div class="carousel-inner container">
+        <!-- Slide 1 -->
+        <div class="carousel-item active">
+          <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start">
+              <p class="text-warning fw-semibold mb-2">Melhores ofertas personalizadas</p>
+              <h2 class="fw-bold">Queima de estoque Nike 🔥</h2>
+              <p class="text-secondary">Compre agora e receba até metade do mês com frete reduzido em seleção especial.
+              </p>
+              <a href="#" class="btn btn-danger">Ver ofertas</a>
             </div>
-            <div>
-                <h5 class="fw-semibold mb-2">Informação</h5>
-                <ul class="list-unstyled text-secondary small">
-                    <li><a href="#" class="text-decoration-none text-secondary">Sobre Drip Store</a></li>
-                    <li><a href="#" class="text-decoration-none text-secondary">Segurança</a></li>
-                    <li><a href="#" class="text-decoration-none text-secondary">Wishlist</a></li>
-                    <li><a href="#" class="text-decoration-none text-secondary">Blog</a></li>
-                    <li><a href="#" class="text-decoration-none text-secondary">Trabalhe conosco</a></li>
-                    <li><a href="#" class="text-decoration-none text-secondary">Meus Pedidos</a></li>
-                </ul>
+            <div class="col-md-6 text-center">
+              <img src="tenis1.png" class="img-fluid" alt="Nike Promo">
             </div>
-            <div>
-                <h5 class="fw-semibold mb-2">Categorias</h5>
-                <ul class="list-unstyled text-secondary small">
-                    <li><a href="#" class="text-decoration-none text-secondary">Camisetas</a></li>
-                    <li><a href="#" class="text-decoration-none text-secondary">Calças</a></li>
-                    <li><a href="#" class="text-decoration-none text-secondary">Bonés</a></li>
-                    <li><a href="#" class="text-decoration-none text-secondary">Headphones</a></li>
-                    <li><a href="#" class="text-decoration-none text-secondary">Tênis</a></li>
-                </ul>
-            </div>
-            <div>
-                <h5 class="fw-semibold mb-2">Contato</h5>
-                <p class="text-secondary small">Av. Santos Dumont, 1510 – 1 andar - Aldeota, Fortaleza - CE, 60150-161
-                </p>
-                <p class="text-secondary small mt-2">(85) 3051-3411</p>
-            </div>
+          </div>
         </div>
-        <div class="border-top border-secondary mt-4 pt-3 text-center text-secondary small">
-            © 2025 Digital College
+
+        <!-- Slide 2 -->
+        <div class="carousel-item">
+          <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start">
+              <p class="text-warning fw-semibold mb-2">Ofertas imperdíveis</p>
+              <h2 class="fw-bold">Nova coleção Adidas 👟</h2>
+              <p class="text-secondary">Confira os modelos mais desejados com descontos exclusivos por tempo limitado.
+              </p>
+              <a href="#" class="btn btn-danger">Ver coleção</a>
+            </div>
+            <div class="col-md-6 text-center">
+              <img src="tenis2.png" class="img-fluid" alt="Adidas Promo">
+            </div>
+          </div>
         </div>
-    </footer>
+
+        <!-- Slide 3 -->
+        <div class="carousel-item">
+          <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start">
+              <p class="text-warning fw-semibold mb-2">Só hoje!</p>
+              <h2 class="fw-bold">Frete grátis em todo site 🚚</h2>
+              <p class="text-secondary">Aproveite para comprar com frete 100% gratuito e mais benefícios exclusivos.</p>
+              <a href="#" class="btn btn-danger">Comprar agora</a>
+            </div>
+            <div class="col-md-6 text-center">
+              <img src="tenis3.png" class="img-fluid" alt="Frete Grátis">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controles -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#promoCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#promoCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+
+      <!-- Indicadores -->
+      <div class="carousel-indicators mt-4">
+        <button type="button" data-bs-target="#promoCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#promoCarousel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#promoCarousel" data-bs-slide-to="2"></button>
+      </div>
+    </div>
+
+
+    <!-- CARROSSEL DE COLEÇÕES -->
+    <section class="container mb-5 ">
+      <h4 class="fw-bold mb-3">Coleções em destaque</h4>
+      <div class="d-flex overflow-auto gap-3 pb-2 justify-content-center">
+        <div class="card flex-shrink-0 p-3 border-0 rounded-4" style="width: 250px; background-color: #D8E3F2;">
+          <span class="badge badge-sale mb-2 w-50">30% OFF</span>
+          <h6 class="fw-bold">Novo drop Supreme</h6>
+          <button class="btn btn-light btn-sm text-danger fw-semibold">Comprar</button>
+          <img src="img/supreme.png" class="mt-2 w-100" alt="Supreme">
+        </div>
+        <div class="card flex-shrink-0 p-3 border-0 rounded-4" style="width: 250px; background-color: #D8E3F2;">
+          <span class="badge badge-sale mb-2 w-50">30% OFF</span>
+          <h6 class="fw-bold">Coleção Adidas</h6>
+          <button class="btn btn-light btn-sm text-danger fw-semibold">Comprar</button>
+          <img src="img/adidas.png" class="mt-2 w-100" alt="Adidas">
+        </div>
+        <div class="card flex-shrink-0 p-3 border-0 rounded-4" style="width: 250px; background-color: #D8E3F2;">
+          <span class="badge badge-sale mb-2 w-50">30% OFF</span>
+          <h6 class="fw-bold">Novo Beats Bass</h6>
+          <button class="btn btn-light btn-sm text-danger fw-semibold">Comprar</button>
+          <img src="img/beats.png" class="mt-2 w-100" alt="Beats">
+        </div>
+      </div>
+    </section>
+
+    <!-- Colecao de destaque -->
+    <section class="py-5 bg-light text-center">
+      <h3 class="fw-bold mb-4">Coleções em destaque</h3>
+      <div class="container">
+        <div class="row justify-content-center g-4">
+          <!-- Item 1 -->
+          <div class="col-6 col-sm-4 col-md-2">
+            <div class="rounded-circle bg-white shadow p-3 mx-auto" style="width: 100px; height: 100px;">
+              <img src="camiseta.svg" alt="Camisetas" class="img-fluid" style="height: 60px;">
+            </div>
+            <p class="mt-2 fw-semibold">Camisetas</p>
+          </div>
+          <!-- Item 2 -->
+          <div class="col-6 col-sm-4 col-md-2">
+            <div class="rounded-circle bg-white shadow p-3 mx-auto" style="width: 100px; height: 100px;">
+              <img src="calca.svg" alt="Calças" class="img-fluid" style="height: 60px;">
+            </div>
+            <p class="mt-2 fw-semibold">Calças</p>
+          </div>
+          <!-- Item 3 -->
+          <div class="col-6 col-sm-4 col-md-2">
+            <div class="rounded-circle bg-white shadow p-3 mx-auto" style="width: 100px; height: 100px;">
+              <img src="bone.svg" alt="Bonés" class="img-fluid" style="height: 60px;">
+            </div>
+            <p class="mt-2 fw-semibold">Bonés</p>
+          </div>
+          <!-- Item 4 -->
+          <div class="col-6 col-sm-4 col-md-2">
+            <div class="rounded-circle bg-white shadow p-3 mx-auto" style="width: 100px; height: 100px;">
+              <img src="headphone.svg" alt="Headphones" class="img-fluid" style="height: 60px;">
+            </div>
+            <p class="mt-2 fw-semibold">Headphones</p>
+          </div>
+          <!-- Item 5 -->
+          <div class="col-6 col-sm-4 col-md-2">
+            <div class="rounded-circle bg-white shadow p-3 mx-auto" style="width: 100px; height: 100px;">
+              <img src="tenis.svg" alt="Tênis" class="img-fluid" style="height: 60px;">
+            </div>
+            <p class="mt-2 fw-semibold">Tênis</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
 
 
+    <!-- PRODUTOS EM ALTA -->
+    <section ;" class="container mb-5">
+      <h4 class="fw-bold mb-3">Produtos em alta</h4>
+      <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
+        <!-- Card de produto -->
+        <div class="col">
+          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+            <span class="badge badge-sale align-self-start">30% OFF</span>
+            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
+            <h6>K-Swiss V8 - Masculino</h6>
+            <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+            <span class="badge badge-sale align-self-start">30% OFF</span>
+            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
+            <h6>K-Swiss V8 - Masculino</h6>
+            <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+            <span class="badge badge-sale align-self-start">30% OFF</span>
+            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
+            <h6>K-Swiss V8 - Masculino</h6>
+            <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+            <span class="badge badge-sale align-self-start">30% OFF</span>
+            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
+            <h6>K-Swiss V8 - Masculino</h6>
+            <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+            <span class="badge badge-sale align-self-start">30% OFF</span>
+            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
+            <h6>K-Swiss V8 - Masculino</h6>
+            <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+            <span class="badge badge-sale align-self-start">30% OFF</span>
+            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
+            <h6>K-Swiss V8 - Masculino</h6>
+            <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+            <span class="badge badge-sale align-self-start">30% OFF</span>
+            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
+            <h6>K-Swiss V8 - Masculino</h6>
+            <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+            <span class="badge badge-sale align-self-start">30% OFF</span>
+            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
+            <h6>K-Swiss V8 - Masculino</h6>
+            <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
+          </div>
+        </div>
+
+
+        <!-- Repetir acima para outros produtos -->
+        <!-- ...copie e cole mais 7 vezes para simular os 8 produtos da imagem -->
+      </div>
+    </section>
+
+    <!-- SEÇÃO DE DESTAQUE -->
+    <section style="background-color: white; height: 300px;" class="container  mt-5 ">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <img src="img/air-jordan.png" class="img-fluid" alt="Air Jordan">
+        </div>
+        <div class="col-md-6">
+          <small class="text-danger fw-semibold">Oferta exclusiva</small>
+          <h4 class="fw-bold">Air Jordan edição de colecionador</h4>
+          <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime dolorem unde
+            voluptatibus!</p>
+          <a href="#" class="btn btn-danger">Comprar agora</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="pt-5 pb-3 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md">
+
+          <div class="d-flex align-items-center gap-2">
+            <img src="img/logo.svg" alt="Logo" class="" />
+          </div>
+
+          <p class="small">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Et repudiandae, reiciendis delectus
+            molestiae tenetur vero cumque ut, cupiditate modi ex iste, illum blanditiis impedit soluta quaerat dolor
+            natus nisi veniam.</p>
+        </div>
+        <div class="col-md">
+          <h6 class="text-white">Informações</h6>
+          <ul class="list-unstyled small">
+            <li><a href="#" class="text-decoration-none text-light">Sobre</a></li>
+            <li><a href="#" class="text-decoration-none text-light">Contato</a></li>
+            <li><a href="#" class="text-decoration-none text-light">Trabalhe Conosco</a></li>
+            <li><a href="#" class="text-decoration-none text-light">Blog</a></li>
+            <li><a href="#" class="text-decoration-none text-light">Meus Pedidos</a></li>
+          </ul>
+        </div>
+        <div class="col-md">
+          <h6 class="text-white">Categorias</h6>
+          <ul class="list-unstyled small">
+            <li><a href="#" class="text-decoration-none text-light">Tênis</a></li>
+            <li><a href="#" class="text-decoration-none text-light">Acessórios</a></li>
+          </ul>
+        </div>
+        <div class="col-md">
+          <h6 class="text-white">Contato</h6>
+          <p>Av Santos Dumont, 1510 - 1 andar - Aldeota, Fortaleza - CE, 60150-161</p>
+          <P>(85) 3051-3411</P>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <img src="img/redesSociais.svg" alt="Logo" class="" />
+      </div>
+      <hr class="border-light" />
+      <p class="text-center small">© 2025 Digital Store - Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  
 </body>
-<script src="funcao.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </html>
