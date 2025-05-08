@@ -7,9 +7,9 @@
   <title>Digital Store</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
-    body {
+    /* body {
       background-color: #f9f7fc;
-    }
+    } */
 
     .badge-sale {
       background-color: #e4ff48;
@@ -37,21 +37,17 @@
       <div class="d-flex align-items-center gap-2">
         <img src="img/logo -HEADER.svg" alt="Logo" class="" />
       </div>
-      <!-- <input type="text" class="form-control w-50" placeholder="Pesquisar produtos..."> -->
       <div class="position-relative w-100 mx-4" style="max-width: 600px;">
-        <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar produto..."
+        <input style="background-color: rgb(231, 226, 226);" type="text" id="searchInput" class="form-control" placeholder="Pesquisar produto..."
             oninput="showSuggestions()">
         <svg class="position-absolute"
-            style="top: 50%; right: 12px; transform: translateY(-50%); width: 20px; height: 20px; color: gray;"
+            style="top: 50%; right: 12px; transform: translateY(-50%); width: 20px; height: 20px; color: rgb(243, 243, 243);"
             fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
         </svg>
         <ul id="suggestions" class="list-group position-absolute w-100 mt-1 d-none z-3"></ul>
     </div>
-
-
-
       <div class="d-flex gap-3">
         <a href="#" class="text-muted">Cadastre-se</a>
         <button class="btn btn-danger">Entrar</button>
@@ -74,8 +70,8 @@
 
   <main>
     <!-- Carrossel -->
-    <div id="promoCarousel" class="carousel slide bg-light py-5" data-bs-ride="carousel">
-      <div class="carousel-inner container">
+    <div style="height: 400px; background-color: rgb(233, 232, 232);" id="promoCarousel" class="carousel slide bg-light py-5 mt-5 m-5" data-bs-ride="carousel">
+      <div class="carousel-inner container-fluid">
         <!-- Slide 1 -->
         <div class="carousel-item active">
           <div class="row align-items-center">
@@ -87,7 +83,7 @@
               <a href="#" class="btn btn-danger">Ver ofertas</a>
             </div>
             <div class="col-md-6 text-center">
-              <img src="tenis1.png" class="img-fluid" alt="Nike Promo">
+              <img src="img/White-Sneakers-BANENRlipart 1.svg" class="img-fluid" alt="Nike Promo">
             </div>
           </div>
         </div>
@@ -144,24 +140,24 @@
     <!-- CARROSSEL DE COLEÇÕES -->
     <section class="container mb-5 ">
       <h4 class="fw-bold mb-3">Coleções em destaque</h4>
-      <div class="d-flex overflow-auto gap-3 pb-2 justify-content-center">
+      <div class="d-flex overflow-auto gap-4 pb-2 justify-content-center">
         <div class="card flex-shrink-0 p-3 border-0 rounded-4" style="width: 250px; background-color: #D8E3F2;">
           <span class="badge badge-sale mb-2 w-50">30% OFF</span>
-          <h6 class="fw-bold">Novo drop Supreme</h6>
+          <h6 class="fw-bold ">Novo drop Supreme</h6>
           <button class="btn btn-light btn-sm text-danger fw-semibold">Comprar</button>
-          <img src="img/supreme.png" class="mt-2 w-100" alt="Supreme">
+          <img src="img/star-wars-storm-trooper-supreme-shirts-supreme-t-shirt-snoopy-clothing-apparel-t-shirt-text-transparent-png-616696 1.svg" alt="Supreme">
         </div>
         <div class="card flex-shrink-0 p-3 border-0 rounded-4" style="width: 250px; background-color: #D8E3F2;">
           <span class="badge badge-sale mb-2 w-50">30% OFF</span>
           <h6 class="fw-bold">Coleção Adidas</h6>
           <button class="btn btn-light btn-sm text-danger fw-semibold">Comprar</button>
-          <img src="img/adidas.png" class="mt-2 w-100" alt="Adidas">
+          <img src="img/ddd 1.svg" class="mt-2 w-100" alt="Adidas">
         </div>
         <div class="card flex-shrink-0 p-3 border-0 rounded-4" style="width: 250px; background-color: #D8E3F2;">
           <span class="badge badge-sale mb-2 w-50">30% OFF</span>
           <h6 class="fw-bold">Novo Beats Bass</h6>
           <button class="btn btn-light btn-sm text-danger fw-semibold">Comprar</button>
-          <img src="img/beats.png" class="mt-2 w-100" alt="Beats">
+          <img src="img/fooone.svg" class="mt-2 w-100" alt="Beats">
         </div>
       </div>
     </section>
@@ -281,18 +277,14 @@
             <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
           </div>
         </div>
-
-
-        <!-- Repetir acima para outros produtos -->
-        <!-- ...copie e cole mais 7 vezes para simular os 8 produtos da imagem -->
       </div>
     </section>
 
     <!-- SEÇÃO DE DESTAQUE -->
-    <section style="background-color: white; height: 300px;" class="container  mt-5 ">
-      <div class="row align-items-center">
-        <div class="col-md-6">
-          <img src="img/air-jordan.png" class="img-fluid" alt="Air Jordan">
+    <section style="background-color: white; height: 400px; " class=" container-fluid  mt-5"  >
+      <div class="row align-items-center ">
+        <div class="col-md-6 p-5">
+          <img src="img/ultimoTenis.svg" class="img-fluid" alt="Air Jordan">
         </div>
         <div class="col-md-6">
           <small class="text-danger fw-semibold">Oferta exclusiva</small>
@@ -303,10 +295,9 @@
         </div>
       </div>
     </section>
-
   </main>
 
-  <footer class="pt-5 pb-3 mt-5">
+  <footer class="pt-5 pb-3">
     <div class="container">
       <div class="row">
         <div class="col-md">
