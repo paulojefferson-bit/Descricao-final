@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Digital Store</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-
+  <link rel="stylesheet" href="styleHome.css">
 </head>
 
 <body>
@@ -27,6 +27,7 @@
             d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
         </svg>
         <ul id="suggestions" class="list-group position-absolute w-100 mt-1 d-none z-3"></ul>
+      </div>
       <div class="d-flex gap-3">
         <a href="#" class="text-muted">Cadastre-se</a>
         <button class="btn btn-danger">Entrar</button>
@@ -51,7 +52,7 @@
             <a class="nav-link text-danger fw-semibold border-bottom border-2 border-danger py-2" href="#">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-muted py-2" href="#">Produtos</a>
+            <a class="nav-link text-muted py-2" href="produtos.html">Produtos</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-muted py-2" href="#">Categorias</a>
@@ -69,8 +70,6 @@
     <!-- Carrossel -->
     <div id="promoCarousel" class="carousel slide bg-light py-5" data-bs-ride="carousel">
       <div class="carousel-inner container">
-    <div style="height: 400px; background-color: rgb(233, 232, 232);" id="promoCarousel" class="carousel slide bg-light py-5 mt-5 m-5" data-bs-ride="carousel">
-      <div class="carousel-inner container-fluid">
         <!-- Slide 1 -->
         <div class="carousel-item active">
           <div class="row align-items-center">
@@ -142,37 +141,22 @@
       <div class="d-flex overflow-auto gap-4 pb-2 justify-content-center">
         <div class="card collection-item p-3 border-0 rounded-1" style="width: 250px; background-color: #D8E3F2;">
           <span class="badge badge-sale mb-2 w-50">30% OFF</span>
-
           <h6 class="fw-bold">Novo drop Supreme</h6>
           <button class="btn btn-light btn-sm text-danger fw-semibold w-50">Comprar</button>
           <img
             src="img/star-wars-storm-trooper-supreme-shirts-supreme-t-shirt-snoopy-clothing-apparel-t-shirt-text-transparent-png-616696 1.svg"
             class="mt-2 w-100 " alt="Supreme">
-
-          <h6 class="fw-bold ">Novo drop Supreme</h6>
-          <button class="btn btn-light btn-sm text-danger fw-semibold">Comprar</button>
-          <img src="img/star-wars-storm-trooper-supreme-shirts-supreme-t-shirt-snoopy-clothing-apparel-t-shirt-text-transparent-png-616696 1.svg" alt="Supreme">
-
         </div>
         <div class="card flex-shrink-0 p-3 border-0 rounded-1" style="width: 250px; background-color: #D8E3F2;">
           <span class="badge badge-sale mb-2 w-50">30% OFF</span>
           <h6 class="fw-bold">Coleção Adidas</h6>
-
           <button class="btn btn-light btn-sm text-danger fw-semibold w-50">Comprar</button>
           <img src="img/fooone.svg" class="mt-2 w-100" alt="Adidas">
-
-          <button class="btn btn-light btn-sm text-danger fw-semibold">Comprar</button>
-          <img src="img/ddd 1.svg" class="mt-2 w-100" alt="Adidas">
-
         </div>
         <div class="card flex-shrink-0 p-3 border-0 rounded-1" style="width: 250px; background-color: #D8E3F2;">
           <span class="badge badge-sale mb-2 w-50">30% OFF</span>
           <h6 class="fw-bold">Novo Beats Bass</h6>
-
           <button class="btn btn-light btn-sm text-danger fw-semibold w-50">Comprar</button>
-
-          <button class="btn btn-light btn-sm text-danger fw-semibold">Comprar</button>
-
           <img src="img/fooone.svg" class="mt-2 w-100" alt="Beats">
         </div>
       </div>
@@ -319,19 +303,12 @@
 
     </section>
     <!-- SEÇÃO DE DESTAQUE -->
-
     <section style="background-color: white; height: 400px;" class="container-fluid  mt-5 ">
       <div class="row align-items-center">
         <div
           style="background-image: url(img/Ellipse\ 11.svg ); background-repeat: no-repeat;  background-position: center;"
           class="col-md-6 mt-3">
           <img src="img/Laye 1.svg" class="img-fluid mt-5" alt="Air Jordan">
-
-    <section style="background-color: white; height: 400px; " class=" container-fluid  mt-5"  >
-      <div class="row align-items-center ">
-        <div class="col-md-6 p-5">
-          <img src="img/ultimoTenis.svg" class="img-fluid" alt="Air Jordan">
-
         </div>
         <div class="col-md-6">
           <small class="text-danger fw-semibold">Oferta exclusiva</small>
@@ -342,6 +319,7 @@
         </div>
       </div>
     </section>
+
   </main>
 
   <footer class="pt-5 pb-3">
