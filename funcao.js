@@ -1,3 +1,4 @@
+
 //joao victor
   document.addEventListener("DOMContentLoaded", function () {
     let banner = document.getElementById("cookieBanner"); 
@@ -19,6 +20,7 @@
 
 
 
+
 //Thiago
 
 
@@ -26,4 +28,7 @@
 
 
 
-//Jefferson
+
+
+// Jefferson
+
