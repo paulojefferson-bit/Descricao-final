@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Digital Store</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styleHome.css">
 </head>
 
 <body>
@@ -18,15 +19,15 @@
       <!-- <input type="text" class="form-control w-50" placeholder="Pesquisar produtos..."> -->
       <div class="position-relative w-100 mx-4" style="max-width: 600px;">
         <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar produto..."
-            oninput="showSuggestions()">
+          oninput="showSuggestions()">
         <svg class="position-absolute"
-            style="top: 50%; right: 12px; transform: translateY(-50%); width: 20px; height: 20px; color: gray;"
-            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
+          style="top: 50%; right: 12px; transform: translateY(-50%); width: 20px; height: 20px; color: gray;"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
         </svg>
         <ul id="suggestions" class="list-group position-absolute w-100 mt-1 d-none z-3"></ul>
-    </div>
+      </div>
       <div class="d-flex gap-3">
         <a href="#" class="text-muted">Cadastre-se</a>
         <button class="btn btn-danger">Entrar</button>
@@ -39,12 +40,30 @@
         </div>
       </div>
     </div>
-    <nav class="nav px-4 border-bottom mt-2">
-      <a class="nav-link text-danger fw-semibold border-bottom border-2 border-danger py-2" href="#">Home</a>
-      <a class="nav-link text-muted py-2" href="#">Produtos</a>
-      <a class="nav-link text-muted py-2" href="#">Categorias</a>
-      <a class="nav-link text-muted py-2" href="#">Meus Pedidos</a>
+    <nav class="navbar navbar-expand-md navbar-light bg-white px-4 border-bottom mt-2">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link text-danger fw-semibold border-bottom border-2 border-danger py-2" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-muted py-2" href="#">Produtos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-muted py-2" href="#">Categorias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-muted py-2" href="#">Meus Pedidos</a>
+          </li>
+        </ul>
+      </div>
     </nav>
+
   </header>
 
   <main>
@@ -119,23 +138,25 @@
     <!-- CARROSSEL DE COLEÇÕES -->
     <section class="container mb-5 ">
       <h4 class="fw-bold mb-3">Coleções em destaque</h4>
-      <div class="d-flex overflow-auto gap-3 pb-2 justify-content-center">
-        <div class="card flex-shrink-0 p-3 border-0 rounded-4" style="width: 250px; background-color: #D8E3F2;">
+      <div class="d-flex overflow-auto gap-4 pb-2 justify-content-center">
+        <div class="card collection-item p-3 border-0 rounded-1" style="width: 250px; background-color: #D8E3F2;">
           <span class="badge badge-sale mb-2 w-50">30% OFF</span>
           <h6 class="fw-bold">Novo drop Supreme</h6>
-          <button class="btn btn-light btn-sm text-danger fw-semibold">Comprar</button>
-          <img src="img/star-wars-storm-trooper-supreme-shirts-supreme-t-shirt-snoopy-clothing-apparel-t-shirt-text-transparent-png-616696 1.svg" class="mt-2 w-100" alt="Supreme">
+          <button class="btn btn-light btn-sm text-danger fw-semibold w-50">Comprar</button>
+          <img
+            src="img/star-wars-storm-trooper-supreme-shirts-supreme-t-shirt-snoopy-clothing-apparel-t-shirt-text-transparent-png-616696 1.svg"
+            class="mt-2 w-100 " alt="Supreme">
         </div>
-        <div class="card flex-shrink-0 p-3 border-0 rounded-4" style="width: 250px; background-color: #D8E3F2;">
+        <div class="card flex-shrink-0 p-3 border-0 rounded-1" style="width: 250px; background-color: #D8E3F2;">
           <span class="badge badge-sale mb-2 w-50">30% OFF</span>
           <h6 class="fw-bold">Coleção Adidas</h6>
-          <button class="btn btn-light btn-sm text-danger fw-semibold">Comprar</button>
+          <button class="btn btn-light btn-sm text-danger fw-semibold w-50">Comprar</button>
           <img src="img/fooone.svg" class="mt-2 w-100" alt="Adidas">
         </div>
-        <div class="card flex-shrink-0 p-3 border-0 rounded-4" style="width: 250px; background-color: #D8E3F2;">
+        <div class="card flex-shrink-0 p-3 border-0 rounded-1" style="width: 250px; background-color: #D8E3F2;">
           <span class="badge badge-sale mb-2 w-50">30% OFF</span>
           <h6 class="fw-bold">Novo Beats Bass</h6>
-          <button class="btn btn-light btn-sm text-danger fw-semibold">Comprar</button>
+          <button class="btn btn-light btn-sm text-danger fw-semibold w-50">Comprar</button>
           <img src="img/fooone.svg" class="mt-2 w-100" alt="Beats">
         </div>
       </div>
@@ -144,40 +165,40 @@
     <!-- Colecao de destaque -->
     <section class="py-5 bg-light text-center">
       <h3 class="fw-bold mb-4">Coleções em destaque</h3>
-      <div class="container">
-        <div class="row justify-content-center g-4">
+      <div class="  overflow-auto gap-4">
+        <div class="d-flex justify-content-center g-4">
           <!-- Item 1 -->
-          <div class="col-6 col-sm-4 col-md-2">
+          <div class="collection-item col-6 col-sm-4 col-md-2">
             <div class="rounded-circle bg-white shadow p-3 mx-auto" style="width: 100px; height: 100px;">
-              <img src="camiseta.svg" alt="Camisetas" class="img-fluid" style="height: 60px;">
+              <img src="img/Group camisa.svg" alt="Camisetas" class="img-fluid" style="height: 60px;">
             </div>
             <p class="mt-2 fw-semibold">Camisetas</p>
           </div>
           <!-- Item 2 -->
-          <div class="col-6 col-sm-4 col-md-2">
+          <div class="collection-item  col-6 col-sm-4 col-md-2">
             <div class="rounded-circle bg-white shadow p-3 mx-auto" style="width: 100px; height: 100px;">
-              <img src="calca.svg" alt="Calças" class="img-fluid" style="height: 60px;">
+              <img src="img/calça.svg" alt="Calças" class="img-fluid" style="height: 60px;">
             </div>
             <p class="mt-2 fw-semibold">Calças</p>
           </div>
           <!-- Item 3 -->
-          <div class="col-6 col-sm-4 col-md-2">
+          <div class="collection-item col-6 col-sm-4 col-md-2">
             <div class="rounded-circle bg-white shadow p-3 mx-auto" style="width: 100px; height: 100px;">
-              <img src="bone.svg" alt="Bonés" class="img-fluid" style="height: 60px;">
+              <img src="img/calça.svg" alt="Bonés" class="img-fluid" style="height: 60px;">
             </div>
             <p class="mt-2 fw-semibold">Bonés</p>
           </div>
           <!-- Item 4 -->
-          <div class="col-6 col-sm-4 col-md-2">
+          <div class=" collection-item col-6 col-sm-4 col-md-2">
             <div class="rounded-circle bg-white shadow p-3 mx-auto" style="width: 100px; height: 100px;">
-              <img src="headphone.svg" alt="Headphones" class="img-fluid" style="height: 60px;">
+              <img src="img/fonecole.svg" alt="Headphones" class="img-fluid" style="height: 60px;">
             </div>
             <p class="mt-2 fw-semibold">Headphones</p>
           </div>
           <!-- Item 5 -->
-          <div class="col-6 col-sm-4 col-md-2">
+          <div class="collection-item col-6 col-sm-4 col-md-2 ">
             <div class="rounded-circle bg-white shadow p-3 mx-auto" style="width: 100px; height: 100px;">
-              <img src="tenis.svg" alt="Tênis" class="img-fluid" style="height: 60px;">
+              <img src="img/sneakers.svg" alt="Tênis" class="img-fluid" style="height: 60px;">
             </div>
             <p class="mt-2 fw-semibold">Tênis</p>
           </div>
@@ -191,66 +212,90 @@
       <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
         <!-- Card de produto -->
         <div class="col">
-          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+          <div class="card product-card p-3 border-0 rounded-2 text-center bg-white">
             <span class="badge badge-sale align-self-start">30% OFF</span>
-            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
-            <h6>K-Swiss V8 - Masculino</h6>
+            <img src="img/Layer 1aa 2.svg" class="w-100 my-2" alt="K-Swiss">
+          </div>
+          <div>
+            <h6 style="color: #828080;">Tênis</h6>
+            <a href="">K-Swiss V8 - Masculino</a>
             <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
           </div>
         </div>
         <div class="col">
-          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+          <div class="card product-card p-3 border-0 rounded-2 text-center bg-white">
             <span class="badge badge-sale align-self-start">30% OFF</span>
-            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
-            <h6>K-Swiss V8 - Masculino</h6>
+            <img src="img/Layer 1aa 2.svg" class="w-100 my-2" alt="K-Swiss">
+          </div>
+          <div>
+            <h6 style="color: #828080;">Tênis</h6>
+            <a href="">K-Swiss V8 - Masculino</a>
             <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
           </div>
         </div>
         <div class="col">
-          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+          <div class="card product-card p-3 border-0 rounded-2 text-center bg-white">
             <span class="badge badge-sale align-self-start">30% OFF</span>
-            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
-            <h6>K-Swiss V8 - Masculino</h6>
+            <img src="img/Layer 1aa 2.svg" class="w-100 my-2" alt="K-Swiss">
+          </div>
+          <div>
+            <h6 style="color: #828080;">Tênis</h6>
+            <a href="">K-Swiss V8 - Masculino</a>
             <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
           </div>
         </div>
         <div class="col">
-          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+          <div class="card product-card p-3 border-0 rounded-2 text-center bg-white">
             <span class="badge badge-sale align-self-start">30% OFF</span>
-            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
-            <h6>K-Swiss V8 - Masculino</h6>
+            <img src="img/Layer 1aa 2.svg" class="w-100 my-2" alt="K-Swiss">
+          </div>
+          <div>
+            <h6 style="color: #828080;">Tênis</h6>
+            <a href="">K-Swiss V8 - Masculino</a>
             <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
           </div>
         </div>
         <div class="col">
-          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+          <div class="card product-card p-3 border-0 rounded-2 text-center bg-white">
             <span class="badge badge-sale align-self-start">30% OFF</span>
-            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
-            <h6>K-Swiss V8 - Masculino</h6>
+            <img src="img/Layer 1aa 2.svg" class="w-100 my-2" alt="K-Swiss">
+          </div>
+          <div>
+            <h6 style="color: #828080;">Tênis</h6>
+            <a href="">K-Swiss V8 - Masculino</a>
             <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
           </div>
         </div>
         <div class="col">
-          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+          <div class="card product-card p-3 border-0 rounded-2 text-center bg-white">
             <span class="badge badge-sale align-self-start">30% OFF</span>
-            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
-            <h6>K-Swiss V8 - Masculino</h6>
+            <img src="img/Layer 1aa 2.svg" class="w-100 my-2" alt="K-Swiss">
+          </div>
+          <div>
+            <h6 style="color: #828080;">Tênis</h6>
+            <a href="">K-Swiss V8 - Masculino</a>
             <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
           </div>
         </div>
         <div class="col">
-          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+          <div class="card product-card p-3 border-0 rounded-2 text-center bg-white">
             <span class="badge badge-sale align-self-start">30% OFF</span>
-            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
-            <h6>K-Swiss V8 - Masculino</h6>
+            <img src="img/Layer 1aa 2.svg" class="w-100 my-2" alt="K-Swiss">
+          </div>
+          <div>
+            <h6 style="color: #828080;">Tênis</h6>
+            <a href="">K-Swiss V8 - Masculino</a>
             <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
           </div>
         </div>
         <div class="col">
-          <div class="card product-card p-3 border-0 rounded-4 text-center bg-white">
+          <div class="card product-card p-3 border-0 rounded-2 text-center bg-white">
             <span class="badge badge-sale align-self-start">30% OFF</span>
-            <img src="img/k-swiss.png" class="w-100 my-2" alt="K-Swiss">
-            <h6>K-Swiss V8 - Masculino</h6>
+            <img src="img/Layer 1aa 2.svg" class="w-100 my-2" alt="K-Swiss">
+          </div>
+          <div>
+            <h6 style="color: #828080;">Tênis</h6>
+            <a href="">K-Swiss V8 - Masculino</a>
             <p class="text-muted mb-1"><s>$200</s> <strong>$100</strong></p>
           </div>
         </div>
@@ -259,8 +304,10 @@
     </section>
     <!-- SEÇÃO DE DESTAQUE -->
     <section style="background-color: white; height: 400px;" class="container-fluid  mt-5 ">
-      <div class="row align-items-center">         
-        <div style="background-image: url(img/Ellipse\ 11.svg ); background-repeat: no-repeat;  background-position: center;"  class="col-md-6 mt-3">
+      <div class="row align-items-center">
+        <div
+          style="background-image: url(img/Ellipse\ 11.svg ); background-repeat: no-repeat;  background-position: center;"
+          class="col-md-6 mt-3">
           <img src="img/Laye 1.svg" class="img-fluid mt-5" alt="Air Jordan">
         </div>
         <div class="col-md-6">
@@ -289,10 +336,13 @@
         <div class="col-md">
           <h6 class="text-white">Informações</h6>
           <ul class="list-unstyled small">
-            <li><a href="#" class="text-decoration-none text-light">Sobre</a></li>
-            <li><a href="#" class="text-decoration-none text-light">Contato</a></li>
-            <li><a href="#" class="text-decoration-none text-light">Trabalhe Conosco</a></li>
-            <li><a href="#" class="text-decoration-none text-light">Blog</a></li>
+            <li><a href="https://digitalcollege.com.br/quem-somos/" class="text-decoration-none text-light">Sobre</a>
+            </li>
+            <li><a href="https://api.whatsapp.com/send?1=pt_BR&phone=558599721749"
+                class="text-decoration-none text-light">Contato</a></li>
+            <li><a href="https://digitalcollege.com.br/trabalhe-conosco/"
+                class="text-decoration-none text-light">Trabalhe Conosco</a></li>
+            <li><a href="https://digitalcollege.com.br/blog/" class="text-decoration-none text-light">Blog</a></li>
             <li><a href="#" class="text-decoration-none text-light">Meus Pedidos</a></li>
           </ul>
         </div>
@@ -309,15 +359,30 @@
           <P>(85) 3051-3411</P>
         </div>
       </div>
-      <div class="d-flex align-items-center gap-2">
-        <img src="img/redesSociais.svg" alt="Logo" class="" />
+      <div class="d-flex align-items-center gap-5">
+        <a href="https://www.facebook.com/"><img src="img/Path face.svg" alt=""></a>
+        <a href="https://www.instagram.com/"><img src="img/Instagran.svg" alt=""></a>
+        <a href="https://x.com/"><img src="img/Path twitter.svg" alt=""></a>
       </div>
       <hr class="border-light" />
       <p class="text-center small">© 2025 Digital Store - Todos os direitos reservados.</p>
     </div>
   </footer>
 
-  
+  <!-- //COOKIES -->
+  <section>
+    <div id="cookieBanner"
+      class="position-fixed bottom-0 start-0 w-100 bg-white shadow p-3 d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 z-3"
+      style="display: none;">
+      <div class="text-center text-md-start">
+        <strong>Usamos cookies</strong> para personalizar conteúdo e melhorar sua experiência. Ao continuar, você
+        concorda com nossa <a href="#" class="text-danger text-decoration-underline">Política de Privacidade</a>.
+      </div>
+      <button id="acceptCookies" class="btn btn-danger px-4">Aceitar</button>
+    </div>
+  </section>
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </html>
