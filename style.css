@@ -1,0 +1,165 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fafafa;
+}
+
+header {
+  background: white;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+}
+
+.logo {
+  color: #e6007e;
+  font-weight: bold;
+  font-size: 1.5rem;
+  width: 40px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.search {
+  flex: 1;
+  margin: 0 2rem;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.top-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.main-nav {
+  background: white;
+  padding: 0.5rem 2rem;
+  display: flex;
+  gap: 2rem;
+  border-bottom: 1px solid #eee;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: #333;
+}
+
+.main-nav a.active {
+  color: #333;
+}
+
+main {
+  display: flex;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+aside {
+  width: 200px;
+  background: white;
+  border: 1px solid #eee;
+  padding: 1rem;
+  border-radius: 8px;
+}
+aside:hover {
+  border: #e6007e 2px solid;
+}
+aside.traco:hover {
+  text-decoration: underline;
+}
+
+aside ul {
+  list-style: none;
+  padding: 0;
+}
+
+aside li {
+  margin-bottom: 1rem;
+}
+
+aside a {
+  text-decoration: none;
+  color: #333;
+}
+
+aside a.active {
+  color: #333;
+}
+
+.orders {
+  flex: 1;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.orders h2 {
+  margin-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+td img {
+  width: 40px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.em-transito {
+  color: #f4c000;
+  font-weight: bold;
+}
+
+.finalizado {
+  color: #999;
+}
+
+.cancelado {
+  color: #e6007e;
+  font-weight: bold;
+}
+.menu-item {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.menu-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.menu-item:hover {
+  color: #ee1b53;
+}
+
+.menu-item:hover::after {
+  background-color: #ee1b53;
+}
