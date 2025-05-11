@@ -135,7 +135,7 @@ td img {
   color: #e6007e;
   font-weight: bold;
 }
-.menu-item {
+.item_menu {
   position: relative;
   display: inline-block;
   margin-bottom: 10px;
@@ -145,7 +145,7 @@ td img {
   transition: color 0.3s ease;
 }
 
-.menu-item::after {
+.item_menu::after {
   content: "";
   position: absolute;
   left: 0;
@@ -156,10 +156,10 @@ td img {
   transition: background-color 0.3s ease;
 }
 
-.menu-item:hover {
+.item_menu:hover {
   color: #ee1b53;
 }
 
-.menu-item:hover::after {
+.item_menu:hover::after {
   background-color: #ee1b53;
 }
