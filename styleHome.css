@@ -12,6 +12,12 @@ body {
     max-height: 140px;
     object-fit: contain;
   }
+  .card-pro{
+    transition: all 0.2s;
+  }
+  .card-pro:hover{
+    transform: scale(0.9);
+  }
 
    .collection-item:hover .rounded-circle {
     transform: scale(1.1);
