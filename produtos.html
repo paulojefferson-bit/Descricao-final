@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+</head><!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
@@ -15,61 +15,46 @@
 
 <body>
   <!-- Cabeçalho principal com logo, barra de pesquisa e menu de navegação -->
-  <header class="container-fluid py-3 border-bottom bg-white sticky-top">
-    <!-- Barra superior: logo, pesquisa, login e carrinho -->
-    <div class="d-flex justify-content-between align-items-center px-4">
-      <!-- Logo do site -->
-      <div class="d-flex align-items-center">
-        <a href="home.html" aria-label="Ir para a página inicial">
-          <img src="img/logo -HEADER.svg" alt="Logo Digital Store" width="150" height="40" class="img-fluid" />
-        </a>
-      </div> <!-- Campo de busca com ícone -->
-      <div class="container_busca position-relative w-100 mx-4" style="max-width: 600px;">
-        <label for="searchInput" class="visually-hidden">Pesquisar produto</label>
-        <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar produto..."
-          aria-describedby="searchIcon">
-        <i class="bi bi-search icone_busca position-absolute top-50 end-0 translate-middle-y me-3 text-muted"
-          id="searchIcon"></i>
-        <ul id="suggestions" class="list-group position-absolute w-100 mt-1 d-none shadow-sm z-3" aria-live="polite"
-          aria-label="Sugestões de busca"></ul>
-      </div>
+  <header class="header">
+    <!-- Logo do site -->
+    <a href="home.html" class="header-logo" aria-label="Ir para a página inicial">
+      <img src="img/logo -HEADER.svg" alt="Digital Store">
+    </a>
 
-      <!-- Botões de acesso: Cadastro, Login e Carrinho -->
-      <div class="d-flex align-items-center gap-3">
-        <a href="#" class="text-muted text-decoration-none">Cadastre-se</a>
-        <button class="btn btn-danger rounded-pill px-4">Entrar</button>
-        <a href="#" class="position-relative text-decoration-none" aria-label="Carrinho de compras com 2 itens">
-          <i class="bi bi-cart-fill text-danger fs-5"></i>
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">2</span>
-        </a>
-      </div>
+    <!-- Campo de busca com ícone -->
+    <div class="header-search">
+      <input type="text" id="searchInput" placeholder="Tênis" aria-label="Pesquisar produto">
+      <i class="bi bi-search header-search-icon"></i>
     </div>
 
-    <!-- Menu de navegação principal -->
-    <nav class="navbar navbar-expand-md navbar-light bg-white px-4 border-bottom mt-2" aria-label="Menu principal">
-      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-        aria-controls="navbarContent" aria-expanded="false" aria-label="Abrir menu de navegação">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarContent">
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
-          <li class="nav-item">
-            <a class="nav-link text-muted py-2" href="home.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-danger fw-semibold border-bottom border-2 border-danger py-2" href="produtos.html"
-              aria-current="page">Produtos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-muted py-2" href="#">Categorias</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-muted py-2" href="descricao.html">Meus Pedidos</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    <!-- Botões de acesso: Cadastro, Login e Carrinho -->
+    <div class="header-actions">
+      <a href="#" class="header-register">Cadastre-se</a>
+      <button class="header-login">Entrar</button>
+      <a href="#" class="header-cart" aria-label="Carrinho de compras com 2 itens">
+        <i class="bi bi-cart-fill"></i>
+        <span class="header-cart-badge">2</span>
+      </a>
+    </div>
   </header>
+
+  <!-- Menu de navegação principal -->
+  <nav class="nav-main">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="home.html" class="nav-link">Home</a>
+      </li>
+      <li class="nav-item">
+        <a href="produtos.html" class="nav-link active" aria-current="page">Produtos</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">Categorias</a>
+      </li>
+      <li class="nav-item">
+        <a href="descricao.html" class="nav-link">Meus Pedidos</a>
+      </li>
+    </ul>
+  </nav>
 
   <!-- Conteúdo principal da página -->
 
@@ -1092,6 +1077,11 @@
         © 2025 Digital Store - Todos os direitos reservados.
       </p>
     </div>
+     </div>
+    <!-- Botão de voltar ao topo -->
+    <a href="#" id="back-to-top" class="back-to-top" aria-label="Voltar ao topo da página">
+        <img src="img/scroll-up.svg" alt="" aria-hidden="true">
+    </a>
   </footer>
   <!-- Scripts do Bootstrap -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
