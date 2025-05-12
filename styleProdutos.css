@@ -1,6 +1,9 @@
 /* ===== CABEÇALHO E ESTILOS GERAIS ===== */
 
-/* Estilos para o header atualizado */
+body{
+  background: #F9F8FE;
+}
+/* Estilos para o header  */
 .header {
   display: flex;
   justify-content: space-between;
@@ -21,6 +24,7 @@
 
 .header-logo img {
   height: 30px;
+  
 }
 
 .header-search {
@@ -167,7 +171,7 @@
 
 /* Estilos para elementos na página de produtos */
 .fundo_cinza_claro {
-  background-color: #f8f9fa;
+  background-color: white;
 }
 
 /* Responsividade para o header */
@@ -218,104 +222,188 @@
   }
 }
 
-/* ===== CARDS DE PRODUTOS ===== */
+/* ===== CARDS DE PRODUTO ===== */
 
-/* Efeitos de hover */
 .card_produto {
   display: flex;
   flex-direction: column;
   height: 100%;
   transition: transform 0.3s ease;
-  overflow: hidden;
+  overflow: hidden; /* Contém elementos dentro do card em estado normal */
+  position: relative;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1; /* Base z-index para o card */
 }
 
 .card_produto:hover {
   transform: translateY(-5px);
+  z-index: 10; /* Aumenta o z-index ao passar o mouse para garantir que fique sobre outros elementos */
 }
 
-/* Conteúdo e alinhamento interno */
-.card_produto .corpo_card {
+.card_produto:hover .card_produto__imagem {
+  transform: rotate(-25deg) scale(0.95);
+}
+
+.card_produto:hover .card_produto__desconto {
+  transform: scale(1.05);
+}
+
+/* Imagem do produto */
+.card_produto__area_imagem {
+  height: 200px; /* Aumentado para dar mais espaço à imagem durante transformações */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  padding: 5px;
+  background-color: #f8f9fa;
+  border-radius: 8px 8px 0 0;
+}
+
+.card_produto__imagem {
+  width: 180px; /* Ajustado para melhor proporção */
+  height: 120px;
+  transform: rotate(-20deg);
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+  transition: transform 0.3s ease;
+  max-width: 100%;
+  position: relative;
+  z-index: 2;
+  transform-origin: center; /* Garante que a rotação aconteça a partir do centro */
+}
+
+@media (max-width: 768px) {
+  .card_produto__imagem {
+    width: 160px;
+    height: 110px;
+  }
+  .card_produto__area_imagem {
+    height: 180px;
+  }
+}
+@media (max-width: 576px) {
+  .card_produto__imagem {
+    width: 140px;
+    height: 100px;
+  }
+  .card_produto__area_imagem {
+    height: 170px;
+  }
+}
+
+/* Badge de desconto */
+.card_produto__desconto_area {
+  z-index: 5;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  transition: transform 0.3s ease;
+}
+
+.card_produto__desconto {
+  background-color: #C92071;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  padding: 0.35rem 0.65rem;
+  border-radius: 50rem;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+/* Corpo do card */
+.card_produto__corpo {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
   padding: 1rem;
 }
 
-/* Alinhamento consistente dos elementos */
-.card_produto .corpo_card > * {
-  width: 100%;
+.card_produto__marca {
+  font-size: 0.95rem;
+  color: #888;
+  margin-bottom: 0.25rem;
 }
 
-/* Posicionamento do botão no final do card */
-.card_produto .corpo_card .btn {
-  margin-top: auto;
+.card_produto__titulo {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #222;
 }
 
-/* ===== ESTILO DAS IMAGENS ===== */
-
-/* Estilo para imagens de produtos com rotação */
-.imagem_produto {
-  width: 248px;
-  height: 134px;
-  transform: rotate(-30deg);
-  object-fit: contain;
-  margin: 0 auto;
-  display: block;
-  transition: transform 0.2s ease;
-  max-width: 100%;
-}
-
-/* Área da imagem com altura fixa */
-.card_produto .p-3 {
-  height: 180px;
+/* Avaliação */
+.card_produto__avaliacao_area {
   display: flex;
   align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
+  margin-bottom: 0.5rem;
 }
 
-/* ===== ESTILO DOS BADGES DE DESCONTO ===== */
-
-/* Z-index para etiquetas de desconto */
-.card_produto .posicao_absoluta {
-  z-index: 2;
+.card_produto__avaliacao_estrelas {
+  color: #ffc107;
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
 }
 
-/* Estilo para etiquetas de desconto */
-.etiqueta_desconto {
-  background-color: #dc3545;
-  color: white;
-  font-weight: 600;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-  padding: 0.35rem 0.65rem;
-  border-radius: 50rem;
+.card_produto__avaliacao_total {
+  font-size: 0.95rem;
+  color: #888;
 }
 
-/* ===== PREÇOS E AVALIAÇÕES ===== */
-
-/* Alinhamento de preços */
-.card_produto .corpo_card .mb-3 {
+/* Preço */
+.card_produto__preco_area {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
 }
 
-/* Estilo para estrelas de avaliação */
-.avaliacao_estrelas {
-  color: #ffc107; /* Cor amarela para as estrelas */
+.card_produto__preco_antigo {
+  color: #888;
+  text-decoration: line-through;
+  font-size: 1rem;
+}
+
+.card_produto__preco_atual {
+  color: #C92071;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Botão adicionar ao carrinho */
+.card_produto__botao_carrinho {
+  margin-top: auto;
+  background: none;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  border-radius: 50rem;
+  font-weight: 600;
+  padding: 0.5rem 0;
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
 }
 
-.avaliacao_estrelas .bi-star-fill,
-.avaliacao_estrelas .bi-star-half {
-  color: #ffc107;
+.card_produto__botao_carrinho:hover {
+  background: #dc3545;
+  color: #fff;
 }
 
-.avaliacao_estrelas .bi-star {
-  color: #ffc107;
-  opacity: 0.5;
+/* Ícone do carrinho dentro do botão */
+.card_produto__icone_carrinho {
+  font-size: 1.1rem;
+  margin-right: 0.3rem;
 }
 
 /* ===== FILTROS E FORMULÁRIOS ===== */
@@ -429,27 +517,7 @@
 
 /* Ajustes responsivos */
 @media (max-width: 768px) {
-  .imagem_produto {
-    width: 200px;
-    height: 120px;
-  }
-  
-  .card_produto .p-3 {
-    height: 150px;
-  }
-  
   .cabecalho_resultados {
     font-size: 20px;
-  }
-}
-
-@media (max-width: 576px) {
-  .imagem_produto {
-    width: 200px;
-    height: 110px;
-  }
-  
-  .card_produto .p-3 {
-    height: 150px;
   }
 }

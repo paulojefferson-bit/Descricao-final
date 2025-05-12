@@ -223,249 +223,206 @@
         <div class="container-fluid px-0">
 
           <!-- Primeira linha de produtos (1-6) -->
-
-          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mb-5"> <!-- Produto 1 -->
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mb-5">
+            <!-- Produto 1 -->
             <article class="col">
-              <div class="card_produto shadow-sm rounded overflow-hidden h-100">
-                <!-- Badge de desconto -->
-                <div class="posicao_absoluta top-0 start-0 p-2">
-                  <span class="etiqueta_desconto">50% OFF</span>
+              <div class="card_produto">
+                <div class="card_produto__desconto_area">
+                  <span class="card_produto__desconto">50% OFF</span>
                 </div>
-                <!-- Imagem do produto -->
-                <div class="p-3 bg-light">
-                  <img src="img/tenis_produtos.png" alt="Nike Air Max" class="imagem_produto">
+                <div class="card_produto__area_imagem">
+                  <img src="img/tenis_produtos.png" alt="Nike Air Max" class="card_produto__imagem">
                 </div>
-                <!-- Corpo do card -->
-                <div class="corpo_card">
-                  <h3 class="h6 fw-semibold mb-2">Nike Air Max</h3>
-                  <!-- Avaliação com estrelas -->
-                  <div class="d-flex align-items-center mb-2">
-                    <div class="avaliacao_estrelas me-2" aria-label="4.5 de 5 estrelas">
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-half" aria-hidden="true"></i>
+                <div class="card_produto__corpo">
+                  <p class="card_produto__marca">Nike</p>
+                  <h3 class="card_produto__titulo">Nike Air Max</h3>
+                  <div class="card_produto__avaliacao_area">
+                    <div class="card_produto__avaliacao_estrelas">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-half"></i>
                     </div>
-                    <small class="text-muted">(128)</small>
+                    <span class="card_produto__avaliacao_total">(128)</span>
                   </div>
-                  <!-- Preço -->
-                  <div class="mb-3">
-                    <span class="text-danger fw-semibold me-2">R$499,99</span>
-                    <span class="text-muted fw-normal text-decoration-line-through">R$999,99</span>
+                  <div class="card_produto__preco_area">
+                    <del class="card_produto__preco_antigo">R$999,99</del>
+                    <span class="card_produto__preco_atual">R$499,99</span>
                   </div>
-                  <!-- Botão adicionar ao carrinho -->
-                  <button class="btn btn-outline-danger rounded-pill w-100 botao_adicionar_carrinho">
-                    <i class="bi bi-cart-plus me-1"></i> Adicionar ao carrinho
+                  <button class="card_produto__botao_carrinho">
+                    <i class="bi bi-cart-plus card_produto__icone_carrinho"></i>
+                    Adicionar ao carrinho
                   </button>
                 </div>
               </div>
             </article>
             <!-- Produto 2 -->
             <article class="col">
-              <div class="card h-100 border-0 shadow-sm card_produto">
-                <div class="posicao_absoluta top-0 start-0 p-2">
-                  <span class="etiqueta_desconto rounded-pill px-3 py-2 fw-medium">50% OFF</span>
+              <div class="card_produto">
+                <div class="card_produto__desconto_area">
+                  <span class="card_produto__desconto">50% OFF</span>
                 </div>
-                <div class="p-3">
-                  <img src="img/tenis_produtos.png" class="imagem_produto img-fluid"
-                    alt="Tênis Adidas Ultraboost masculino" loading="lazy">
+                <div class="card_produto__area_imagem">
+                  <img src="img/tenis_produtos.png" alt="Ultraboost 22 - Masculino" class="card_produto__imagem">
                 </div>
-                <div class="corpo_card">
-                  <p class="small text-muted mb-1">Adidas</p>
-                  <h3 class="h6 fw-bold mb-2">Ultraboost 22 - Masculino</h3>
-
-                  <!-- Avaliações -->
-
-                  <div class="d-flex align-items-center mb-2">
-                    <div class="avaliacao_estrelas me-2" aria-label="4.0 de 5 estrelas">
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star" aria-hidden="true"></i>
+                <div class="card_produto__corpo">
+                  <p class="card_produto__marca">Adidas</p>
+                  <h3 class="card_produto__titulo">Ultraboost 22 - Masculino</h3>
+                  <div class="card_produto__avaliacao_area">
+                    <div class="card_produto__avaliacao_estrelas">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star"></i>
                     </div>
-                    <small class="text-muted">(98)</small>
+                    <span class="card_produto__avaliacao_total">(98)</span>
                   </div>
-
-                  <!-- Preço -->
-
-                  <div class="mb-3">
-                    <del class="text-muted me-2">R$999,99</del>
-                    <span class="fw-bold">R$499,99</span>
+                  <div class="card_produto__preco_area">
+                    <del class="card_produto__preco_antigo">R$999,99</del>
+                    <span class="card_produto__preco_atual">R$499,99</span>
                   </div>
-                  <button
-                    class="btn btn-sm btn-outline-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-1">
-                    <i class="bi bi-cart-plus" aria-hidden="true"></i>
-                    <span>Adicionar ao carrinho</span>
+                  <button class="card_produto__botao_carrinho">
+                    <i class="bi bi-cart-plus card_produto__icone_carrinho"></i>
+                    Adicionar ao carrinho
                   </button>
                 </div>
               </div>
             </article>
             <!-- Produto 3 -->
             <article class="col">
-              <div class="card h-100 border-0 shadow-sm card_produto">
-                <div class="posicao_absoluta top-0 start-0 p-2">
-                  <span class="etiqueta_desconto rounded-pill px-3 py-2 fw-medium">50% OFF</span>
+              <div class="card_produto">
+                <div class="card_produto__desconto_area">
+                  <span class="card_produto__desconto">50% OFF</span>
                 </div>
-                <div class="p-3">
-                  <img src="img/tenis_produtos.png" class="imagem_produto img-fluid" alt="Tênis K-Swiss V8 masculino"
-                    loading="lazy">
+                <div class="card_produto__area_imagem">
+                  <img src="img/tenis_produtos.png" alt="K-Swiss V8 - Masculino" class="card_produto__imagem">
                 </div>
-                <div class="corpo_card">
-                  <p class="small text-muted mb-1">K-Swiss</p>
-                  <h3 class="h6 fw-bold mb-2">K-Swiss V8 - Masculino</h3>
-
-                  <!-- Avaliações -->
-
-                  <div class="d-flex align-items-center mb-2">
-                    <div class="avaliacao_estrelas me-2" aria-label="3.5 de 5 estrelas">
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-half" aria-hidden="true"></i>
-                      <i class="bi bi-star" aria-hidden="true"></i>
+                <div class="card_produto__corpo">
+                  <p class="card_produto__marca">K-Swiss</p>
+                  <h3 class="card_produto__titulo">K-Swiss V8 - Masculino</h3>
+                  <div class="card_produto__avaliacao_area">
+                    <div class="card_produto__avaliacao_estrelas">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-half"></i>
+                      <i class="bi bi-star"></i>
                     </div>
-                    <small class="text-muted">(42)</small>
+                    <span class="card_produto__avaliacao_total">(42)</span>
                   </div>
-
-                  <!-- Preço -->
-
-                  <div class="mb-3">
-                    <del class="text-muted me-2">R$799,99</del>
-                    <span class="fw-bold">R$399,99</span>
+                  <div class="card_produto__preco_area">
+                    <del class="card_produto__preco_antigo">R$799,99</del>
+                    <span class="card_produto__preco_atual">R$399,99</span>
                   </div>
-                  <button
-                    class="btn btn-sm btn-outline-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-1">
-                    <i class="bi bi-cart-plus" aria-hidden="true"></i>
-                    <span>Adicionar ao carrinho</span>
+                  <button class="card_produto__botao_carrinho">
+                    <i class="bi bi-cart-plus card_produto__icone_carrinho"></i>
+                    Adicionar ao carrinho
                   </button>
                 </div>
               </div>
             </article>
             <!-- Produto 4 -->
             <article class="col">
-              <div class="card h-100 border-0 shadow-sm card_produto">
-                <div class="posicao_absoluta top-0 start-0 p-2">
-                  <span class="etiqueta_desconto rounded-pill px-3 py-2 fw-medium">43% OFF</span>
+              <div class="card_produto">
+                <div class="card_produto__desconto_area">
+                  <span class="card_produto__desconto">43% OFF</span>
                 </div>
-                <div class="p-3">
-                  <img src="img/tenis_produtos.png" class="imagem_produto img-fluid"
-                    alt="Tênis Nike Revolution 5 masculino" loading="lazy">
+                <div class="card_produto__area_imagem">
+                  <img src="img/tenis_produtos.png" alt="Revolution 5 - Masculino" class="card_produto__imagem">
                 </div>
-                <div class="corpo_card">
-                  <p class="small text-muted mb-1">Nike</p>
-                  <h3 class="h6 fw-bold mb-2">Revolution 5 - Masculino</h3>
-
-                  <!-- Avaliações -->
-
-                  <div class="d-flex align-items-center mb-2">
-                    <div class="avaliacao_estrelas me-2" aria-label="3.0 de 5 estrelas">
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star" aria-hidden="true"></i>
-                      <i class="bi bi-star" aria-hidden="true"></i>
+                <div class="card_produto__corpo">
+                  <p class="card_produto__marca">Nike</p>
+                  <h3 class="card_produto__titulo">Revolution 5 - Masculino</h3>
+                  <div class="card_produto__avaliacao_area">
+                    <div class="card_produto__avaliacao_estrelas">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star"></i>
+                      <i class="bi bi-star"></i>
                     </div>
-                    <small class="text-muted">(54)</small>
+                    <span class="card_produto__avaliacao_total">(54)</span>
                   </div>
-
-                  <!-- Preço -->
-
-                  <div class="mb-3">
-                    <del class="text-muted me-2">R$349,99</del>
-                    <span class="fw-bold">R$199,99</span>
+                  <div class="card_produto__preco_area">
+                    <del class="card_produto__preco_antigo">R$349,99</del>
+                    <span class="card_produto__preco_atual">R$199,99</span>
                   </div>
-                  <button
-                    class="btn btn-sm btn-outline-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-1">
-                    <i class="bi bi-cart-plus" aria-hidden="true"></i>
-                    <span>Adicionar ao carrinho</span>
+                  <button class="card_produto__botao_carrinho">
+                    <i class="bi bi-cart-plus card_produto__icone_carrinho"></i>
+                    Adicionar ao carrinho
                   </button>
                 </div>
               </div>
             </article>
             <!-- Produto 5 -->
             <article class="col">
-              <div class="card h-100 border-0 shadow-sm card_produto">
-                <div class="posicao_absoluta top-0 start-0 p-2">
-                  <span class="etiqueta_desconto rounded-pill px-3 py-2 fw-medium">38% OFF</span>
+              <div class="card_produto">
+                <div class="card_produto__desconto_area">
+                  <span class="card_produto__desconto">38% OFF</span>
                 </div>
-                <div class="p-3">
-                  <img src="img/tenis_produtos.png" class="imagem_produto img-fluid"
-                    alt="Tênis Adidas Duramo 10 masculino" loading="lazy">
+                <div class="card_produto__area_imagem">
+                  <img src="img/tenis_produtos.png" alt="Duramo 10 - Masculino" class="card_produto__imagem">
                 </div>
-                <div class="corpo_card">
-                  <p class="small text-muted mb-1">Adidas</p>
-                  <h3 class="h6 fw-bold mb-2">Duramo 10 - Masculino</h3>
-
-                  <!-- Avaliações -->
-
-                  <div class="d-flex align-items-center mb-2">
-                    <div class="avaliacao_estrelas me-2" aria-label="3.5 de 5 estrelas">
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-half" aria-hidden="true"></i>
-                      <i class="bi bi-star" aria-hidden="true"></i>
+                <div class="card_produto__corpo">
+                  <p class="card_produto__marca">Adidas</p>
+                  <h3 class="card_produto__titulo">Duramo 10 - Masculino</h3>
+                  <div class="card_produto__avaliacao_area">
+                    <div class="card_produto__avaliacao_estrelas">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-half"></i>
+                      <i class="bi bi-star"></i>
                     </div>
-                    <small class="text-muted">(78)</small>
+                    <span class="card_produto__avaliacao_total">(78)</span>
                   </div>
-
-                  <!-- Preço -->
-
-                  <div class="mb-3">
-                    <del class="text-muted me-2">R$399,99</del>
-                    <span class="fw-bold">R$249,99</span>
+                  <div class="card_produto__preco_area">
+                    <del class="card_produto__preco_antigo">R$399,99</del>
+                    <span class="card_produto__preco_atual">R$249,99</span>
                   </div>
-                  <button
-                    class="btn btn-sm btn-outline-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-1">
-                    <i class="bi bi-cart-plus" aria-hidden="true"></i>
-                    <span>Adicionar ao carrinho</span>
+                  <button class="card_produto__botao_carrinho">
+                    <i class="bi bi-cart-plus card_produto__icone_carrinho"></i>
+                    Adicionar ao carrinho
                   </button>
                 </div>
               </div>
             </article>
             <!-- Produto 6 -->
             <article class="col">
-              <div class="card h-100 border-0 shadow-sm card_produto">
-                <div class="posicao_absoluta top-0 start-0 p-2">
-                  <span class="etiqueta_desconto rounded-pill px-3 py-2 fw-medium">37% OFF</span>
+              <div class="card_produto">
+                <div class="card_produto__desconto_area">
+                  <span class="card_produto__desconto">37% OFF</span>
                 </div>
-                <div class="p-3">
-                  <img src="img/tenis_produtos.png" class="imagem_produto img-fluid"
-                    alt="Tênis Puma Anzarun Lite masculino" loading="lazy">
+                <div class="card_produto__area_imagem">
+                  <img src="img/tenis_produtos.png" alt="Anzarun Lite - Masculino" class="card_produto__imagem">
                 </div>
-                <div class="corpo_card">
-                  <p class="small text-muted mb-1">Puma</p>
-                  <h3 class="h6 fw-bold mb-2">Anzarun Lite - Masculino</h3>
-
-                  <!-- Avaliações -->
-
-                  <div class="d-flex align-items-center mb-2">
-                    <div class="avaliacao_estrelas me-2" aria-label="3.0 de 5 estrelas">
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star" aria-hidden="true"></i>
-                      <i class="bi bi-star" aria-hidden="true"></i>
+                <div class="card_produto__corpo">
+                  <p class="card_produto__marca">Puma</p>
+                  <h3 class="card_produto__titulo">Anzarun Lite - Masculino</h3>
+                  <div class="card_produto__avaliacao_area">
+                    <div class="card_produto__avaliacao_estrelas">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star"></i>
+                      <i class="bi bi-star"></i>
                     </div>
-                    <small class="text-muted">(36)</small>
+                    <span class="card_produto__avaliacao_total">(36)</span>
                   </div>
-
-                  <!-- Preço -->
-
-                  <div class="mb-3">
-                    <del class="text-muted me-2">R$349,99</del>
-                    <span class="fw-bold">R$219,99</span>
+                  <div class="card_produto__preco_area">
+                    <del class="card_produto__preco_antigo">R$349,99</del>
+                    <span class="card_produto__preco_atual">R$219,99</span>
                   </div>
-                  <button
-                    class="btn btn-sm btn-outline-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-1">
-                    <i class="bi bi-cart-plus" aria-hidden="true"></i>
-                    <span>Adicionar ao carrinho</span>
+                  <button class="card_produto__botao_carrinho">
+                    <i class="bi bi-cart-plus card_produto__icone_carrinho"></i>
+                    Adicionar ao carrinho
                   </button>
                 </div>
               </div>
             </article>
+            
           </div>
 
           <!-- Segunda linha de produtos (7-12) -->
@@ -473,123 +430,99 @@
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mb-5">
             <!-- Produto 7 -->
             <article class="col">
-              <div class="card h-100 border-0 shadow-sm card_produto">
-                <div class="posicao_absoluta top-0 start-0 p-2">
-                  <span class="etiqueta_desconto rounded-pill px-3 py-2 fw-medium">50% OFF</span>
+              <div class="card_produto">
+                <div class="card_produto__desconto_area">
+                  <span class="card_produto__desconto">50% OFF</span>
                 </div>
-                <div class="p-3">
-                  <img src="img/tenis_produtos.png" class="imagem_produto img-fluid"
-                    alt="Tênis Nike Pegasus 39 masculino" loading="lazy">
+                <div class="card_produto__area_imagem">
+                  <img src="img/tenis_produtos.png" alt="Pegasus 39 - Masculino" class="card_produto__imagem">
                 </div>
-                <div class="corpo_card">
-                  <p class="small text-muted mb-1">Nike</p>
-                  <h3 class="h6 fw-bold mb-2">Pegasus 39 - Masculino</h3>
-
-                  <!-- Avaliações -->
-
-                  <div class="d-flex align-items-center mb-2">
-                    <div class="avaliacao_estrelas me-2" aria-label="4.0 de 5 estrelas">
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star" aria-hidden="true"></i>
+                <div class="card_produto__corpo">
+                  <p class="card_produto__marca">Nike</p>
+                  <h3 class="card_produto__titulo">Pegasus 39 - Masculino</h3>
+                  <div class="card_produto__avaliacao_area">
+                    <div class="card_produto__avaliacao_estrelas">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star"></i>
                     </div>
-                    <small class="text-muted">(86)</small>
+                    <span class="card_produto__avaliacao_total">(86)</span>
                   </div>
-
-                  <!-- Preço -->
-
-                  <div class="mb-3">
-                    <del class="text-muted me-2">R$799,99</del>
-                    <span class="fw-bold">R$399,99</span>
+                  <div class="card_produto__preco_area">
+                    <del class="card_produto__preco_antigo">R$799,99</del>
+                    <span class="card_produto__preco_atual">R$399,99</span>
                   </div>
-                  <button
-                    class="btn btn-sm btn-outline-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-1">
-                    <i class="bi bi-cart-plus" aria-hidden="true"></i>
-                    <span>Adicionar ao carrinho</span>
+                  <button class="card_produto__botao_carrinho">
+                    <i class="bi bi-cart-plus card_produto__icone_carrinho"></i>
+                    Adicionar ao carrinho
                   </button>
                 </div>
               </div>
             </article>
             <!-- Produto 8 -->
             <article class="col">
-              <div class="card h-100 border-0 shadow-sm card_produto">
-                <div class="posicao_absoluta top-0 start-0 p-2">
-                  <span class="etiqueta_desconto rounded-pill px-3 py-2 fw-medium">40% OFF</span>
+              <div class="card_produto">
+                <div class="card_produto__desconto_area">
+                  <span class="card_produto__desconto">40% OFF</span>
                 </div>
-                <div class="p-3">
-                  <img src="img/tenis_produtos.png" class="imagem_produto img-fluid"
-                    alt="Tênis Adidas Run Falcon 2.0 masculino" loading="lazy">
+                <div class="card_produto__area_imagem">
+                  <img src="img/tenis_produtos.png" alt="Run Falcon 2.0 - Masculino" class="card_produto__imagem">
                 </div>
-                <div class="corpo_card">
-                  <p class="small text-muted mb-1">Adidas</p>
-                  <h3 class="h6 fw-bold mb-2">Run Falcon 2.0 - Masculino</h3>
-
-                  <!-- Avaliações -->
-
-                  <div class="d-flex align-items-center mb-2">
-                    <div class="avaliacao_estrelas me-2" aria-label="3.5 de 5 estrelas">
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-half" aria-hidden="true"></i>
-                      <i class="bi bi-star" aria-hidden="true"></i>
+                <div class="card_produto__corpo">
+                  <p class="card_produto__marca">Adidas</p>
+                  <h3 class="card_produto__titulo">Run Falcon 2.0 - Masculino</h3>
+                  <div class="card_produto__avaliacao_area">
+                    <div class="card_produto__avaliacao_estrelas">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-half"></i>
+                      <i class="bi bi-star"></i>
                     </div>
-                    <small class="text-muted">(45)</small>
+                    <span class="card_produto__avaliacao_total">(45)</span>
                   </div>
-
-                  <!-- Preço -->
-
-                  <div class="mb-3">
-                    <del class="text-muted me-2">R$299,99</del>
-                    <span class="fw-bold">R$179,99</span>
+                  <div class="card_produto__preco_area">
+                    <del class="card_produto__preco_antigo">R$299,99</del>
+                    <span class="card_produto__preco_atual">R$179,99</span>
                   </div>
-                  <button
-                    class="btn btn-sm btn-outline-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-1">
-                    <i class="bi bi-cart-plus" aria-hidden="true"></i>
-                    <span>Adicionar ao carrinho</span>
+                  <button class="card_produto__botao_carrinho">
+                    <i class="bi bi-cart-plus card_produto__icone_carrinho"></i>
+                    Adicionar ao carrinho
                   </button>
                 </div>
               </div>
             </article>
             <!-- Produto 9 -->
             <article class="col">
-              <div class="card h-100 border-0 shadow-sm card_produto">
-                <div class="posicao_absoluta top-0 start-0 p-2">
-                  <span class="etiqueta_desconto rounded-pill px-3 py-2 fw-medium">39% OFF</span>
+              <div class="card_produto">
+                <div class="card_produto__desconto_area">
+                  <span class="card_produto__desconto">39% OFF</span>
                 </div>
-                <div class="p-3">
-                  <img src="img/tenis_produtos.png" class="imagem_produto img-fluid"
-                    alt="Tênis Puma Softride Vital masculino" loading="lazy">
+                <div class="card_produto__area_imagem">
+                  <img src="img/tenis_produtos.png" alt="Softride Vital - Masculino" class="card_produto__imagem">
                 </div>
-                <div class="corpo_card">
-                  <p class="small text-muted mb-1">Puma</p>
-                  <h3 class="h6 fw-bold mb-2">Softride Vital - Masculino</h3>
-
-                  <!-- Avaliações -->
-
-                  <div class="d-flex align-items-center mb-2">
-                    <div class="avaliacao_estrelas me-2" aria-label="3.0 de 5 estrelas">
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star" aria-hidden="true"></i>
-                      <i class="bi bi-star" aria-hidden="true"></i>
+                <div class="card_produto__corpo">
+                  <p class="card_produto__marca">Puma</p>
+                  <h3 class="card_produto__titulo">Softride Vital - Masculino</h3>
+                  <div class="card_produto__avaliacao_area">
+                    <div class="card_produto__avaliacao_estrelas">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star"></i>
+                      <i class="bi bi-star"></i>
                     </div>
-                    <small class="text-muted">(32)</small>
+                    <span class="card_produto__avaliacao_total">(32)</span>
                   </div>
-
-                  <!-- Preço -->
-
-                  <div class="mb-3">
-                    <del class="text-muted me-2">R$459,99</del>
-                    <span class="fw-bold">R$279,99</span>
+                  <div class="card_produto__preco_area">
+                    <del class="card_produto__preco_antigo">R$459,99</del>
+                    <span class="card_produto__preco_atual">R$279,99</span>
                   </div>
-                  <button
-                    class="btn btn-sm btn-outline-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-1">
-                    <i class="bi bi-cart-plus" aria-hidden="true"></i>
-                    <span>Adicionar ao carrinho</span>
+                  <button class="card_produto__botao_carrinho">
+                    <i class="bi bi-cart-plus card_produto__icone_carrinho"></i>
+                    Adicionar ao carrinho
                   </button>
                 </div>
               </div>
@@ -601,41 +534,33 @@
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mb-4">
             <!-- Produto 10 -->
             <article class="col">
-              <div class="card h-100 border-0 shadow-sm card_produto">
-                <div class="posicao_absoluta top-0 start-0 p-2">
-                  <span class="etiqueta_desconto rounded-pill px-3 py-2 fw-medium">30% OFF</span>
+              <div class="card_produto">
+                <div class="card_produto__desconto_area">
+                  <span class="card_produto__desconto">28% OFF</span>
                 </div>
-                <div class="p-3">
-                  <img src="img/tenis_produtos.png" class="imagem_produto img-fluid"
-                    alt="Tênis Nike Revolution 6 Next Nature masculino" loading="lazy">
+                <div class="card_produto__area_imagem">
+                  <img src="img/tenis_produtos.png" alt="Gel-Nimbus 24 - Masculino" class="card_produto__imagem">
                 </div>
-                <div class="corpo_card">
-                  <p class="small text-muted mb-1">Nike</p>
-                  <h3 class="h6 fw-bold mb-2">Revolution 6 Next Nature - Masculino</h3>
-
-                  <!-- Avaliações -->
-
-                  <div class="d-flex align-items-center mb-2">
-                    <div class="avaliacao_estrelas me-2" aria-label="4.5 de 5 estrelas">
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-half" aria-hidden="true"></i>
+                <div class="card_produto__corpo">
+                  <p class="card_produto__marca">Asics</p>
+                  <h3 class="card_produto__titulo">Gel-Nimbus 24 - Masculino</h3>
+                  <div class="card_produto__avaliacao_area">
+                    <div class="card_produto__avaliacao_estrelas">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-half"></i>
                     </div>
-                    <small class="text-muted">(78)</small>
+                    <span class="card_produto__avaliacao_total">(92)</span>
                   </div>
-
-                  <!-- Preço -->
-
-                  <div class="mb-3">
-                    <del class="text-muted me-2">R$499,99</del>
-                    <span class="fw-bold">R$349,99</span>
+                  <div class="card_produto__preco_area">
+                    <del class="card_produto__preco_antigo">R$899,99</del>
+                    <span class="card_produto__preco_atual">R$649,99</span>
                   </div>
-                  <button
-                    class="btn btn-sm btn-outline-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-1">
-                    <i class="bi bi-cart-plus" aria-hidden="true"></i>
-                    <span>Adicionar ao carrinho</span>
+                  <button class="card_produto__botao_carrinho">
+                    <i class="bi bi-cart-plus card_produto__icone_carrinho"></i>
+                    Adicionar ao carrinho
                   </button>
                 </div>
               </div>
@@ -643,41 +568,33 @@
 
             <!-- Produto 11 -->
             <article class="col">
-              <div class="card h-100 border-0 shadow-sm card_produto">
-                <div class="posicao_absoluta top-0 start-0 p-2">
-                  <span class="etiqueta_desconto rounded-pill px-3 py-2 fw-medium">28% OFF</span>
+              <div class="card_produto">
+                <div class="card_produto__desconto_area">
+                  <span class="card_produto__desconto">30% OFF</span>
                 </div>
-                <div class="p-3">
-                  <img src="img/tenis_produtos.png" class="imagem_produto img-fluid"
-                    alt="Tênis Asics Gel-Nimbus 24 masculino" loading="lazy">
+                <div class="card_produto__area_imagem">
+                  <img src="img/tenis_produtos.png" alt="Wave Creation 23 - Masculino" class="card_produto__imagem">
                 </div>
-                <div class="corpo_card">
-                  <p class="small text-muted mb-1">Asics</p>
-                  <h3 class="h6 fw-bold mb-2">Gel-Nimbus 24 - Masculino</h3>
-
-                  <!-- Avaliações -->
-
-                  <div class="d-flex align-items-center mb-2">
-                    <div class="avaliacao_estrelas me-2" aria-label="4.7 de 5 estrelas">
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-half" aria-hidden="true"></i>
+                <div class="card_produto__corpo">
+                  <p class="card_produto__marca">Mizuno</p>
+                  <h3 class="card_produto__titulo">Wave Creation 23 - Masculino</h3>
+                  <div class="card_produto__avaliacao_area">
+                    <div class="card_produto__avaliacao_estrelas">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star"></i>
                     </div>
-                    <small class="text-muted">(92)</small>
+                    <span class="card_produto__avaliacao_total">(55)</span>
                   </div>
-
-                  <!-- Preço -->
-
-                  <div class="mb-3">
-                    <del class="text-muted me-2">R$899,99</del>
-                    <span class="fw-bold">R$649,99</span>
+                  <div class="card_produto__preco_area">
+                    <del class="card_produto__preco_antigo">R$999,99</del>
+                    <span class="card_produto__preco_atual">R$699,99</span>
                   </div>
-                  <button
-                    class="btn btn-sm btn-outline-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-1">
-                    <i class="bi bi-cart-plus" aria-hidden="true"></i>
-                    <span>Adicionar ao carrinho</span>
+                  <button class="card_produto__botao_carrinho">
+                    <i class="bi bi-cart-plus card_produto__icone_carrinho"></i>
+                    Adicionar ao carrinho
                   </button>
                 </div>
               </div>
@@ -685,41 +602,33 @@
 
             <!-- Produto 12 -->
             <article class="col">
-              <div class="card h-100 border-0 shadow-sm card_produto">
-                <div class="posicao_absoluta top-0 start-0 p-2">
-                  <span class="etiqueta_desconto rounded-pill px-3 py-2 fw-medium">30% OFF</span>
+              <div class="card_produto">
+                <div class="card_produto__desconto_area">
+                  <span class="card_produto__desconto">29% OFF</span>
                 </div>
-                <div class="p-3">
-                  <img src="img/tenis_produtos.png" class="imagem_produto img-fluid"
-                    alt="Tênis Mizuno Wave Creation 23 masculino" loading="lazy">
+                <div class="card_produto__area_imagem">
+                  <img src="img/tenis_produtos.png" alt="Fresh Foam 1080v11 - Masculino" class="card_produto__imagem">
                 </div>
-                <div class="corpo_card">
-                  <p class="small text-muted mb-1">Mizuno</p>
-                  <h3 class="h6 fw-bold mb-2">Wave Creation 23 - Masculino</h3>
-
-                  <!-- Avaliações -->
-
-                  <div class="d-flex align-items-center mb-2">
-                    <div class="avaliacao_estrelas me-2" aria-label="4.0 de 5 estrelas">
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star" aria-hidden="true"></i>
+                <div class="card_produto__corpo">
+                  <p class="card_produto__marca">New Balance</p>
+                  <h3 class="card_produto__titulo">Fresh Foam 1080v11 - Masculino</h3>
+                  <div class="card_produto__avaliacao_area">
+                    <div class="card_produto__avaliacao_estrelas">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-half"></i>
                     </div>
-                    <small class="text-muted">(55)</small>
+                    <span class="card_produto__avaliacao_total">(67)</span>
                   </div>
-
-                  <!-- Preço -->
-
-                  <div class="mb-3">
-                    <del class="text-muted me-2">R$999,99</del>
-                    <span class="fw-bold">R$699,99</span>
+                  <div class="card_produto__preco_area">
+                    <del class="card_produto__preco_antigo">R$849,99</del>
+                    <span class="card_produto__preco_atual">R$599,99</span>
                   </div>
-                  <button
-                    class="btn btn-sm btn-outline-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-1">
-                    <i class="bi bi-cart-plus" aria-hidden="true"></i>
-                    <span>Adicionar ao carrinho</span>
+                  <button class="card_produto__botao_carrinho">
+                    <i class="bi bi-cart-plus card_produto__icone_carrinho"></i>
+                    Adicionar ao carrinho
                   </button>
                 </div>
               </div>
@@ -727,131 +636,107 @@
 
             <!-- Produto 13 -->
             <article class="col">
-              <div class="card h-100 border-0 shadow-sm card_produto">
-                <div class="posicao_absoluta top-0 start-0 p-2">
-                  <span class="etiqueta_desconto rounded-pill px-3 py-2 fw-medium">29% OFF</span>
+              <div class="card_produto">
+                <div class="card_produto__desconto_area">
+                  <span class="card_produto__desconto">37% OFF</span>
                 </div>
-                <div class="p-3">
-                  <img src="img/tenis_produtos.png" class="imagem_produto img-fluid"
-                    alt="Tênis New Balance Fresh Foam 1080v11 masculino" loading="lazy">
+                <div class="card_produto__area_imagem">
+                  <img src="img/tenis_produtos.png" alt="Go Run Ride 9 - Masculino" class="card_produto__imagem">
                 </div>
-                <div class="corpo_card">
-                  <p class="small text-muted mb-1">New Balance</p>
-                  <h3 class="h6 fw-bold mb-2">Fresh Foam 1080v11 - Masculino</h3>
-
-                  <!-- Avaliações -->
-
-                  <div class="d-flex align-items-center mb-2">
-                    <div class="avaliacao_estrelas me-2" aria-label="4.3 de 5 estrelas">
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-half" aria-hidden="true"></i>
+                <div class="card_produto__corpo">
+                  <p class="card_produto__marca">Skechers</p>
+                  <h3 class="card_produto__titulo">Go Run Ride 9 - Masculino</h3>
+                  <div class="card_produto__avaliacao_area">
+                    <div class="card_produto__avaliacao_estrelas">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star"></i>
                     </div>
-                    <small class="text-muted">(67)</small>
+                    <span class="card_produto__avaliacao_total">(48)</span>
                   </div>
-
-                  <!-- Preço -->
-
-                  <div class="mb-3">
-                    <del class="text-muted me-2">R$849,99</del>
-                    <span class="fw-bold">R$599,99</span>
+                  <div class="card_produto__preco_area">
+                    <del class="card_produto__preco_antigo">R$599,99</del>
+                    <span class="card_produto__preco_atual">R$379,99</span>
                   </div>
-                  <button
-                    class="btn btn-sm btn-outline-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-1">
-                    <i class="bi bi-cart-plus" aria-hidden="true"></i>
-                    <span>Adicionar ao carrinho</span>
+                  <button class="card_produto__botao_carrinho">
+                    <i class="bi bi-cart-plus card_produto__icone_carrinho"></i>
+                    Adicionar ao carrinho
                   </button>
                 </div>
               </div>
             </article>
             <!-- Produto 14 -->
-
             <article class="col">
-              <div class="card h-100 border-0 shadow-sm card_produto">
-                <div class="posicao_absoluta top-0 start-0 p-2">
-                  <span class="etiqueta_desconto rounded-pill px-3 py-2 fw-medium">37% OFF</span>
+              <div class="card_produto">
+                <div class="card_produto__desconto_area">
+                  <span class="card_produto__desconto">27% OFF</span>
                 </div>
-                <div class="p-3">
-                  <img src="img/tenis_produtos.png" class="imagem_produto img-fluid"
-                    alt="Tênis Skechers Go Run Ride 9 masculino" loading="lazy">
+                <div class="card_produto__area_imagem">
+                  <img src="img/tenis_produtos.png" alt="Charged Pursuit 3 - Masculino" class="card_produto__imagem">
                 </div>
-                <div class="corpo_card">
-                  <p class="small text-muted mb-1">Skechers</p>
-                  <h3 class="h6 fw-bold mb-2">Go Run Ride 9 - Masculino</h3>
-
-                  <!-- Avaliações -->
-
-                  <div class="d-flex align-items-center mb-2">
-                    <div class="avaliacao_estrelas me-2" aria-label="4.2 de 5 estrelas">
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star" aria-hidden="true"></i>
+                <div class="card_produto__corpo">
+                  <p class="card_produto__marca">Under Armour</p>
+                  <h3 class="card_produto__titulo">Charged Pursuit 3 - Masculino</h3>
+                  <div class="card_produto__avaliacao_area">
+                    <div class="card_produto__avaliacao_estrelas">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-half"></i>
+                      <i class="bi bi-star"></i>
                     </div>
-                    <small class="text-muted">(48)</small>
+                    <span class="card_produto__avaliacao_total">(41)</span>
                   </div>
-
-                  <!-- Preço -->
-
-                  <div class="mb-3">
-                    <del class="text-muted me-2">R$599,99</del>
-                    <span class="fw-bold">R$379,99</span>
+                  <div class="card_produto__preco_area">
+                    <del class="card_produto__preco_antigo">R$549,99</del>
+                    <span class="card_produto__preco_atual">R$399,99</span>
                   </div>
-                  <button
-                    class="btn btn-sm btn-outline-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-1">
-                    <i class="bi bi-cart-plus" aria-hidden="true"></i>
-                    <span>Adicionar ao carrinho</span>
+                  <button class="card_produto__botao_carrinho">
+                    <i class="bi bi-cart-plus card_produto__icone_carrinho"></i>
+                    Adicionar ao carrinho
                   </button>
                 </div>
               </div>
             </article>
             <!-- Produto 15 -->
-
             <article class="col">
-              <div class="card h-100 border-0 shadow-sm card_produto">
-                <div class="posicao_absoluta top-0 start-0 p-2">
-                  <span class="etiqueta_desconto rounded-pill px-3 py-2 fw-medium">27% OFF</span>
+              <div class="card_produto">
+                <div class="card_produto__desconto_area">
+                  <span class="card_produto__desconto">30% OFF</span>
                 </div>
-                <div class="p-3">
-                  <img src="img/tenis_produtos.png" class="imagem_produto img-fluid"
-                    alt="Tênis Under Armour Charged Pursuit 3 masculino" loading="lazy">
+                <div class="card_produto__area_imagem">
+                  <img src="img/tenis_produtos.png" alt="HOVR Phantom 2 - Masculino" class="card_produto__imagem">
                 </div>
-                <div class="corpo_card">
-                  <p class="small text-muted mb-1">Under Armour</p>
-                  <h3 class="h6 fw-bold mb-2">Charged Pursuit 3 - Masculino</h3>
-
-                  <!-- Avaliações -->
-
-                  <div class="d-flex align-items-center mb-2">
-                    <div class="avaliacao_estrelas me-2" aria-label="3.8 de 5 estrelas">
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-fill" aria-hidden="true"></i>
-                      <i class="bi bi-star-half" aria-hidden="true"></i>
-                      <i class="bi bi-star" aria-hidden="true"></i>
+                <div class="card_produto__corpo">
+                  <p class="card_produto__marca">Under Armour</p>
+                  <h3 class="card_produto__titulo">HOVR Phantom 2 - Masculino</h3>
+                  <div class="card_produto__avaliacao_area">
+                    <div class="card_produto__avaliacao_estrelas">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-half"></i>
+                      <i class="bi bi-star"></i>
                     </div>
-                    <small class="text-muted">(41)</small>
+                    <span class="card_produto__avaliacao_total">(41)</span>
                   </div>
-
-                  <!-- Preço -->
-
-                  <div class="mb-3">
-                    <del class="text-muted me-2">R$549,99</del>
-                    <span class="fw-bold">R$399,99</span>
+                  <div class="card_produto__preco_area">
+                    <del class="card_produto__preco_antigo">R$549,99</del>
+                    <span class="card_produto__preco_atual">R$399,99</span>
                   </div>
-                  <button
-                    class="btn btn-sm btn-outline-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-1">
-                    <i class="bi bi-cart-plus" aria-hidden="true"></i>
-                    <span>Adicionar ao carrinho</span>
+                  <button class="card_produto__botao_carrinho">
+                    <i class="bi bi-cart-plus card_produto__icone_carrinho"></i>
+                    Adicionar ao carrinho
                   </button>
                 </div>
               </div>
             </article>
           </div>
         </div>
+
+        
 
         <!-- Fim da galeria de produtos -->
         <!-- Paginação -->
