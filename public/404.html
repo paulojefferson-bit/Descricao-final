@@ -1,0 +1,19 @@
+<!-- 
+  Este arquivo é carregado quando o usuário tenta acessar diretamente uma URL que não existe fisicamente
+  mas deve ser tratada pelo React Router. Ele será apenas redirecionado para o index.html
+-->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0;url=/" />
+  <title>Redirecionando...</title>
+  <script>
+    // Em caso do redirecionamento meta não funcionar
+    window.location.href = "/";
+  </script>
+</head>
+<body>
+  Se você não for redirecionado automaticamente, <a href="/">clique aqui</a>.
+</body>
+</html>

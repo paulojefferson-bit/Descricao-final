@@ -1,0 +1,200 @@
+.home-hero {
+  margin-bottom: 4rem;
+}
+
+.home-label {
+  display: inline-block;
+  background-color: #F5F5F5;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #8F8F8F;
+  margin-bottom: 1rem;
+}
+
+.home-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #1F1F1F;
+  margin-bottom: 1rem;
+}
+
+.home-subtitle {
+  font-size: 1rem;
+  color: #474747;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.home-button {
+  background-color: #C92071;
+  border-color: #C92071;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+}
+
+.home-button:hover {
+  background-color: #991956;
+  border-color: #991956;
+}
+
+.home-hero-image {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1F1F1F;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: #474747;
+  margin-bottom: 2rem;
+  max-width: 600px;
+}
+
+.home-product-card {
+  border: none;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.home-product-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.home-card-img {
+  height: 200px;
+  object-fit: contain;
+  background-color: #F5F5F5;
+  padding: 1rem;
+}
+
+.home-card-title {
+  font-weight: 600;
+  color: #1F1F1F;
+}
+
+.home-card-price {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.home-card-old-price {
+  color: #8F8F8F;
+  font-size: 14px;
+  text-decoration: line-through;
+}
+
+.home-card-current-price {
+  color: #1F1F1F;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.home-card-button {
+  background-color: #C92071;
+  border-color: #C92071;
+  width: 100%;
+}
+
+.home-card-button:hover {
+  background-color: #991956;
+  border-color: #991956;
+}
+
+.home-categories-section {
+  margin-top: 5rem;
+}
+
+.home-category-card {
+  height: 300px;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-category-card.male {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/img/calça.svg');
+}
+
+.home-category-card.female {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/img/Group camisa.svg');
+}
+
+.home-category-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 2rem;
+  width: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+}
+
+.home-category-title {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.home-category-button {
+  background-color: white;
+  color: #1F1F1F;
+  border: none;
+  font-weight: 600;
+}
+
+.home-category-button:hover {
+  background-color: #F5F5F5;
+}
+
+/* Estilos da página inicial */
+.display-4 {
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.lead {
+  color: var(--text-medium);
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .home-title {
+    font-size: 2.5rem;
+  }
+  
+  .home-hero {
+    text-align: center;
+  }
+  
+  .home-hero-image {
+    max-width: 70%;
+    margin: 2rem auto 0;
+  }
+}
