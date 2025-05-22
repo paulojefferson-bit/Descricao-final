@@ -27,7 +27,7 @@ const Footer = () => {
               </a>
             </div>
           </Col>
-          
+
           <Col lg={2} md={6} className="mb-4 mb-lg-0">
             <h5 className="footer-heading">Informações</h5>
             <ul className="footer-links">
@@ -37,7 +37,7 @@ const Footer = () => {
               <li><Link to="/devolucoes">Trocas e Devoluções</Link></li>
             </ul>
           </Col>
-          
+
           <Col lg={2} md={6} className="mb-4 mb-lg-0">
             <h5 className="footer-heading">Categorias</h5>
             <ul className="footer-links">
@@ -47,29 +47,19 @@ const Footer = () => {
               <li><Link to="/produtos?category=running">Corrida</Link></li>
             </ul>
           </Col>
-          
+
           <Col lg={4} md={6}>
-            <h5 className="footer-heading">Cadastre-se</h5>
+            <h5 className="footer-heading">Contato:</h5>
             <p className="footer-text">
-              Cadastre-se e receba nossas novidades e promoções
+              Av Santos Dumont, 1510 - 1 andar - <br />
+              Aldeota, Fortaleza - CE, 60150-161 <br />
+              (85) 3051-3411
             </p>
-            <form className="footer-form mt-3">
-              <div className="input-group">
-                <input 
-                  type="email" 
-                  className="form-control" 
-                  placeholder="Digite seu email" 
-                  aria-label="Digite seu email"
-                />
-                <button className="btn btn-primary" type="button">
-                  Enviar
-                </button>
-              </div>
-            </form>
+            
           </Col>
         </Row>
       </Container>
-      
+
       <div className="footer-bottom py-3">
         <Container>
           <Row className="align-items-center">
