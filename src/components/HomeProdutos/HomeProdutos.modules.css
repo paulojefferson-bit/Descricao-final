@@ -1,0 +1,6 @@
+.card-pro{
+    transition: all 0.2s;
+  }
+  .card-pro:hover{
+    transform: scale(0.9);
+  }
