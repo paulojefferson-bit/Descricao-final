@@ -8,13 +8,12 @@ const OfertaExclusiva = () => {
     >
       <div className="row align-items-center">
         <div
-          className="col-md-6 col-12 mb-4 mb-md-0 d-flex justify-content-center"
+          className="col-md-6 col-12 mb-4 mb-md-0 d-flex "
           style={{
             backgroundImage: "url('img/Ellipse 11.svg')",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
-          }}
-        >
+          }}>
           <img
             src="img/Laye 1.svg"
             className="img-fluid mt-5"
