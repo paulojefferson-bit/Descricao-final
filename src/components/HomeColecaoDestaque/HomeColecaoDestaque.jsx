@@ -18,7 +18,7 @@ const Destaques = () => {
                                 className="card h-100 shadow-sm"
                                 style={{
                                     backgroundColor: '#D8E3F2',
-                                    backgroundImage:
+                                     backgroundImage:
                                         "url('img/star-wars-storm-trooper-supreme-shirts-supreme-t-shirt-snoopy-clothing-apparel-t-shirt-text-transparent-png-616696 1.svg')",
                                     backgroundRepeat: 'no-repeat',
                                     backgroundPosition: 'right',
