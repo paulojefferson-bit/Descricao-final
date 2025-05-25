@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './HomeProdutos.modules.css'
 
 const ProdutosEmAlta = () => {
@@ -7,7 +8,7 @@ const ProdutosEmAlta = () => {
     id: 1,
     categoria: 'Tênis',
     nome: 'K-Swiss V8 - Masculino',
-    imagem: 'img/Layer 1aa 2.svg',
+    imagem: '../img/Layer 1aa 2.svg',
     precoAntigo: '$200',
     precoAtual: '$100',
     desconto: '30% OFF',
@@ -17,7 +18,7 @@ const ProdutosEmAlta = () => {
     <section className="container mb-5">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4 className="fw-bold mb-0">Produtos em alta</h4>
-        <a href="produtos.html" style={{ textDecoration: 'none' }}>Ver todos →</a>
+        <Link to="/produtos" style={{ textDecoration: 'none' }}>Ver todos →</Link>
       </div>
 
       <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
@@ -35,10 +36,9 @@ const ProdutosEmAlta = () => {
               <img src={produto.imagem} className="w-100 my-2" alt={produto.nome} />
             </div>
             <div className="mt-2 text-start">
-              <h6 style={{ color: '#828080' }}>{produto.categoria}</h6>
-              <a href="produtos.html" style={{ textDecoration: 'none', color: '#000' }}>
+              <h6 style={{ color: '#828080' }}>{produto.categoria}</h6>              <Link to={`/produtos/${produto.id}`} style={{ textDecoration: 'none', color: '#000' }}>
                 {produto.nome}
-              </a>
+              </Link>
               <p className="text-muted mb-1">
                 <s>{produto.precoAntigo}</s>{' '}
                 <strong>{produto.precoAtual}</strong>

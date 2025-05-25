@@ -9,19 +9,20 @@ const Footer = () => {
       <footer className="footer ">
         <Container>
           <Row className="footer-main py-5">
-            <Col lg={4} md={6} className="mb-4 mb-lg-0">
-              <div className="footer-brand mb-4">
-                <img src="favicon.svg" alt="Digital Store" />
+            <Col lg={4} md={6} className="mb-4 mb-lg-0">              <div className="footer-brand mb-4">
+                <img src="../../img/logo.svg" alt="Digital Store" />
               </div>
               <p className="footer-text">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-              <div className="footer-social mt-4">
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="footer-social-link">
-                  <i className="bi bi-facebook"></i>
+              </p>              <div className="footer-social mt-4">
+                <a href="#" className="footer-social-link">
+                  <img src="../img/Path face.svg" alt="Facebook" />
                 </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="footer-social-link">
-                  <i className="bi bi-instagram"></i>
+                <a href="#" className="footer-social-link">
+                  <img src="../img/Instagran.svg" alt="Instagram" />
+                </a>
+                <a href="#" className="footer-social-link">
+                  <img src="../img/Path twitter.svg" alt="Twitter" />
                 </a>
                 <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="footer-social-link">
                   <i className="bi bi-twitter"></i>
