@@ -1,14 +1,16 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import HomePage from '../pages/HomePage/HomePage';
+import Cadastro from '../pages/Cadastro'
 // import ProductsPage from '../pages/ProductsPage/ProductsPage';
 // import ProductDetailPage from '../pages/ProductDetailPage/ProductDetailPage';
-// import CartPage from '../../BackupJv/CartPage/CartPage';
+
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/cadastro" element={<Cadastro />} />
       {/* <Route path="/produtos" element={<ProductsPage />} />
       <Route path="/produtos/:id" element={<ProductDetailPage />} />
       <Route path="/carrinho" element={<CartPage />} />

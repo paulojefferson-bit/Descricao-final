@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import './Header.css';
 
+
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -38,7 +39,8 @@ const Header = () => {
           <button type="submit" className="header-search-button" aria-label="Buscar">
             <i className="bi bi-search header-search-icon"></i>
           </button>
-        </form>        {/* Botões de acesso: Cadastro, Login e Carrinho */}
+        </form>       
+         {/* Botões de acesso: Cadastro, Login e Carrinho */}
         <div className="header-actions">
           <Link to="/cadastro" className="header-register">Cadastre-se</Link>
           <button className="header-login">Entrar</button>

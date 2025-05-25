@@ -10,6 +10,7 @@ import HomeOferta from '../../components/HomeOferta/HomeOferta';
 
 
 
+
 const HomePage = () => {
   return (
     <>
@@ -17,6 +18,8 @@ const HomePage = () => {
     <HomeColecaoDestaque/>
     <HomeProdutos/>
     <HomeOferta/>
+    
+    
     </>
   );
 };
