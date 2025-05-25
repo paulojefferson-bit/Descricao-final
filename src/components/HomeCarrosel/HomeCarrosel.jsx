@@ -1,6 +1,8 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import './HomeCarrosel.css';
+
 
 const CarroseHome = () => {
   return (
@@ -21,18 +23,8 @@ const CarroseHome = () => {
                 <a href="#" className="btn btn-danger">Ver ofertas</a>
               </div>
               <div className="col-md-6 text-center">
-                <div
-                  style={{
-                    backgroundImage: "url('img/Ornament 11.svg')",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "top"
-                  }}
-                >
-                  <img
-                    src="img/White-Sneakers-BANENRlipart 1.svg"
-                    className="img-fluid"
-                    alt="Nike Promo"
-                  />
+                <div style={{ backgroundImage: "url('img/Ornament 11.svg')", backgroundRepeat: "no-repeat", backgroundPosition: "top"}}>
+                  <img src="img/White-Sneakers-BANENRlipart 1.svg" className="img-fluid w-100" alt="Nike Promo"/>
                 </div>
               </div>
             </div>
