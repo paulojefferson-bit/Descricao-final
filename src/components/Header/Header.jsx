@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useCart } from '../../context/CartContext';
+import { useCarrinho } from '../../context/ContextoCarrinho';
 import './Header.css';
 
 
@@ -9,7 +9,7 @@ const Header = () => {
   const navigate = useNavigate();
   const path = location.pathname;
   const [searchTerm, setSearchTerm] = useState('');
-  const { getCartItemCount } = useCart();
+  const { obterQuantidadeItensCarrinho } = useCarrinho();
 
   // Função para lidar com a pesquisa
   const handleSearch = (e) => {
@@ -25,7 +25,7 @@ const Header = () => {
       <header className="header">
         {/* Logo do site */}
         <Link to="/" className="header-logo" aria-label="Ir para a página inicial">
-          <img src="/img/logo -HEADER.svg" alt="Digital Store" />
+          <img src="../../img/logo -HEADER.svg" alt="Digital Store" />
         </Link>        {/* Campo de busca com ícone */}
         <form className="header-search" onSubmit={handleSearch}>
           <input
@@ -45,10 +45,9 @@ const Header = () => {
           <Link to="/cadastro" className="header-register">Cadastre-se</Link>
           <button className="header-login">Entrar</button>
           <Link to="/carrinho" className="header-cart position-relative">
-            <i className="bi bi-cart-fill"></i>
-            {getCartItemCount() > 0 && (
+            <i className="bi bi-cart-fill"></i>            {obterQuantidadeItensCarrinho() > 0 && (
               <span className="header-cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                {getCartItemCount()}
+                {obterQuantidadeItensCarrinho()}
               </span>
             )}
           </Link>

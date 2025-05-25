@@ -5,17 +5,16 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import AppRoutes from './routes/AppRoutes'
 import MainLayout from './layouts/MainLayout'
-import { CartProvider } from './context/CartContext'
+import { ProvedorCarrinho } from './context/ContextoCarrinho'
 
 function App() {
-  return (
-    <CartProvider>
+  return (    <ProvedorCarrinho>
       <BrowserRouter>
         <MainLayout>
           <AppRoutes />
         </MainLayout>
       </BrowserRouter>
-    </CartProvider>
+    </ProvedorCarrinho>
   )
 }
 

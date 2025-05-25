@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './HomeColecaoDestaque.modules.css'
@@ -31,14 +32,13 @@ const Destaques = () => {
                                             style={{ backgroundColor: 'rgba(231, 255, 134, 1)' }}
                                         >
                                             30% OFF
-                                        </span>
-                                        <h5 className="fw-bold">
+                                        </span>                                        <h5 className="fw-bold">
                                             Coleção <br /> Novo drop Supreme
                                         </h5>
                                     </div>
-                                    <button className="btn btn-light text-danger mt-3 w-50 fw-semibold">
+                                    <Link to="/produtos" className="btn btn-light text-danger mt-3 w-50 fw-semibold">
                                         Comprar
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -49,7 +49,7 @@ const Destaques = () => {
                                 className="card h-100 shadow-sm"
                                 style={{
                                     backgroundColor: '#D8E3F2',
-                                    backgroundImage: "url('img/ddd 1.svg')",
+                                    backgroundImage: "url('../img/ddd 1.svg')",
                                     backgroundRepeat: 'no-repeat',
                                     backgroundPosition: 'right',
                                 }}
@@ -117,7 +117,7 @@ const Destaques = () => {
                             className="rounded-circle bg-white shadow p-3 mx-auto"
                             style={{ width: '100px', height: '100px' }}>
                             <img
-                                src="img/Group camisa.svg"
+                                src="../img/Group camisa.svg"
                                 alt="Camisetas"
                                 className="img-fluid"
                                 style={{ height: '60px' }}/>
@@ -130,9 +130,8 @@ const Destaques = () => {
                         <div
                             className="rounded-circle bg-white shadow p-3 mx-auto"
                             style={{ width: '100px', height: '100px' }}
-                        >
-                            <img
-                                src="img/calça.svg"
+                        >                            <img
+                                src="../img/calça.svg"
                                 alt="Calças"
                                 className="img-fluid"
                                 style={{ height: '60px' }}
@@ -164,7 +163,7 @@ const Destaques = () => {
                             style={{ width: '100px', height: '100px' }}
                         >
                             <img
-                                src="img/fonecole.svg"
+                                src="../img/fonecole.svg"
                                 alt="Headphones"
                                 className="img-fluid"
                                 style={{ height: '60px' }}
@@ -180,7 +179,7 @@ const Destaques = () => {
                             style={{ width: '100px', height: '100px' }}
                         >
                             <img
-                                src="img/sneakers.svg"
+                                src="../img/sneakers.svg"
                                 alt="Tênis"
                                 className="img-fluid"
                                 style={{ height: '60px' }}

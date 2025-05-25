@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './HomeCarrosel.css';
@@ -20,11 +21,11 @@ const CarroseHome = () => {
                 <p className="text-secondary">
                   Compre agora e receba até metade do mês com frete reduzido em seleção especial.
                 </p>
-                <a href="#" className="btn btn-danger">Ver ofertas</a>
+                <Link to="/produtos" className="btn btn-danger">Ver ofertas</Link>
               </div>
               <div className="col-md-6 text-center">
                 <div style={{ backgroundImage: "url('img/Ornament 11.svg')", backgroundRepeat: "no-repeat", backgroundPosition: "top"}}>
-                  <img src="img/White-Sneakers-BANENRlipart 1.svg" className="img-fluid w-100" alt="Nike Promo"/>
+                  <img src="../img/White-Sneakers-BANENRlipart 1.svg" className="img-fluid w-100" alt="Nike Promo"/>
                 </div>
               </div>
             </div>
@@ -39,7 +40,7 @@ const CarroseHome = () => {
                 <p className="text-secondary">
                   Confira os modelos mais desejados com descontos exclusivos por tempo limitado.
                 </p>
-                <a href="#" className="btn btn-danger">Ver coleção</a>
+                <Link to="/produtos" className="btn btn-danger">Ver coleção</Link>
               </div>
               <div className="col-md-6 text-center">
                 <div
@@ -68,7 +69,7 @@ const CarroseHome = () => {
                 <p className="text-secondary">
                   Aproveite para comprar com frete 100% gratuito e mais benefícios exclusivos.
                 </p>
-                <a href="#" className="btn btn-danger">Comprar agora</a>
+                <Link to="/produtos" className="btn btn-danger">Comprar agora</Link>
               </div>
               <div className="col-md-6 text-center">
                 <div
