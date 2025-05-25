@@ -24,7 +24,7 @@ const CarroseHome = () => {
               </div>
               <div className="col-md-6 text-center">
                 <div style={{ backgroundImage: "url('img/Ornament 11.svg')", backgroundRepeat: "no-repeat", backgroundPosition: "top"}}>
-                  <img src="img/White-Sneakers-BANENRlipart 1.svg" className="img-fluid" alt="Nike Promo"/>
+                  <img src="img/White-Sneakers-BANENRlipart 1.svg" className="img-fluid w-100" alt="Nike Promo"/>
                 </div>
               </div>
             </div>
