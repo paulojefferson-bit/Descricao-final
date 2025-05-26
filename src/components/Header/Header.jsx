@@ -43,7 +43,7 @@ const Header = () => {
          {/* Botões de acesso: Cadastro, Login e Carrinho */}
         <div className="header-actions">
           <Link to="/cadastro" className="header-register">Cadastre-se</Link>
-          <button className="header-login">Entrar</button>
+          <Link to='/cadastro'><button  className="header-login">Entrar</button></Link>
           <Link to="/carrinho" className="header-cart position-relative">
             <i className="bi bi-cart-fill"></i>            {obterQuantidadeItensCarrinho() > 0 && (
               <span className="header-cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
