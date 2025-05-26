@@ -24,9 +24,7 @@ const Footer = () => {
                 <a href="#" className="footer-social-link">
                   <img src="../img/Path twitter.svg" alt="Twitter" />
                 </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="footer-social-link">
-                  <i className="bi bi-twitter"></i>
-                </a>
+                
               </div>
             </Col>
 

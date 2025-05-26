@@ -36,7 +36,8 @@ const ProdutosEmAlta = () => {
               <img src={produto.imagem} className="w-100 my-2" alt={produto.nome} />
             </div>
             <div className="mt-2 text-start">
-              <h6 style={{ color: '#828080' }}>{produto.categoria}</h6>              <Link to={`/produtos/${produto.id}`} style={{ textDecoration: 'none', color: '#000' }}>
+              <h6 style={{ color: '#828080' }}>{produto.categoria}</h6>              
+              <Link to={`/produtos/${produto.id}`} style={{ textDecoration: 'none', color: '#000' }}>
                 {produto.nome}
               </Link>
               <p className="text-muted mb-1">
