@@ -65,12 +65,12 @@ export default function Login() {
           </div>
 
           {/* Imagem */}
-          <div className="col-md-6 d-none d-md-flex align-items-center justify-content-center bg-light">
+          <div className="col-md-6 d-none d-md-flex align-items-center justify-content-center ">
             <img
               src="img/cadastro.png"
               alt="Tênis"
               className="img-fluid p-4"
-              style={{ maxHeight: '700px' }}
+              style={{ maxHeight: '900px' }}
             />
           </div>
         </div>
