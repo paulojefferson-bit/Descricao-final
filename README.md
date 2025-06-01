@@ -1,12 +1,88 @@
-# React + Vite
+# 🏪 Loja de Tênis - Projeto Completo Front + Back
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sistema completo de e-commerce para loja de tênis desenvolvido com **React + Vite** (frontend) e **Node.js + Express + MySQL** (backend).
 
-Currently, two official plugins are available:
+## 🎯 Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🖥️ Frontend (React + Vite)
+- ⚛️ Interface moderna e responsiva
+- 🛒 Sistema de carrinho de compras
+- 🔍 Filtros e busca de produtos
+- 📱 Design mobile-first
+- 🎨 UI/UX otimizada
 
-## Expanding the ESLint configuration
+### 🔧 Backend (Node.js + Express)
+- 🔐 **Sistema de autenticação JWT**
+- 👥 **Diferentes níveis de acesso:**
+  - Visitante (visualização)
+  - Usuário (carrinho + compras)
+  - Colaborador (gerenciar produtos)
+  - Supervisor (promoções relâmpago)
+  - Diretor (acesso total + logs)
+- 🛡️ **Segurança:**
+  - Rate limiting
+  - Helmet para headers de segurança
+  - Validação de dados
+  - Logs de auditoria
+- 📋 **Compliance LGPD**
+- ⚡ **Promoções relâmpago**
+- 🛒 **Sistema completo de carrinho**
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🗄️ Banco de Dados
+
+- **MySQL** com estrutura otimizada
+- Tabelas: produtos, usuários, carrinho, promoções, logs, etc.
+- Índices para performance
+- Sistema de auditoria completo
+
+## 🚀 Como Executar
+
+### Backend
+```bash
+cd backend
+npm install
+npm start
+```
+
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## 📋 Variáveis de Ambiente
+
+Crie um arquivo `.env` no backend com:
+```env
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=sua_senha
+DB_NAME=projetofgt
+JWT_SECRET=sua_chave_secreta
+```
+
+## 🛠️ Tecnologias
+
+### Frontend
+- React 18
+- Vite
+- CSS Modules
+- React Router
+
+### Backend
+- Node.js
+- Express.js
+- MySQL
+- JWT
+- bcrypt
+- Helmet
+- Rate Limiting
+
+## 👨‍💻 Desenvolvido por
+
+**FGT - Loja de Tênis**
+
+---
+
+⭐ **Sistema completo, seguro e pronto para produção!**
