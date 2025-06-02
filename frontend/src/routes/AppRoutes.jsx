@@ -7,13 +7,14 @@ import PaginaDetalhesProduto from '../pages/PaginaDetalhesProduto/PaginaDetalhes
 import PaginaCarrinho from '../pages/PaginaCarrinho/PaginaCarrinho';
 import CheckoutPage from '../pages/Checkout/CheckoutPage';
 import SucessoPage from '../pages/Checkout/SucessoPage';
+import TesteAPI from '../components/TesteAPI/TesteAPI';
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/cadastro" element={<Cadastro />} />      <Route path="/produtos" element={<PaginaProdutos />} />
-      <Route path="/produtos/:id" element={<PaginaDetalhesProduto />} />
+      <Route path="/produto/:id" element={<PaginaDetalhesProduto />} />
       <Route path="/carrinho" element={<PaginaCarrinho />} />
       <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="/sucesso" element={<SucessoPage />} />

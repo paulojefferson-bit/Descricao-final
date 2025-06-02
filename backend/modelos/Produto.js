@@ -1,8 +1,7 @@
 const mysql = require('mysql2/promise');
 const conexao = require('../banco/conexao');
 
-class Produto {
-  constructor(dados) {
+class Produto {  constructor(dados) {
     this.id = dados.id;
     this.marca = dados.marca;
     this.nome = dados.nome;
@@ -11,11 +10,11 @@ class Produto {
     this.preco_atual = dados.preco_atual;
     this.desconto = dados.desconto;
     this.avaliacao = dados.avaliacao;
-    this.numero_avaliacoes = dados.numero_avaliacoes;
+    this.numero_avaliacoes = dados.total_avaliacoes || dados.numero_avaliacoes || 0;
     this.categoria = dados.categoria;
     this.genero = dados.genero;
     this.condicao = dados.condicao;
-    this.estoque = dados.quantidade_estoque;
+    this.estoque = dados.estoque || dados.quantidade_estoque || 0;
     this.descricao = dados.descricao;
     this.tamanhos_disponiveis = dados.tamanhos_disponiveis;
     this.cores_disponiveis = dados.cores_disponiveis;
@@ -84,11 +83,9 @@ class Produto {
       if (filtros.avaliacao_minima) {
         sql += ` AND avaliacao >= ?`;
         parametros.push(filtros.avaliacao_minima);
-      }
-
-      // Filtro por estoque disponível
+      }      // Filtro por estoque disponível
       if (filtros.apenas_em_estoque) {
-        sql += ` AND quantidade_estoque > 0`;
+        sql += ` AND estoque > 0`;
       }
 
       // Ordenação
@@ -136,8 +133,20 @@ class Produto {
       console.error('Erro ao buscar produtos:', erro);
       throw new Error('Erro interno do servidor ao buscar produtos');
     }
+  }  // Buscar produto por ID (versão simples para debug)
+  static async buscarPorIdSimples(id) {
+    try {
+      const resultados = await conexao.executarConsulta(
+        'SELECT * FROM produtos WHERE id = ? LIMIT 1',
+        [id]
+      );
+      
+      return resultados[0] || null;
+    } catch (erro) {
+      console.error('Erro ao buscar produto por ID (simples):', erro);
+      throw erro;
+    }
   }
-
   // Buscar produto por ID
   static async buscarPorId(id) {
     try {
@@ -160,11 +169,10 @@ class Produto {
   // Criar novo produto
   static async criar(dadosProduto) {
     try {
-      const sql = `
-        INSERT INTO produtos (
+      const sql = `        INSERT INTO produtos (
           marca, nome, imagem, preco_antigo, preco_atual, desconto,
           avaliacao, numero_avaliacoes, categoria, genero, condicao,
-          quantidade_estoque, descricao, tamanhos_disponiveis, cores_disponiveis,
+          estoque, descricao, tamanhos_disponiveis, cores_disponiveis,
           peso, material, origem, garantia_meses
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
@@ -246,9 +254,8 @@ class Produto {
 
   // Atualizar estoque
   async atualizarEstoque(quantidade) {
-    try {
-      await conexao.executarConsulta(
-        'UPDATE produtos SET quantidade_estoque = ? WHERE id = ?',
+    try {      await conexao.executarConsulta(
+        'UPDATE produtos SET estoque = ? WHERE id = ?',
         [quantidade, this.id]
       );
       this.estoque = quantidade;
@@ -273,21 +280,40 @@ class Produto {
       console.error('Erro ao reduzir estoque:', erro);
       throw erro;
     }
-  }
-
-  // Buscar produtos relacionados (mesma categoria, marca diferente)
+  }  // Buscar produtos relacionados (mesma categoria, marca diferente)
   async buscarRelacionados(limite = 4) {
     try {
-      const resultados = await conexao.executarConsulta(`
-        SELECT * FROM produtos 
-        WHERE categoria = ? AND id != ? AND marca != ?
-        ORDER BY avaliacao DESC, numero_avaliacoes DESC
-        LIMIT ?
-      `, [this.categoria, this.id, this.marca, limite]);
+      // Validar parâmetros antes da consulta
+      console.log('🔍 Buscando produtos relacionados para:', {
+        categoria: this.categoria,
+        id: this.id,
+        marca: this.marca,
+        limite: limite
+      });
 
+      // Garantir que limite seja um número inteiro e seguro
+      const limiteNumerico = Math.max(1, Math.min(20, parseInt(limite, 10) || 4));
+      
+      // Usar LIMIT diretamente na string SQL para evitar problemas de prepared statement
+      const sql = `
+        SELECT * FROM produtos 
+        WHERE categoria = ? AND id <> ? 
+        ORDER BY avaliacao DESC, total_avaliacoes DESC
+        LIMIT ${limiteNumerico}
+      `;
+      
+      const resultados = await conexao.executarConsulta(sql, [this.categoria, this.id]);
+
+      console.log('✅ Produtos relacionados encontrados:', resultados.length);
       return resultados.map(produto => new Produto(produto));
     } catch (erro) {
-      console.error('Erro ao buscar produtos relacionados:', erro);
+      console.error('❌ Erro ao buscar produtos relacionados:', erro);
+      console.error('📝 Parâmetros:', {
+        categoria: this.categoria,
+        id: this.id,
+        marca: this.marca,
+        limite: limite
+      });
       throw new Error('Erro interno do servidor ao buscar produtos relacionados');
     }
   }

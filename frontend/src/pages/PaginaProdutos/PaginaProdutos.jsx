@@ -7,6 +7,7 @@ import ItemListaProduto from '../../components/ItemListaProduto/ItemListaProduto
 import CabecalhoListaProdutos from '../../components/CabecalhoListaProdutos/CabecalhoListaProdutos';
 import OrdenacaoProdutos from '../../components/OrdenacaoProdutos/OrdenacaoProdutos';
 import { dadosProdutos, obterProdutosFiltrados } from '../../data/produtos';
+import { produtosService } from '../../services';
 import './PaginaProdutos.css';
 
 const PaginaProdutos = () => {
@@ -35,32 +36,67 @@ const PaginaProdutos = () => {
       searchTerm: termoPesquisa
     }));
   }, [termoPesquisa]);
-  
-  // Efeito para filtrar produtos quando os filtros mudam
+    // Efeito para filtrar produtos quando os filtros mudam
   useEffect(() => {
     let estaMontado = true;
     setCarregando(true);
     
-    // Simulação de carregamento (em produção, isso seria uma chamada de API real)
+    // Função para buscar produtos da API
+    const buscarProdutos = async () => {
+      try {
+        // Preparar parâmetros de filtro para a API
+        const parametrosAPI = {
+          termo_pesquisa: filtros.searchTerm || '',
+          marcas: filtros.brands ? filtros.brands.join(',') : '',
+          categorias: filtros.categories ? filtros.categories.join(',') : '',
+          generos: filtros.genders ? filtros.genders.join(',') : '',
+          preco_minimo: filtros.price ? filtros.price.min : undefined,
+          preco_maximo: filtros.price ? filtros.price.max : undefined,
+          avaliacao_minima: filtros.minRating || undefined,
+          condicao: filtros.condition || '',
+          apenas_em_estoque: true,
+          ordenar_por: ordenacaoAtual === 'featured' ? undefined : ordenacaoAtual,
+          limite: produtosPorPagina,
+          offset: (paginaAtual - 1) * produtosPorPagina
+        };
+
+        const resposta = await produtosService.buscarTodos(parametrosAPI);
+        
+        if (estaMontado && resposta.sucesso) {
+          setProdutos(resposta.dados || []);
+          setTotalProdutos(resposta.total || 0);
+        }
+      } catch (erro) {
+        console.error('Erro ao buscar produtos:', erro);
+        if (estaMontado) {
+          // Em caso de erro, usar dados locais como fallback
+          const produtosFiltrados = obterProdutosFiltrados({
+            ...filtros,
+            sort: ordenacaoAtual
+          });
+          setProdutos(produtosFiltrados);
+          setTotalProdutos(produtosFiltrados.length);
+        }
+      } finally {
+        if (estaMontado) {
+          setCarregando(false);
+        }
+      }
+    };
+
+    // Pequeno delay para evitar muitas requisições
     const temporizador = setTimeout(() => {
       if (estaMontado) {
-        const produtosFiltrados = obterProdutosFiltrados({
-          ...filtros,
-          sort: ordenacaoAtual
-        });
-        setProdutos(produtosFiltrados);
-        setTotalProdutos(produtosFiltrados.length);
-        setPaginaAtual(1); // Resetar para a primeira página ao aplicar filtros
-        setCarregando(false);
+        buscarProdutos();
       }
-    }, 500);
+    }, 300);
     
-    // Função de limpeza para cancelar o temporizador e evitar atualizações após desmontagem
+    // Função de limpeza
     return () => {
       estaMontado = false;
       clearTimeout(temporizador);
     };
-  }, [filtros, ordenacaoAtual]);
+  }, [filtros, ordenacaoAtual, paginaAtual, produtosPorPagina]);
 
   // Carregar filtros da URL quando a página é carregada
   useEffect(() => {
