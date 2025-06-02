@@ -1,8 +1,7 @@
 const mysql = require('mysql2/promise');
 const conexao = require('../banco/conexao');
 
-class Produto {
-  constructor(dados) {
+class Produto {  constructor(dados) {
     this.id = dados.id;
     this.marca = dados.marca;
     this.nome = dados.nome;
@@ -11,7 +10,7 @@ class Produto {
     this.preco_atual = dados.preco_atual;
     this.desconto = dados.desconto;
     this.avaliacao = dados.avaliacao;
-    this.numero_avaliacoes = dados.numero_avaliacoes;
+    this.numero_avaliacoes = dados.total_avaliacoes || dados.numero_avaliacoes || 0;
     this.categoria = dados.categoria;
     this.genero = dados.genero;
     this.condicao = dados.condicao;
@@ -136,8 +135,20 @@ class Produto {
       console.error('Erro ao buscar produtos:', erro);
       throw new Error('Erro interno do servidor ao buscar produtos');
     }
+  }  // Buscar produto por ID (versão simples para debug)
+  static async buscarPorIdSimples(id) {
+    try {
+      const resultados = await conexao.executarConsulta(
+        'SELECT * FROM produtos WHERE id = ? LIMIT 1',
+        [id]
+      );
+      
+      return resultados[0] || null;
+    } catch (erro) {
+      console.error('Erro ao buscar produto por ID (simples):', erro);
+      throw erro;
+    }
   }
-
   // Buscar produto por ID
   static async buscarPorId(id) {
     try {
@@ -273,21 +284,40 @@ class Produto {
       console.error('Erro ao reduzir estoque:', erro);
       throw erro;
     }
-  }
-
-  // Buscar produtos relacionados (mesma categoria, marca diferente)
+  }  // Buscar produtos relacionados (mesma categoria, marca diferente)
   async buscarRelacionados(limite = 4) {
     try {
-      const resultados = await conexao.executarConsulta(`
-        SELECT * FROM produtos 
-        WHERE categoria = ? AND id != ? AND marca != ?
-        ORDER BY avaliacao DESC, numero_avaliacoes DESC
-        LIMIT ?
-      `, [this.categoria, this.id, this.marca, limite]);
+      // Validar parâmetros antes da consulta
+      console.log('🔍 Buscando produtos relacionados para:', {
+        categoria: this.categoria,
+        id: this.id,
+        marca: this.marca,
+        limite: limite
+      });
 
+      // Garantir que limite seja um número inteiro e seguro
+      const limiteNumerico = Math.max(1, Math.min(20, parseInt(limite, 10) || 4));
+      
+      // Usar LIMIT diretamente na string SQL para evitar problemas de prepared statement
+      const sql = `
+        SELECT * FROM produtos 
+        WHERE categoria = ? AND id <> ? 
+        ORDER BY avaliacao DESC, total_avaliacoes DESC
+        LIMIT ${limiteNumerico}
+      `;
+      
+      const resultados = await conexao.executarConsulta(sql, [this.categoria, this.id]);
+
+      console.log('✅ Produtos relacionados encontrados:', resultados.length);
       return resultados.map(produto => new Produto(produto));
     } catch (erro) {
-      console.error('Erro ao buscar produtos relacionados:', erro);
+      console.error('❌ Erro ao buscar produtos relacionados:', erro);
+      console.error('📝 Parâmetros:', {
+        categoria: this.categoria,
+        id: this.id,
+        marca: this.marca,
+        limite: limite
+      });
       throw new Error('Erro interno do servidor ao buscar produtos relacionados');
     }
   }

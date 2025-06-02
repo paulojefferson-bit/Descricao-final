@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { carrinhoService, authService } from '../services';
 
 // Criando o contexto do carrinho
 const ContextoCarrinho = createContext();
@@ -10,31 +11,45 @@ export const useCarrinho = () => useContext(ContextoCarrinho);
 export const ProvedorCarrinho = ({ children }) => {
   // Estado para armazenar os itens do carrinho
   const [itensCarrinho, setItensCarrinho] = useState([]);
-
   // Carregar itens do localStorage quando o componente é montado
   useEffect(() => {
-    // Usar uma referência para verificar se o componente ainda está montado
     let estaMontado = true;
 
-    // Função para carregar do localStorage de forma segura
-    const carregarDoLocalStorage = async () => {
+    const carregarCarrinho = async () => {
       try {
+        // Verificar se o usuário está autenticado
+        if (authService.isAuthenticated()) {
+          // Se autenticado, carregar do backend
+          const resposta = await carrinhoService.obter();
+          if (resposta.sucesso && estaMontado) {
+            setItensCarrinho(resposta.dados?.itens || []);
+            return;
+          }
+        }
+        
+        // Se não autenticado ou falha na API, carregar do localStorage
         const carrinhoArmazenado = localStorage.getItem('carrinho');
-
         if (carrinhoArmazenado && estaMontado) {
           setItensCarrinho(JSON.parse(carrinhoArmazenado));
         }
       } catch (erro) {
         console.error('Erro ao carregar o carrinho:', erro);
         if (estaMontado) {
-          setItensCarrinho([]);
+          // Fallback para localStorage
+          try {
+            const carrinhoArmazenado = localStorage.getItem('carrinho');
+            if (carrinhoArmazenado) {
+              setItensCarrinho(JSON.parse(carrinhoArmazenado));
+            }
+          } catch (erroLocal) {
+            setItensCarrinho([]);
+          }
         }
       }
     };
 
-    carregarDoLocalStorage();
+    carregarCarrinho();
 
-    // Limpar na desmontagem do componente
     return () => {
       estaMontado = false;
     };
@@ -62,39 +77,64 @@ export const ProvedorCarrinho = ({ children }) => {
     return () => {
       estaMontado = false;
     };
-  }, [itensCarrinho]);
-  // Adicionar um item ao carrinho
+  }, [itensCarrinho]);  // Adicionar um item ao carrinho
   const adicionarAoCarrinho = async (produto, quantidade = 1) => {
-    if (!produto) return false; // Verificar se o produto é válido
+    if (!produto) return false;
 
     try {
+      // Se o usuário estiver autenticado, sincronizar com o backend
+      if (authService.isAuthenticated()) {
+        const resposta = await carrinhoService.adicionarItem({
+          produto_id: produto.id,
+          quantidade: quantidade
+        });
+        
+        if (resposta.sucesso) {
+          // Atualizar estado local com dados do backend
+          const carrinhoAtualizado = await carrinhoService.obter();
+          if (carrinhoAtualizado.sucesso) {
+            setItensCarrinho(carrinhoAtualizado.dados?.itens || []);
+            return true;
+          }
+        }
+      }
+      
+      // Fallback para operação local
       setItensCarrinho(itensPrevios => {
-        // Verificar se o produto já está no carrinho
         const indiceItemExistente = itensPrevios.findIndex(item => item.id === produto.id);
         if (indiceItemExistente >= 0) {
-          // Se o produto já estiver no carrinho, incrementar a quantidade
           const novosItens = [...itensPrevios];
           novosItens[indiceItemExistente] = {
             ...novosItens[indiceItemExistente],
-            quantidade: quantidade
+            quantidade: novosItens[indiceItemExistente].quantidade + quantidade
           };
           return novosItens;
         } else {
-          // Se o produto não estiver no carrinho, adicioná-lo
           return [...itensPrevios, { ...produto, quantidade: quantidade }];
         }
       });
 
-      return true; // Indicar sucesso
+      return true;
     } catch (erro) {
       console.error('Erro ao adicionar ao carrinho:', erro);
-      return false; // Indicar falha
+      return false;
     }
   };
-
   // Remover um item do carrinho
   const removerDoCarrinho = async (idProduto) => {
     try {
+      if (authService.isAuthenticated()) {
+        const resposta = await carrinhoService.removerItem(idProduto);
+        if (resposta.sucesso) {
+          const carrinhoAtualizado = await carrinhoService.obter();
+          if (carrinhoAtualizado.sucesso) {
+            setItensCarrinho(carrinhoAtualizado.dados?.itens || []);
+            return true;
+          }
+        }
+      }
+      
+      // Fallback para operação local
       setItensCarrinho(itensPrevios => itensPrevios.filter(item => item.id !== idProduto));
       return true;
     } catch (erro) {
@@ -102,13 +142,25 @@ export const ProvedorCarrinho = ({ children }) => {
       return false;
     }
   };
-
   // Atualizar a quantidade de um item no carrinho
   const atualizarQuantidade = async (idProduto, quantidade) => {
     try {
       if (quantidade <= 0) {
         return await removerDoCarrinho(idProduto);
       }
+      
+      if (authService.isAuthenticated()) {
+        const resposta = await carrinhoService.atualizarItem(idProduto, { quantidade });
+        if (resposta.sucesso) {
+          const carrinhoAtualizado = await carrinhoService.obter();
+          if (carrinhoAtualizado.sucesso) {
+            setItensCarrinho(carrinhoAtualizado.dados?.itens || []);
+            return true;
+          }
+        }
+      }
+      
+      // Fallback para operação local
       setItensCarrinho(itensPrevios =>
         itensPrevios.map(item =>
           item.id === idProduto ? { ...item, quantidade: quantidade } : item
@@ -120,10 +172,18 @@ export const ProvedorCarrinho = ({ children }) => {
       return false;
     }
   };
-
   // Limpar o carrinho
   const limparCarrinho = async () => {
     try {
+      if (authService.isAuthenticated()) {
+        const resposta = await carrinhoService.limpar();
+        if (resposta.sucesso) {
+          setItensCarrinho([]);
+          return true;
+        }
+      }
+      
+      // Fallback para operação local
       setItensCarrinho([]);
       return true;
     } catch (erro) {

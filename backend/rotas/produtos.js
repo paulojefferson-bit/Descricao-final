@@ -49,16 +49,27 @@ router.get('/:id', async (req, res) => {
       });
     }
 
-    // Buscar produtos relacionados
-    const produtosRelacionados = await produto.buscarRelacionados();
-    
-    res.json({
-      sucesso: true,
-      dados: {
-        produto,
-        produtos_relacionados: produtosRelacionados
-      }
-    });
+    // Temporariamente vamos retornar o produto sem os relacionados para testar
+    try {
+      const produtosRelacionados = await produto.buscarRelacionados();
+      res.json({
+        sucesso: true,
+        dados: {
+          produto,
+          produtos_relacionados: produtosRelacionados
+        }
+      });
+    } catch (erro) {
+      console.warn('⚠️ Erro ao buscar produtos relacionados, retornando produto sem relacionados:', erro.message);
+      // Retornar produto sem relacionados se houver erro
+      res.json({
+        sucesso: true,
+        dados: {
+          produto,
+          produtos_relacionados: []
+        }
+      });
+    }
   } catch (erro) {
     console.error('Erro ao buscar produto:', erro);
     res.status(500).json({

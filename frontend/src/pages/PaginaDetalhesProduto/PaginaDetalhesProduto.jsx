@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Badge, Breadcrumb, Tabs, Tab } from 'react-bootstrap';
 import { useCarrinho } from '../../context/ContextoCarrinho';
 import { obterProdutoPorId } from '../../data/produtos';
+import { produtosService } from '../../services';
 import './PaginaDetalhesProduto.css';
 
 let PaginaDetalhesProduto = () => {
@@ -13,19 +14,40 @@ let PaginaDetalhesProduto = () => {
   let [carregando, setCarregando] = useState(true);
   let [quantidade, setQuantidade] = useState(1);
   let [imagemAtiva, setImagemAtiva] = useState(0);
-  let [mostrarMensagemSucesso, setMostrarMensagemSucesso] = useState(false);
-  // Buscar dados do produto
+  let [mostrarMensagemSucesso, setMostrarMensagemSucesso] = useState(false);  // Buscar dados do produto
   useEffect(() => {
     let estaMontado = true;
     
-    let buscarProduto = () => {
+    const buscarProduto = async () => {
       try {
-        let dadosProduto = obterProdutoPorId(id);
-        if (dadosProduto && estaMontado) {
-          setProduto(dadosProduto);
+        setCarregando(true);
+        
+        // Tentar buscar da API primeiro
+        const resposta = await produtosService.buscarPorId(id);
+        
+        if (resposta.sucesso && resposta.dados && estaMontado) {
+          setProduto(resposta.dados);
+        } else if (estaMontado) {
+          // Fallback para dados locais se a API falhar
+          const dadosProdutoLocal = obterProdutoPorId(id);
+          if (dadosProdutoLocal) {
+            setProduto(dadosProdutoLocal);
+          }
         }
       } catch (error) {
-        console.error("Erro ao buscar produto:", error);
+        console.error("Erro ao buscar produto da API:", error);
+        
+        if (estaMontado) {
+          // Fallback para dados locais em caso de erro
+          try {
+            const dadosProdutoLocal = obterProdutoPorId(id);
+            if (dadosProdutoLocal) {
+              setProduto(dadosProdutoLocal);
+            }
+          } catch (errorLocal) {
+            console.error("Erro ao buscar produto local:", errorLocal);
+          }
+        }
       } finally {
         if (estaMontado) {
           setCarregando(false);
