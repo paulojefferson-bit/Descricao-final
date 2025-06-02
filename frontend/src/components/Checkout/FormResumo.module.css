@@ -1,0 +1,41 @@
+/* Resumo.module.css */
+
+.imgResumo img {
+  width: 150px;
+  height: auto;
+}
+
+
+@media (max-width: 768px) {
+  .imgResumo img {
+    width: 100px;
+  }
+
+  .resumoContainer h3 {
+    font-size: 1.8rem;
+  }
+
+  .resumoContainer p {
+    font-size: 0.8rem;
+  }
+
+  .resumoContainer small {
+    font-size: 0.4rem;
+    margin-top: 0;
+    
+
+  }
+
+  .resumoContainer a {
+    font-size: 0.8rem;
+  }
+
+  .resumoTotal h3,
+  .resumoTotal p {
+    font-size: 1rem;
+  }
+
+  .resumoContainer button {
+    font-size: 0.7rem;
+  }
+}

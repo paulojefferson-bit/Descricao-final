@@ -6,14 +6,18 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import AppRoutes from './routes/AppRoutes'
 import MainLayout from './layouts/MainLayout'
 import { ProvedorCarrinho } from './context/ContextoCarrinho'
+import { FormProvider } from './context/FormContext'
 
 function App() {
-  return (    <ProvedorCarrinho>
-      <BrowserRouter>
-        <MainLayout>
-          <AppRoutes />
-        </MainLayout>
-      </BrowserRouter>
+  return (
+    <ProvedorCarrinho>
+      <FormProvider>
+        <BrowserRouter>
+          <MainLayout>
+            <AppRoutes />
+          </MainLayout>
+        </BrowserRouter>
+      </FormProvider>
     </ProvedorCarrinho>
   )
 }
