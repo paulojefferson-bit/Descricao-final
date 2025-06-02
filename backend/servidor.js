@@ -116,8 +116,10 @@ app.use(async (req, res, next) => {
 app.use('/api/produtos', require('./rotas/produtos'));
 app.use('/api/auth', require('./rotas/autenticacao'));
 app.use('/api/carrinho', require('./rotas/carrinho'));
+app.use('/api/pedidos', require('./rotas/pedidos'));
 app.use('/api/promocoes', require('./rotas/promocoes'));
 app.use('/api/admin', require('./rotas/admin'));
+app.use('/api/admin/metrics', require('./rotas/admin-metrics'));
 
 // Rota de saúde
 app.get('/api/health', (req, res) => {
@@ -136,11 +138,11 @@ app.get('/api/info', (req, res) => {
     dados: {
       nome: 'API Loja de Tênis FGT',
       versao: '1.0.0',
-      descricao: 'Backend completo para loja de tênis com sistema de autenticação e diferentes níveis de acesso',
-      endpoints: {
+      descricao: 'Backend completo para loja de tênis com sistema de autenticação e diferentes níveis de acesso',      endpoints: {
         produtos: '/api/produtos',
         autenticacao: '/api/auth',
         carrinho: '/api/carrinho',
+        pedidos: '/api/pedidos',
         promocoes: '/api/promocoes',
         admin: '/api/admin'
       },
