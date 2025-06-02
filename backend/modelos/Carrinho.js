@@ -11,20 +11,19 @@ class Carrinho {  constructor(dados) {
     this.cor = dados.cor;
     this.preco_unitario = dados.preco_unitario;
     this.data_adicionado = dados.data_adicionado;
-    this.data_atualizacao = dados.data_atualizacao;
   }
   // Buscar itens do carrinho por usuário
   static async buscarPorUsuario(usuarioId) {
     try {
       console.log('🔍 Buscando carrinho para usuário ID:', usuarioId);
-      
-      const sql = `
+        const sql = `
         SELECT 
           c.*,
           p.nome as produto_nome,
-          p.marca as produto_marca,          p.imagem as produto_imagem,
+          p.marca as produto_marca,
+          p.imagem as produto_imagem,
           p.preco_atual as produto_preco_atual,
-          p.estoque as produto_estoque
+          p.quantidade_estoque as produto_estoque
         FROM carrinho c
         INNER JOIN produtos p ON c.produto_id = p.id
         WHERE c.usuario_id = ?

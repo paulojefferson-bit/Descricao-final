@@ -101,7 +101,8 @@ router.put('/:itemId', verificarAutenticacao, async (req, res) => {
     }
 
     // Buscar o item para verificar se pertence ao usuário
-    const [itens] = await require('../banco/conexao').execute(
+    const conexao = require('../banco/conexao');
+    const itens = await conexao.executarConsulta(
       'SELECT * FROM carrinho WHERE id = ? AND usuario_id = ?',
       [req.params.itemId, req.usuario.id]
     );
@@ -150,7 +151,8 @@ router.put('/:itemId', verificarAutenticacao, async (req, res) => {
 router.delete('/:itemId', verificarAutenticacao, async (req, res) => {
   try {
     // Buscar o item para verificar se pertence ao usuário
-    const [itens] = await require('../banco/conexao').execute(
+    const conexao = require('../banco/conexao');
+    const itens = await conexao.executarConsulta(
       'SELECT * FROM carrinho WHERE id = ? AND usuario_id = ?',
       [req.params.itemId, req.usuario.id]
     );
