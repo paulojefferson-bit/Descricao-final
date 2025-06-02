@@ -186,8 +186,12 @@ const PaginaCarrinho = () => {
                 <div className="d-flex justify-content-between mb-3">
                   <span className="fw-bold">Total:</span>
                   <span className="fw-bold fs-5 text-primary">{formatarMoeda(total)}</span>
-                </div>
-                <Button variant="success" className="w-100">
+                </div>                <Button 
+                  variant="success" 
+                  className="w-100"
+                  as={Link}
+                  to="/checkout"
+                >
                   <i className="bi bi-credit-card me-2"></i>
                   Finalizar Compra
                 </Button>
