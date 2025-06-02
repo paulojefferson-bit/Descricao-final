@@ -101,7 +101,7 @@ class PromocaoRelampago {  constructor(dados) {
           p.marca as produto_marca,
           p.imagem as produto_imagem,
           p.preco_atual as produto_preco_original,
-          p.quantidade_estoque as produto_estoque,
+          p.estoque as produto_estoque,
           u.nome as criador_nome
         FROM promocoes_relampago pr
         INNER JOIN produtos p ON pr.produto_id = p.id

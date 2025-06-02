@@ -14,7 +14,7 @@ class Produto {  constructor(dados) {
     this.categoria = dados.categoria;
     this.genero = dados.genero;
     this.condicao = dados.condicao;
-    this.estoque = dados.quantidade_estoque;
+    this.estoque = dados.estoque || dados.quantidade_estoque || 0;
     this.descricao = dados.descricao;
     this.tamanhos_disponiveis = dados.tamanhos_disponiveis;
     this.cores_disponiveis = dados.cores_disponiveis;
@@ -83,11 +83,9 @@ class Produto {  constructor(dados) {
       if (filtros.avaliacao_minima) {
         sql += ` AND avaliacao >= ?`;
         parametros.push(filtros.avaliacao_minima);
-      }
-
-      // Filtro por estoque disponível
+      }      // Filtro por estoque disponível
       if (filtros.apenas_em_estoque) {
-        sql += ` AND quantidade_estoque > 0`;
+        sql += ` AND estoque > 0`;
       }
 
       // Ordenação
@@ -171,11 +169,10 @@ class Produto {  constructor(dados) {
   // Criar novo produto
   static async criar(dadosProduto) {
     try {
-      const sql = `
-        INSERT INTO produtos (
+      const sql = `        INSERT INTO produtos (
           marca, nome, imagem, preco_antigo, preco_atual, desconto,
           avaliacao, numero_avaliacoes, categoria, genero, condicao,
-          quantidade_estoque, descricao, tamanhos_disponiveis, cores_disponiveis,
+          estoque, descricao, tamanhos_disponiveis, cores_disponiveis,
           peso, material, origem, garantia_meses
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
@@ -257,9 +254,8 @@ class Produto {  constructor(dados) {
 
   // Atualizar estoque
   async atualizarEstoque(quantidade) {
-    try {
-      await conexao.executarConsulta(
-        'UPDATE produtos SET quantidade_estoque = ? WHERE id = ?',
+    try {      await conexao.executarConsulta(
+        'UPDATE produtos SET estoque = ? WHERE id = ?',
         [quantidade, this.id]
       );
       this.estoque = quantidade;
