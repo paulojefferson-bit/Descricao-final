@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Badge, Breadcrumb, Tabs, Tab } from 'react-bootstrap';
 import { useCarrinho } from '../../context/ContextoCarrinho';
 import { obterProdutoPorId } from '../../data/produtos';
@@ -8,6 +8,7 @@ import './PaginaDetalhesProduto.css';
 let PaginaDetalhesProduto = () => {
   let { id } = useParams();
   let { adicionarAoCarrinho } = useCarrinho();
+  const navigate = useNavigate();
   let [produto, setProduto] = useState(null);
   let [carregando, setCarregando] = useState(true);
   let [quantidade, setQuantidade] = useState(1);
@@ -241,11 +242,14 @@ let PaginaDetalhesProduto = () => {
                 >
                   <i className="bi bi-cart-plus me-2"></i>
                   Adicionar ao Carrinho
-                </Button>
-                <Button 
+                </Button>                <Button 
                   variant="light" 
                   className="btn-comprar-agora" 
                   size="lg"
+                  onClick={async () => {
+                    await handleAdicionarAoCarrinho();
+                    navigate('/checkout');
+                  }}
                 >
                   <i className="bi bi-lightning-fill me-2"></i>
                   Comprar Agora
