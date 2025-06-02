@@ -1,6 +1,7 @@
 const mysql = require('mysql2/promise');
 const conexao = require('../banco/conexao');
 const Produto = require('./Produto');
+const Pedido = require('./Pedido');
 
 class Carrinho {  constructor(dados) {
     this.id = dados.id;
@@ -251,46 +252,121 @@ class Carrinho {  constructor(dados) {
       console.error('Erro ao atualizar preços do carrinho:', erro);
       throw new Error('Erro interno do servidor ao atualizar preços do carrinho');
     }
-  }
-
-  // Converter carrinho em pedido (simulação)
+  }  // Converter carrinho em pedido - Implementação funcional
   static async finalizarCompra(usuarioId, dadosPagamento = {}) {
     try {
+      console.log('🛒 Iniciando finalização de compra para usuário:', usuarioId);
+      
       // Validar carrinho
       const validacao = await Carrinho.validarCarrinho(usuarioId);
       if (!validacao.valido) {
         throw new Error(`Erro na validação do carrinho: ${validacao.erros.join(', ')}`);
       }
 
+      if (validacao.itens.length === 0) {
+        throw new Error('Carrinho vazio');
+      }
+
       // Calcular total
       const total = await Carrinho.calcularTotal(usuarioId);
+      
+      const valorDesconto = dadosPagamento.desconto || 0;
+      const valorFrete = dadosPagamento.frete || 0;
+      const valorTotal = total.valor_total + valorFrete - valorDesconto;
 
-      // Simular processamento do pagamento
-      const pedido = {
-        id: Math.floor(Math.random() * 1000000),
-        usuario_id: usuarioId,
-        itens: validacao.itens,
-        valor_total: total.valor_total,
-        status: 'confirmado',
-        data_pedido: new Date().toISOString(),
-        dados_pagamento: {
-          metodo: dadosPagamento.metodo || 'cartao',
-          parcelas: dadosPagamento.parcelas || 1
-        }
-      };
+      // Gerar ID único para o pedido
+      const pedidoId = `PED-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+      // Criar tabela de pedidos simples se não existir
+      try {
+        await conexao.executarConsulta(`
+          CREATE TABLE IF NOT EXISTS pedidos_simples (
+            id VARCHAR(50) PRIMARY KEY,
+            usuario_id INT NOT NULL,
+            valor_total DECIMAL(10, 2) NOT NULL,
+            valor_desconto DECIMAL(10, 2) DEFAULT 0,
+            valor_frete DECIMAL(10, 2) DEFAULT 0,
+            forma_pagamento VARCHAR(50),
+            observacoes TEXT,
+            status_pedido VARCHAR(20) DEFAULT 'pendente',
+            data_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            itens_json TEXT
+          )
+        `);
+      } catch (erroTabela) {
+        console.log('⚠️ Tabela já existe ou erro menor:', erroTabela.message);
+      }
+
+      // Preparar dados dos itens para JSON
+      const itensParaSalvar = validacao.itens.map(item => ({
+        produto_id: item.produto_id,
+        produto_nome: item.produto.nome,
+        produto_marca: item.produto.marca,
+        quantidade: item.quantidade,
+        tamanho: item.tamanho,
+        cor: item.cor,
+        preco_unitario: item.preco_unitario,
+        subtotal: item.quantidade * item.preco_unitario
+      }));
+
+      // Salvar pedido
+      await conexao.executarConsulta(`
+        INSERT INTO pedidos_simples (
+          id, usuario_id, valor_total, valor_desconto, valor_frete,
+          forma_pagamento, observacoes, status_pedido, itens_json
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `, [
+        pedidoId,
+        usuarioId,
+        valorTotal,
+        valorDesconto,
+        valorFrete,
+        dadosPagamento.metodo_pagamento || 'cartao_credito',
+        dadosPagamento.observacoes || '',
+        'confirmado',
+        JSON.stringify(itensParaSalvar)
+      ]);
 
       // Reduzir estoque dos produtos
       for (const item of validacao.itens) {
-        const produto = await Produto.buscarPorId(item.produto_id);
-        await produto.reduzirEstoque(item.quantidade);
+        try {
+          const produto = await Produto.buscarPorId(item.produto_id);
+          if (produto && produto.reduzirEstoque) {
+            await produto.reduzirEstoque(item.quantidade);
+          } else {
+            // Reduzir estoque manualmente se o método não existir
+            await conexao.executarConsulta(`
+              UPDATE produtos 
+              SET quantidade_estoque = quantidade_estoque - ? 
+              WHERE id = ? AND quantidade_estoque >= ?
+            `, [item.quantidade, item.produto_id, item.quantidade]);
+          }
+        } catch (erroEstoque) {
+          console.warn('⚠️ Erro ao reduzir estoque do produto', item.produto_id, ':', erroEstoque.message);
+        }
       }
 
       // Limpar carrinho
       await Carrinho.limparCarrinho(usuarioId);
 
-      return pedido;
+      console.log('✅ Compra finalizada com sucesso. Pedido ID:', pedidoId);
+
+      return {
+        id: pedidoId,
+        usuario_id: usuarioId,
+        valor_total: valorTotal,
+        valor_desconto: valorDesconto,
+        valor_frete: valorFrete,
+        status: 'confirmado',
+        forma_pagamento: dadosPagamento.metodo_pagamento || 'cartao_credito',
+        observacoes: dadosPagamento.observacoes || '',
+        data_pedido: new Date().toISOString(),
+        total_itens: validacao.itens.length,
+        total_produtos: validacao.itens.reduce((acc, item) => acc + item.quantidade, 0),
+        itens: itensParaSalvar
+      };
     } catch (erro) {
-      console.error('Erro ao finalizar compra:', erro);
+      console.error('❌ Erro ao finalizar compra:', erro);
       throw erro;
     }
   }

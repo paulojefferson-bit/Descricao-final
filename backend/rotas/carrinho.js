@@ -254,7 +254,7 @@ router.post('/atualizar-precos', verificarAutenticacao, async (req, res) => {
 // POST /api/carrinho/finalizar - Finalizar compra
 router.post('/finalizar', verificarAutenticacao, async (req, res) => {
   try {
-    const { metodo_pagamento, parcelas, endereco_entrega } = req.body;
+    const { metodo_pagamento, parcelas, endereco_entrega, frete, desconto, observacoes } = req.body;
 
     // Validações básicas
     if (!metodo_pagamento) {
@@ -265,19 +265,24 @@ router.post('/finalizar', verificarAutenticacao, async (req, res) => {
     }
 
     const dadosPagamento = {
-      metodo: metodo_pagamento,
+      metodo_pagamento: metodo_pagamento,
       parcelas: parcelas || 1,
-      endereco_entrega: endereco_entrega
+      endereco_entrega: endereco_entrega,
+      frete: frete || 0,
+      desconto: desconto || 0,
+      observacoes: observacoes || ''
     };
 
     const pedido = await Carrinho.finalizarCompra(req.usuario.id, dadosPagamento);
     
-    // Log da ação
-    req.logAcao('compra_finalizada', { 
-      pedido_id: pedido.id,
-      valor_total: pedido.valor_total,
-      metodo_pagamento: metodo_pagamento 
-    });
+    // Log da ação (se a função existir)
+    if (typeof req.logAcao === 'function') {
+      req.logAcao('compra_finalizada', { 
+        pedido_id: pedido.id,
+        valor_total: pedido.valor_total,
+        metodo_pagamento: metodo_pagamento 
+      });
+    }
     
     res.json({
       sucesso: true,
@@ -291,6 +296,13 @@ router.post('/finalizar', verificarAutenticacao, async (req, res) => {
       return res.status(400).json({
         sucesso: false,
         mensagem: erro.message
+      });
+    }
+
+    if (erro.message.includes('Carrinho vazio')) {
+      return res.status(400).json({
+        sucesso: false,
+        mensagem: 'Carrinho vazio'
       });
     }
     

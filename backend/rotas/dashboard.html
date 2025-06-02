@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema de Pedidos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            color: #718096;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status.healthy {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status.warning {
+            background: #feebc8;
+            color: #c05621;
+        }
+
+        .status.error {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #718096;
+        }
+
+        .error {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+
+        .refresh-btn {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+            margin-bottom: 1rem;
+        }
+
+        .refresh-btn:hover {
+            background: #3182ce;
+        }
+
+        .refresh-btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        .chart-container {
+            grid-column: 1 / -1;
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: end;
+            gap: 10px;
+            height: 200px;
+            margin-top: 1rem;
+        }
+
+        .bar {
+            background: linear-gradient(to top, #4299e1, #63b3ed);
+            border-radius: 4px 4px 0 0;
+            min-width: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            align-items: center;
+            position: relative;
+        }
+
+        .bar-label {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-size: 0.75rem;
+            color: #4a5568;
+            margin-bottom: 5px;
+        }
+
+        .bar-value {
+            background: #2d3748;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            position: absolute;
+            top: -25px;
+        }
+
+        .timestamp {
+            text-align: center;
+            color: #718096;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Dashboard Sistema de Pedidos</h1>
+            <p class="subtitle">Monitoramento e métricas em tempo real</p>
+        </header>
+
+        <button class="refresh-btn" onclick="loadDashboard()" id="refreshBtn">
+            🔄 Atualizar Dados
+        </button>
+
+        <div id="loading" class="loading" style="display: none;">
+            <p>⏳ Carregando dados...</p>
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+
+        <div class="dashboard-grid" id="dashboard">
+            <!-- Conteúdo será carregado via JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000/admin/metrics';
+
+        // Função para formatar números
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toString();
+        }
+
+        // Função para formatar tempo
+        function formatTime(ms) {
+            if (ms >= 1000) {
+                return (ms / 1000).toFixed(1) + 's';
+            }
+            return ms + 'ms';
+        }
+
+        // Função para formatar bytes
+        function formatBytes(bytes) {
+            const units = ['B', 'KB', 'MB', 'GB'];
+            let size = bytes;
+            let unitIndex = 0;
+            
+            while (size >= 1024 && unitIndex < units.length - 1) {
+                size /= 1024;
+                unitIndex++;
+            }
+            
+            return size.toFixed(1) + ' ' + units[unitIndex];
+        }
+
+        // Função para criar card de métricas
+        function createMetricCard(title, icon, metrics) {
+            const metricItems = metrics.map(metric => `
+                <div class="metric">
+                    <span class="metric-label">${metric.label}</span>
+                    <span class="metric-value">${metric.value}</span>
+                </div>
+            `).join('');
+
+            return `
+                <div class="card">
+                    <h3 class="card-title">${icon} ${title}</h3>
+                    ${metricItems}
+                </div>
+            `;
+        }
+
+        // Função para criar card de saúde
+        function createHealthCard(health) {
+            const statusClass = health.status === 'healthy' ? 'healthy' : 
+                               health.status === 'warning' ? 'warning' : 'error';
+            
+            const issues = health.issues.length > 0 ? 
+                health.issues.map(issue => `<li>${issue}</li>`).join('') : 
+                '<li>Nenhum problema detectado</li>';
+
+            return `
+                <div class="card">
+                    <h3 class="card-title">💚 Status do Sistema</h3>
+                    <div class="metric">
+                        <span class="metric-label">Status</span>
+                        <span class="status ${statusClass}">${health.status}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Problemas</span>
+                        <span class="metric-value">${health.issues.length}</span>
+                    </div>
+                    ${health.issues.length > 0 ? `
+                        <div style="margin-top: 1rem;">
+                            <strong>Issues:</strong>
+                            <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                                ${issues}
+                            </ul>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Função para criar gráfico de barras
+        function createBarChart(title, data, valueKey = 'requests') {
+            if (!data || data.length === 0) {
+                return `
+                    <div class="chart-container">
+                        <h3 class="card-title">📊 ${title}</h3>
+                        <p>Nenhum dado disponível</p>
+                    </div>
+                `;
+            }
+
+            const maxValue = Math.max(...data.map(item => item[valueKey]));
+            
+            const bars = data.slice(0, 12).map(item => {
+                const height = (item[valueKey] / maxValue) * 150;
+                const label = item.hour !== undefined ? item.hour + 'h' : 
+                             item.endpoint || item.userId || item.name || 'N/A';
+                
+                return `
+                    <div class="bar" style="height: ${height}px;">
+                        <div class="bar-value">${item[valueKey]}</div>
+                        <div class="bar-label">${label}</div>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div class="chart-container">
+                    <h3 class="card-title">📊 ${title}</h3>
+                    <div class="bar-chart">
+                        ${bars}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Função principal para carregar dashboard
+        async function loadDashboard() {
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const dashboardEl = document.getElementById('dashboard');
+            const refreshBtn = document.getElementById('refreshBtn');
+
+            loadingEl.style.display = 'block';
+            errorEl.style.display = 'none';
+            refreshBtn.disabled = true;
+            refreshBtn.textContent = '⏳ Carregando...';
+
+            try {
+                const response = await fetch(`${API_BASE}/dashboard`);
+                const result = await response.json();
+
+                if (!result.sucesso) {
+                    throw new Error(result.mensagem || 'Erro desconhecido');
+                }
+
+                const data = result.dados;
+                
+                // Criar cards
+                const cards = [
+                    createMetricCard('📈 Requisições', '📈', [
+                        { label: 'Total', value: formatNumber(data.summary.requests.total) },
+                        { label: 'Taxa de Sucesso', value: data.summary.requests.successRate + '%' },
+                        { label: 'Por Hora', value: formatNumber(data.summary.requests.requestsPerHour.toFixed(1)) }
+                    ]),
+                    
+                    createMetricCard('⚡ Performance', '⚡', [
+                        { label: 'Tempo Médio', value: formatTime(data.summary.performance.averageResponseTime) },
+                        { label: 'Mais Lenta', value: formatTime(data.summary.performance.slowestRequest?.duration || 0) },
+                        { label: 'Mais Rápida', value: formatTime(data.summary.performance.fastestRequest?.duration || 0) }
+                    ]),
+                    
+                    createMetricCard('💾 Sistema', '💾', [
+                        { label: 'Uptime', value: data.summary.uptime.hours.toFixed(1) + 'h' },
+                        { label: 'Memória Atual', value: data.summary.memory.current },
+                        { label: 'Pico de Memória', value: data.summary.memory.peak }
+                    ]),
+                    
+                    createMetricCard('📋 Pedidos', '📋', [
+                        { label: 'Consultas Total', value: formatNumber(data.summary.pedidos.totalConsultas) },
+                        { label: 'Pedidos Encontrados', value: formatNumber(data.summary.pedidos.pedidosEncontrados) },
+                        { label: 'Taxa de Encontro', value: data.summary.pedidos.taxaEncontro + '%' }
+                    ]),
+
+                    createHealthCard(data.health),
+
+                    createMetricCard('📊 Logs', '📊', [
+                        { label: 'Arquivos', value: data.logs?.totalFiles || 0 },
+                        { label: 'Tamanho Total', value: formatBytes(data.logs?.totalSize || 0) },
+                        { label: 'Erros', value: data.logs?.logCounts?.ERROR || 0 }
+                    ])
+                ];
+
+                // Gráficos
+                const charts = [
+                    createBarChart('Horários de Pico', data.peakHours),
+                    createBarChart('Top Endpoints', data.topEndpoints),
+                    createBarChart('Top Usuários', data.topUsers)
+                ];
+
+                dashboardEl.innerHTML = cards.join('') + charts.join('');
+
+                // Timestamp
+                const timestamp = new Date(data.timestamp).toLocaleString('pt-BR');
+                dashboardEl.innerHTML += `<div class="timestamp">📅 Última atualização: ${timestamp}</div>`;
+
+            } catch (error) {
+                console.error('Erro ao carregar dashboard:', error);
+                errorEl.textContent = `❌ Erro ao carregar dados: ${error.message}`;
+                errorEl.style.display = 'block';
+            } finally {
+                loadingEl.style.display = 'none';
+                refreshBtn.disabled = false;
+                refreshBtn.textContent = '🔄 Atualizar Dados';
+            }
+        }
+
+        // Carregar dados inicial
+        loadDashboard();
+
+        // Auto-refresh a cada 30 segundos
+        setInterval(loadDashboard, 30000);
+    </script>
+</body>
+</html>
