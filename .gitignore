@@ -34,15 +34,32 @@ Thumbs.db
 *.bak
 *.tmp
 backups/
+backend_backup_*/
+backup_teste_files/
 
 # MySQL dumps
 *.sql.gz
 *.sql.backup
 
-# Arquivos de teste
+# Arquivos de teste removidos na limpeza
 *test*.js
 *test*.md
+teste_*.ps1
+teste_*.js
+teste_*.html
+teste_*.bat
+dashboard.html
 executar_testes.ps1
 testar_*.js
 verificar_*.js
 RELATORIO_*.md
+TESTE_*.md
+README_PEDIDOS.md
+INTEGRACAO_FRONTEND.md
+GUIA_TESTES_*.md
+
+# Vite cache
+.vite/
+
+# Node modules antigo
+node_modules_old/

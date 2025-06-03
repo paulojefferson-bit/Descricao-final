@@ -163,6 +163,79 @@ class MetricsCollector {
       }
       this.metrics.pedidos.statusPedidos[status]++;
     });
+  }  /**
+   * Registrar erro na aplicação
+   */
+  recordError(endpoint, error, additionalInfo = {}) {
+    // Incrementar contador de erros
+    this.metrics.requests.errors++;
+    
+    // Registrar por endpoint
+    if (!this.metrics.requests.byEndpoint[endpoint]) {
+      this.metrics.requests.byEndpoint[endpoint] = { total: 0, success: 0, errors: 0 };
+    }
+    this.metrics.requests.byEndpoint[endpoint].errors++;
+    
+    // Log do erro para debugging
+    logger.error('Erro registrado nas métricas', {
+      endpoint,
+      error: error.message || error,
+      stack: error.stack,
+      timestamp: new Date().toISOString(),
+      additionalInfo
+    });
+    
+    // Se for erro relacionado a pedidos, registrar nas métricas de pedidos
+    if (endpoint.includes('/pedidos')) {
+      this.metrics.pedidos.pedidosNaoEncontrados++;
+    }
+  }
+
+  /**
+   * Registrar resposta da aplicação
+   */
+  recordResponse(duration, success = true) {
+    // Atualizar métricas de performance
+    this.metrics.performance.totalResponseTime += duration;
+    this.metrics.performance.averageResponseTime = 
+      this.metrics.performance.totalResponseTime / Math.max(this.metrics.requests.total, 1);
+    
+    // Log da resposta
+    logger.debug('Resposta registrada nas métricas', {
+      duration: `${duration}ms`,
+      success,
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  /**
+   * Registrar operação específica de pedidos
+   */
+  recordPedidoOperation(operation, success, count = 0, userId = null) {
+    // Registrar operação geral
+    if (success) {
+      this.metrics.requests.success++;
+    } else {
+      this.metrics.requests.errors++;
+    }
+    
+    // Registrar nas métricas de pedidos
+    if (operation === 'buscar_pedido') {
+      if (success && count > 0) {
+        this.metrics.pedidos.pedidosEncontrados += count;
+      } else if (!success) {
+        this.metrics.pedidos.pedidosNaoEncontrados++;
+      }
+    }
+    
+    // Log da operação
+    logger.debug('Operação de pedido registrada nas métricas', {
+      operation,
+      success,
+      count,
+      userId,
+      timestamp: new Date().toISOString()
+    });
   }
 
   /**
