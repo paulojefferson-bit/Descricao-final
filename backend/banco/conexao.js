@@ -30,11 +30,10 @@ class ConexaoBanco {
             console.error('❌ Erro ao conectar ao MySQL:', erro.message);
             process.exit(1);
         }
-    }
-
-    async executarConsulta(sql, parametros = []) {
+    }    async executarConsulta(sql, parametros = []) {
         try {
-            const [resultados] = await this.pool.execute(sql, parametros);
+            // Usando query() ao invés de execute() para resolver problema com prepared statements
+            const [resultados] = await this.pool.query(sql, parametros);
             return resultados;
         } catch (erro) {
             console.error('❌ Erro na consulta MySQL:', erro.message);

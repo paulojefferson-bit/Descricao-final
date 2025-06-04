@@ -80,19 +80,35 @@ const AuthContext = createContext();
 // Provider do contexto de autenticação
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, authInitialState);
-
   // Verificar autenticação ao inicializar
   useEffect(() => {
-    const checkAuthStatus = () => {
+    const checkAuthStatus = async () => {
       try {
+        dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: true });
+        
         const isLoggedIn = authService.isLoggedIn();
         const currentUser = authService.getCurrentUser();
 
         if (isLoggedIn && currentUser) {
-          dispatch({
-            type: AUTH_ACTIONS.LOGIN_SUCCESS,
-            payload: { usuario: currentUser }
-          });
+          // Verificar se o token ainda é válido fazendo uma chamada para o backend
+          try {
+            const tokenValid = await authService.verificarToken();
+            if (tokenValid && tokenValid.sucesso) {
+              dispatch({
+                type: AUTH_ACTIONS.LOGIN_SUCCESS,
+                payload: { usuario: currentUser }
+              });
+            } else {
+              // Token inválido, fazer logout
+              authService.logout();
+              dispatch({ type: AUTH_ACTIONS.LOGOUT });
+            }
+          } catch (tokenError) {
+            // Se a verificação falhar, considerar como não autenticado
+            console.warn('Token inválido ou expirado:', tokenError);
+            authService.logout();
+            dispatch({ type: AUTH_ACTIONS.LOGOUT });
+          }
         } else {
           dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false });
         }

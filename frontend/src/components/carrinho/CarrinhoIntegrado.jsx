@@ -184,13 +184,12 @@ const CarrinhoIntegrado = () => {
 
                     {/* Preço e ações */}
                     <div className="col-md-3 col-6 text-end">
-                      <div className="d-flex align-items-center justify-content-end">
-                        <div className="me-3">
+                      <div className="d-flex align-items-center justify-content-end">                        <div className="me-3">
                           <div className="fw-bold">
-                            R$ {(item.preco * item.quantidade).toFixed(2)}
+                            R$ {Number(item.preco * item.quantidade).toFixed(2)}
                           </div>
                           <small className="text-muted">
-                            R$ {item.preco.toFixed(2)} cada
+                            R$ {Number(item.preco).toFixed(2)} cada
                           </small>
                         </div>
                         <button
@@ -230,23 +229,22 @@ const CarrinhoIntegrado = () => {
             <div className="card-header bg-light">
               <h5 className="mb-0">Resumo do Pedido</h5>
             </div>
-            <div className="card-body">
-              <div className="d-flex justify-content-between mb-2">
+            <div className="card-body">              <div className="d-flex justify-content-between mb-2">
                 <span>Subtotal:</span>
-                <span>R$ {totais.subtotal.toFixed(2)}</span>
+                <span>R$ {Number(totais.subtotal).toFixed(2)}</span>
               </div>
               
               {totais.desconto > 0 && (
                 <div className="d-flex justify-content-between mb-2 text-success">
                   <span>Desconto:</span>
-                  <span>-R$ {totais.desconto.toFixed(2)}</span>
+                  <span>-R$ {Number(totais.desconto).toFixed(2)}</span>
                 </div>
               )}
               
               <div className="d-flex justify-content-between mb-2">
                 <span>Frete:</span>
                 <span>
-                  {totais.frete === 0 ? 'Grátis' : `R$ ${totais.frete.toFixed(2)}`}
+                  {totais.frete === 0 ? 'Grátis' : `R$ ${Number(totais.frete).toFixed(2)}`}
                 </span>
               </div>
               

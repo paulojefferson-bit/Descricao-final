@@ -6,7 +6,6 @@ import CardProduto from '../../components/CardProduto/CardProduto';
 import ItemListaProduto from '../../components/ItemListaProduto/ItemListaProduto';
 import CabecalhoListaProdutos from '../../components/CabecalhoListaProdutos/CabecalhoListaProdutos';
 import OrdenacaoProdutos from '../../components/OrdenacaoProdutos/OrdenacaoProdutos';
-import { dadosProdutos, obterProdutosFiltrados } from '../../data/produtos';
 import { produtosService } from '../../services';
 import './PaginaProdutos.css';
 
@@ -43,39 +42,44 @@ const PaginaProdutos = () => {
     
     // Função para buscar produtos da API
     const buscarProdutos = async () => {
-      try {
-        // Preparar parâmetros de filtro para a API
+      try {        // Preparar parâmetros de filtro para a API
         const parametrosAPI = {
           termo_pesquisa: filtros.searchTerm || '',
           marcas: filtros.brands ? filtros.brands.join(',') : '',
           categorias: filtros.categories ? filtros.categories.join(',') : '',
           generos: filtros.genders ? filtros.genders.join(',') : '',
-          preco_minimo: filtros.price ? filtros.price.min : undefined,
-          preco_maximo: filtros.price ? filtros.price.max : undefined,
-          avaliacao_minima: filtros.minRating || undefined,
           condicao: filtros.condition || '',
           apenas_em_estoque: true,
-          ordenar_por: ordenacaoAtual === 'featured' ? undefined : ordenacaoAtual,
           limite: produtosPorPagina,
           offset: (paginaAtual - 1) * produtosPorPagina
         };
 
+        // Adicionar parâmetros opcionais apenas se eles têm valores válidos
+        if (filtros.price && filtros.price.min !== undefined && filtros.price.min > 0) {
+          parametrosAPI.preco_min = filtros.price.min;
+        }
+        if (filtros.price && filtros.price.max !== undefined && filtros.price.max < 1000) {
+          parametrosAPI.preco_max = filtros.price.max;
+        }
+        if (filtros.minRating && filtros.minRating > 0) {
+          parametrosAPI.avaliacao_minima = filtros.minRating;
+        }
+        if (ordenacaoAtual && ordenacaoAtual !== 'featured') {
+          parametrosAPI.ordenar_por = ordenacaoAtual;
+        }
+
+        console.log('Parâmetros enviados para API:', parametrosAPI);
         const resposta = await produtosService.buscarTodos(parametrosAPI);
         
         if (estaMontado && resposta.sucesso) {
           setProdutos(resposta.dados || []);
-          setTotalProdutos(resposta.total || 0);
-        }
+          setTotalProdutos(resposta.total || 0);        }
       } catch (erro) {
         console.error('Erro ao buscar produtos:', erro);
         if (estaMontado) {
-          // Em caso de erro, usar dados locais como fallback
-          const produtosFiltrados = obterProdutosFiltrados({
-            ...filtros,
-            sort: ordenacaoAtual
-          });
-          setProdutos(produtosFiltrados);
-          setTotalProdutos(produtosFiltrados.length);
+          // Exibir erro sem dados de fallback
+          setProdutos([]);
+          setTotalProdutos(0);
         }
       } finally {
         if (estaMontado) {
@@ -440,11 +444,10 @@ const PaginaProdutos = () => {
                     </td>
                   ))}
                 </tr>
-                <tr>
-                  <td>Preço</td>
+                <tr>                  <td>Preço</td>
                   {produtosSelecionados.map(produto => (
                     <td key={`price-${produto.id}`} className="text-center font-weight-bold">
-                      R$ {produto.currentPrice.toFixed(2)}
+                      R$ {Number(produto.currentPrice).toFixed(2)}
                     </td>
                   ))}
                 </tr>

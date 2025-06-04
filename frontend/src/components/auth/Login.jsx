@@ -11,8 +11,9 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [lembrarMe, setLembrarMe] = useState(false);
   
-  const { login, isAuthenticated, loading, error, clearError } = useAuth();
+  const { login, register, isAuthenticated, loading, error, clearError } = useAuth();
   const { validarEmail } = useUtils();
   const navigate = useNavigate();
 
@@ -22,11 +23,31 @@ const Login = () => {
       navigate('/dashboard', { replace: true });
     }
   }, [isAuthenticated, navigate]);
-
-  // Limpar erro ao montar componente
+  // Limpar erro ao montar componente e carregar credenciais salvas
   useEffect(() => {
     clearError();
-  }, [clearError]);
+    
+    // Carregar credenciais salvas se "lembrar-me" foi marcado
+    const savedEmail = localStorage.getItem('saved_email');
+    const savedPassword = localStorage.getItem('saved_password');
+    const rememberMe = localStorage.getItem('remember_me') === 'true';
+    
+    if (rememberMe && savedEmail) {
+      setFormData(prev => ({
+        ...prev,
+        email: savedEmail,
+        senha: savedPassword || ''
+      }));
+      setLembrarMe(true);
+      
+      // Se tiver senha salva, fazer login automático
+      if (savedPassword) {
+        setTimeout(() => {
+          login(savedEmail, savedPassword);
+        }, 500);
+      }
+    }
+  }, [clearError, login]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,9 +82,7 @@ const Login = () => {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
+  };  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) {
@@ -74,11 +93,56 @@ const Login = () => {
       const response = await login(formData.email, formData.senha);
       
       if (response.sucesso) {
+        // Salvar credenciais se "lembrar-me" estiver marcado
+        if (lembrarMe) {
+          localStorage.setItem('saved_email', formData.email);
+          localStorage.setItem('saved_password', formData.senha);
+          localStorage.setItem('remember_me', 'true');
+        } else {
+          // Limpar credenciais salvas se não estiver marcado
+          localStorage.removeItem('saved_email');
+          localStorage.removeItem('saved_password');
+          localStorage.removeItem('remember_me');
+        }
+        
         // Login bem-sucedido, usuário será redirecionado pelo useEffect
-
       }
     } catch (err) {
       console.error('Erro no login:', err);
+    }
+  };
+  // Função para login demo/automático
+  const handleDemoLogin = async () => {
+    try {
+      // Credenciais de usuário demo
+      const response = await login('demo@lojafgt.com', 'demo123');
+      
+      if (response.sucesso) {
+        // Salvar como lembrado para próxima vez
+        localStorage.setItem('saved_email', 'demo@lojafgt.com');
+        localStorage.setItem('saved_password', 'demo123');
+        localStorage.setItem('remember_me', 'true');
+        console.log('Login demo realizado com sucesso');
+      }
+    } catch (err) {
+      console.error('Erro no login demo:', err);
+      // Se falhar, tentar criar o usuário demo
+      try {
+        await register({
+          nome: 'Usuário Demo',
+          email: 'demo@lojafgt.com',
+          senha: 'demo123',
+          confirmar_senha: 'demo123'
+        });
+        // Tentar fazer login novamente
+        await login('demo@lojafgt.com', 'demo123');
+        // Salvar como lembrado
+        localStorage.setItem('saved_email', 'demo@lojafgt.com');
+        localStorage.setItem('saved_password', 'demo123');
+        localStorage.setItem('remember_me', 'true');
+      } catch (createErr) {
+        console.error('Erro ao criar usuário demo:', createErr);
+      }
     }
   };
 
@@ -167,15 +231,15 @@ const Login = () => {
                       </div>
                     )}
                   </div>
-                </div>
-
-                {/* Lembrar-me e Esqueci senha */}
+                </div>                {/* Lembrar-me e Esqueci senha */}
                 <div className="d-flex justify-content-between align-items-center mb-4">
                   <div className="form-check">
                     <input 
                       className="form-check-input" 
                       type="checkbox" 
                       id="lembrarMe"
+                      checked={lembrarMe}
+                      onChange={(e) => setLembrarMe(e.target.checked)}
                     />
                     <label className="form-check-label text-sm" htmlFor="lembrarMe">
                       Lembrar-me
@@ -205,16 +269,27 @@ const Login = () => {
                       Entrar
                     </>
                   )}
-                </button>
-
-                {/* Divisor */}
+                </button>                {/* Divisor */}
                 <div className="text-center mb-3">
                   <span className="text-muted">ou</span>
                 </div>
 
+                {/* Login Demo */}
+                <div className="d-grid gap-2 mb-3">
+                  <button 
+                    type="button" 
+                    className="btn btn-success"
+                    onClick={handleDemoLogin}
+                    disabled={loading}
+                  >
+                    <i className="bi bi-lightning-charge me-2"></i>
+                    Acesso Rápido (Demo)
+                  </button>
+                </div>
+
                 {/* Login social (opcional) */}
                 <div className="d-grid gap-2">
-                  <button type="button" className="btn btn-outline-dark">
+                  <button type="button" className="btn btn-outline-dark" disabled>
                     <i className="bi bi-google me-2"></i>
                     Continuar com Google
                   </button>

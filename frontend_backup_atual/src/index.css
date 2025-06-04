@@ -1,0 +1,52 @@
+/* Estilos globais */
+body {
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  color: #474747;
+  background-color: #F9F8FE;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #C92071;
+  --primary-hover: #991956;
+  --secondary-color: #E7FF86;
+  --text-dark: #1F1F1F;
+  --text-medium: #474747;
+  --text-light: #8F8F8F;
+  --bg-light: #F5F5F5;
+  --border-color: #EFEFEF;
+}
+
+/* Personalização das cores do Bootstrap */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover, 
+.btn-primary:focus, 
+.btn-primary:active {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+/* Padding para o conteúdo principal para evitar que fique sob o header fixo */
+main {
+  padding-top: 1rem;
+}

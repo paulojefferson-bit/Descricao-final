@@ -17,9 +17,12 @@ class ApiService {
         ...options.headers,
       },
       ...options,
-    };    // Adicionar token de autenticação se disponível
-    if (this.token) {
-      config.headers.Authorization = `Bearer ${this.token}`;
+    };
+
+    // Sempre buscar o token mais recente do localStorage
+    const currentToken = this.getToken();
+    if (currentToken) {
+      config.headers.Authorization = `Bearer ${currentToken}`;
     }
 
     try {
@@ -36,10 +39,17 @@ class ApiService {
       throw error;
     }
   }
-
   // Métodos HTTP básicos
   async get(endpoint, params = {}) {
-    const queryString = new URLSearchParams(params).toString();
+    // Filtrar parâmetros undefined, null ou vazios
+    const filteredParams = Object.entries(params).reduce((acc, [key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+    
+    const queryString = new URLSearchParams(filteredParams).toString();
     const url = queryString ? `${endpoint}?${queryString}` : endpoint;
     
     return this.request(url, {
@@ -83,17 +93,18 @@ class ApiService {
       localStorage.removeItem('token');
     }
   }
-
   getToken() {
-    return this.token || localStorage.getItem('token');
+    return this.token || localStorage.getItem('token') || sessionStorage.getItem('token');
   }
-
   clearToken() {
     this.token = null;
     localStorage.removeItem('token');
-  }  // Verificar se está autenticado
+    sessionStorage.removeItem('token');
+  }
+
+  // Verificar se está autenticado
   isAuthenticated() {
-    return !!(this.token || localStorage.getItem('token'));
+    return !!this.getToken();
   }
 }
 

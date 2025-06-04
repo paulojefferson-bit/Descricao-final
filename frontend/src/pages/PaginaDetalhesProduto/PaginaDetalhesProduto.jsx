@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Badge, Breadcrumb, Tabs, Tab } from 'react-bootstrap';
 import { useCarrinho } from '../../context/ContextoCarrinho';
-import { obterProdutoPorId } from '../../data/produtos';
 import { produtosService } from '../../services';
 import './PaginaDetalhesProduto.css';
 
@@ -33,20 +32,12 @@ let PaginaDetalhesProduto = () => {
           if (dadosProdutoLocal) {
             setProduto(dadosProdutoLocal);
           }
-        }
-      } catch (error) {
+        }      } catch (error) {
         console.error("Erro ao buscar produto da API:", error);
         
         if (estaMontado) {
-          // Fallback para dados locais em caso de erro
-          try {
-            const dadosProdutoLocal = obterProdutoPorId(id);
-            if (dadosProdutoLocal) {
-              setProduto(dadosProdutoLocal);
-            }
-          } catch (errorLocal) {
-            console.error("Erro ao buscar produto local:", errorLocal);
-          }
+          // Não há fallback - produto permanece null se não for encontrado
+          setProduto(null);
         }
       } finally {
         if (estaMontado) {
@@ -132,14 +123,18 @@ let PaginaDetalhesProduto = () => {
     
     return estrelas;
   };
-
-  // Simular galeria de imagens
-  const imagensProduto = produto ? [
-    produto.image,
-    produto.image, // Repetindo a mesma imagem para simular mais fotos
-    produto.image, // Na implementação real, viria da API
-    produto.image,
-  ] : [];
+  // Galeria de imagens - usar galeria real se disponível, ou criar uma simulada
+  const imagensProduto = produto ? 
+    (produto.galeria_imagens && produto.galeria_imagens.length > 0) ? 
+      produto.galeria_imagens :
+      // Se não houver galeria, criar uma com a imagem principal repetida
+      [
+        produto.image,
+        produto.image,
+        produto.image,
+        produto.image,
+      ] 
+    : [];
 
   if (carregando) {
     return (
@@ -217,14 +212,13 @@ let PaginaDetalhesProduto = () => {
               </div>
               <span className="contagem-avaliacao-produto">({produto.reviewCount} avaliações)</span>
             </div>
-            
-            <div className="preco-produto mb-4">
+              <div className="preco-produto mb-4">
               {produto.oldPrice && (
-                <span className="preco-antigo-produto">R$ {produto.oldPrice.toFixed(2).replace('.', ',')}</span>
+                <span className="preco-antigo-produto">R$ {Number(produto.oldPrice).toFixed(2).replace('.', ',')}</span>
               )}
-              <span className="preco-atual-produto">R$ {produto.currentPrice.toFixed(2).replace('.', ',')}</span>
+              <span className="preco-atual-produto">R$ {Number(produto.currentPrice).toFixed(2).replace('.', ',')}</span>
               <span className="parcelas-produto">
-                ou 10x de R$ {(produto.currentPrice / 10).toFixed(2).replace('.', ',')}
+                ou 10x de R$ {Number(produto.currentPrice / 10).toFixed(2).replace('.', ',')}
               </span>
             </div>
             
@@ -344,23 +338,21 @@ let PaginaDetalhesProduto = () => {
                 <div className="linha-especificacoes">
                   <div className="rotulo-especificacoes">Gênero</div>
                   <div className="valor-especificacoes">{produto.gender === 'male' ? 'Masculino' : 'Feminino'}</div>
-                </div>
-                <div className="linha-especificacoes">
+                </div>                <div className="linha-especificacoes">
                   <div className="rotulo-especificacoes">Condição</div>
                   <div className="valor-especificacoes">{produto.condition === 'new' ? 'Novo' : 'Usado'}</div>
                 </div>
                 <div className="linha-especificacoes">
                   <div className="rotulo-especificacoes">Código do Produto</div>
-                  <div className="valor-especificacoes">SKU-{produto.id.toString().padStart(5, '0')}</div>
+                  <div className="valor-especificacoes">SKU-{produto.id ? produto.id.toString().padStart(5, '0') : '00000'}</div>
                 </div>
               </div>
             </div>
           </Tab>
           <Tab eventKey="reviews" title={`Avaliações (${produto.reviewCount})`}>
             <div className="p-4 bg-light rounded">
-              <div className="d-flex align-items-center mb-4">
-                <div className="avaliacao-geral me-4">
-                  <div className="numero-avaliacao">{produto.rating.toFixed(1)}</div>
+              <div className="d-flex align-items-center mb-4">                <div className="avaliacao-geral me-4">
+                  <div className="numero-avaliacao">{Number(produto.rating).toFixed(1)}</div>
                   <div className="estrelas-avaliacao">
                     {renderizarEstrelas(produto.rating)}
                   </div>

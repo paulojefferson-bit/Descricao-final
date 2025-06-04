@@ -492,13 +492,12 @@ const CheckoutIntegrado = () => {
                           name="parcelas"
                           value={dadosPagamento.parcelas}
                           onChange={handleDadosPagamentoChange}
-                        >
-                          <option value="1">1x de R$ {totais.total.toFixed(2)} sem juros</option>
-                          <option value="2">2x de R$ {(totais.total / 2).toFixed(2)} sem juros</option>
-                          <option value="3">3x de R$ {(totais.total / 3).toFixed(2)} sem juros</option>
-                          <option value="4">4x de R$ {(totais.total / 4).toFixed(2)} sem juros</option>
-                          <option value="5">5x de R$ {(totais.total / 5).toFixed(2)} sem juros</option>
-                          <option value="6">6x de R$ {(totais.total / 6).toFixed(2)} sem juros</option>
+                        >                          <option value="1">1x de R$ {Number(totais.total).toFixed(2)} sem juros</option>
+                          <option value="2">2x de R$ {Number(totais.total / 2).toFixed(2)} sem juros</option>
+                          <option value="3">3x de R$ {Number(totais.total / 3).toFixed(2)} sem juros</option>
+                          <option value="4">4x de R$ {Number(totais.total / 4).toFixed(2)} sem juros</option>
+                          <option value="5">5x de R$ {Number(totais.total / 5).toFixed(2)} sem juros</option>
+                          <option value="6">6x de R$ {Number(totais.total / 6).toFixed(2)} sem juros</option>
                         </select>
                       </div>
                     </div>
@@ -541,9 +540,8 @@ const CheckoutIntegrado = () => {
                 <h6>Forma de Pagamento:</h6>
                 <p className="text-muted mb-3">
                   {dadosPagamento.forma_pagamento === 'cartao' ? (
-                    <>
-                      Cartão de Crédito<br />
-                      {dadosPagamento.parcelas}x de R$ {(totais.total / dadosPagamento.parcelas).toFixed(2)}
+                    <>                      Cartão de Crédito<br />
+                      {dadosPagamento.parcelas}x de R$ {Number(totais.total / dadosPagamento.parcelas).toFixed(2)}
                     </>
                   ) : (
                     'PIX - Pagamento à vista'
@@ -622,23 +620,22 @@ const CheckoutIntegrado = () => {
             <div className="card-header">
               <h6 className="mb-0">Resumo do Pedido</h6>
             </div>
-            <div className="card-body">
-              <div className="d-flex justify-content-between mb-2">
+            <div className="card-body">              <div className="d-flex justify-content-between mb-2">
                 <span>Subtotal:</span>
-                <span>R$ {totais.subtotal.toFixed(2)}</span>
+                <span>R$ {Number(totais.subtotal).toFixed(2)}</span>
               </div>
               
               {totais.desconto > 0 && (
                 <div className="d-flex justify-content-between mb-2 text-success">
                   <span>Desconto:</span>
-                  <span>-R$ {totais.desconto.toFixed(2)}</span>
+                  <span>-R$ {Number(totais.desconto).toFixed(2)}</span>
                 </div>
               )}
               
               <div className="d-flex justify-content-between mb-2">
                 <span>Frete:</span>
                 <span>
-                  {totais.frete === 0 ? 'Grátis' : `R$ ${totais.frete.toFixed(2)}`}
+                  {totais.frete === 0 ? 'Grátis' : `R$ ${Number(totais.frete).toFixed(2)}`}
                 </span>
               </div>
               
@@ -647,7 +644,7 @@ const CheckoutIntegrado = () => {
               <div className="d-flex justify-content-between">
                 <strong>Total:</strong>
                 <strong className="text-primary fs-5">
-                  R$ {totais.total.toFixed(2)}
+                  R$ {Number(totais.total).toFixed(2)}
                 </strong>
               </div>
 

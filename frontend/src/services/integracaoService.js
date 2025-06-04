@@ -39,11 +39,26 @@ export const authService = {  // Login
   isLoggedIn() {
     return api.isAuthenticated();
   },
-
   // Obter usuário atual
   getCurrentUser() {
     const usuario = localStorage.getItem('usuario');
     return usuario ? JSON.parse(usuario) : null;
+  },
+
+  // Verificar se token é válido
+  async verificarToken() {
+    try {
+      const token = api.getToken();
+      if (!token) {
+        return { sucesso: false, mensagem: 'Token não encontrado' };
+      }
+      
+      const response = await api.post('/auth/verificar-token', { token });
+      return response;
+    } catch (error) {
+      console.error('Erro ao verificar token:', error);
+      return { sucesso: false, mensagem: 'Token inválido' };
+    }
   }
 };
 

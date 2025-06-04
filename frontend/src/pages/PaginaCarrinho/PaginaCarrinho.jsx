@@ -38,10 +38,11 @@ const PaginaCarrinho = () => {
       }
     }
   };
-
   const formatarMoeda = (valor) => {
-    return `R$ ${valor.toFixed(2).replace('.', ',')}`;
-  };  return (
+    return `R$ ${Number(valor).toFixed(2).replace('.', ',')}`;
+  };
+
+  return (
     <Container className="my-5 cart-page">
       <h1 className="mb-4">Meu Carrinho</h1>
       

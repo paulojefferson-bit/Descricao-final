@@ -1,8 +1,8 @@
 /**
  * Componente ItemListaProduto
- * 
+ *
  * Este componente renderiza um item de produto para a visualização em lista na loja.
- * 
+ *
  * Funcionalidades:
  * - Exibe imagem, marca, nome, preço e avaliações do produto em layout horizontal
  * - Mostra descontos quando disponíveis
@@ -20,17 +20,16 @@ import './ItemListaProduto.css';
 const ItemListaProduto = ({ produto, estaSelecionado = false, aoAlternarComparacao }) => {
   const { adicionarAoCarrinho } = useCarrinho();
   const [mostrarToast, setMostrarToast] = React.useState(false);
-
   const {
     id,
-    brand: marca,
-    name: nome,
-    image: imagem,
-    oldPrice: precoAntigo,
-    currentPrice: precoAtual,
-    discount: desconto,
-    rating: avaliacao,
-    reviewCount: numeroAvaliacoes
+    marca,
+    nome,
+    imagem,
+    preco_antigo: precoAntigo,
+    preco_atual: precoAtual,
+    desconto,
+    avaliacao,
+    numero_avaliacoes: numeroAvaliacoes
   } = produto;
 
   /**
@@ -102,11 +101,12 @@ const ItemListaProduto = ({ produto, estaSelecionado = false, aoAlternarComparac
                   </span>
                 </div>
               )}              
-              <Link to={`/produtos/${id}`}>
+              <Link to={`/produto/${id}`}>
                 <img 
-                  src={imagem}
+                  src={imagem || '/tenis_produtos.png'}
                   alt={nome}
                   className="item-lista-produto__imagem img-fluid rounded"
+                  onError={e => { e.target.src = '/tenis_produtos.png'; }}
                 />
                 <div className="item-lista-produto__imagem-overlay"></div>
               </Link>
@@ -117,7 +117,7 @@ const ItemListaProduto = ({ produto, estaSelecionado = false, aoAlternarComparac
           <div className="col-md-6 col-8">
             <p className="item-lista-produto__marca text-muted mb-1">{marca}</p>
             <h3 className="item-lista-produto__titulo fs-5 mb-2">
-              <Link to={`/produtos/${id}`} className="text-decoration-none text-dark">
+              <Link to={`/produto/${id}`} className="text-decoration-none text-dark">
                 {nome}
               </Link>
             </h3>
@@ -130,28 +130,28 @@ const ItemListaProduto = ({ produto, estaSelecionado = false, aoAlternarComparac
               </span>
             </div>
             <Link 
-              to={`/produtos/${id}`} 
+              to={`/produto/${id}`} 
               className="btn btn-outline-primary btn-sm item-lista-produto__visualizacao-detalhes"
             >
               <i className="bi bi-eye me-1"></i> Ver detalhes
             </Link>
-          </div>          {/* Preço e botão de compra */}
+          </div>
+          {/* Preço e botão de compra */}
           <div className="col-md-3 mt-3 mt-md-0">
-            <div className="item-lista-produto__area-preco mb-3">
-              {precoAntigo && (
+            <div className="item-lista-produto__area-preco mb-3">              {precoAntigo && (
                 <>
                   <del className="item-lista-produto__preco-antigo d-block">
-                    R${precoAntigo.toFixed(2).replace('.', ',')}
+                    R${Number(precoAntigo).toFixed(2).replace('.', ',')}
                   </del>
                   {desconto && (
                     <span className="item-lista-produto__economia">
-                      Economize R${(precoAntigo - precoAtual).toFixed(2).replace('.', ',')}
+                      Economize R${Number(precoAntigo - precoAtual).toFixed(2).replace('.', ',')}
                     </span>
                   )}
                 </>
               )}
               <span className="item-lista-produto__preco-atual fw-bold fs-5 text-primary">
-                R${precoAtual.toFixed(2).replace('.', ',')}
+                R${Number(precoAtual).toFixed(2).replace('.', ',')}
               </span>
             </div>
             <div className="d-flex gap-2">

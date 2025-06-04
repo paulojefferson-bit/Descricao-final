@@ -2,9 +2,8 @@ import styles from './FormResumo.module.css'
 import Sneakers from "../../assets/finalizarCompra/Sneakers.svg"
 
 const FormResumo = ({ carrinho = [], subtotal = 0, frete = 0, desconto = 0, total = 0, formatarMoeda }) => {
-
   // Função padrão de formatação se não for passada
-  const formatar = formatarMoeda || ((valor) => `R$ ${valor.toFixed(2).replace('.', ',')}`);
+  const formatar = formatarMoeda || ((valor) => `R$ ${Number(valor).toFixed(2).replace('.', ',')}`);
 
     return (
       <>
