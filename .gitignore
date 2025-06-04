@@ -1,12 +1,20 @@
+# Documentações e arquivos organizados (ignorar para manter repo limpo)
+docs/
+logs/
+tests/
+scripts/
+
 # Dependências
 node_modules/
+backend/node_modules/
+frontend/node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
 # Logs
-logs
 *.log
+*.logs
 
 # Ambiente
 .env
@@ -34,15 +42,40 @@ Thumbs.db
 *.bak
 *.tmp
 backups/
+backend_backup_*/
+backup_teste_files/
+backup_*/
 
 # MySQL dumps
 *.sql.gz
 *.sql.backup
 
-# Arquivos de teste
-*test*.js
-*test*.md
-executar_testes.ps1
-testar_*.js
-verificar_*.js
-RELATORIO_*.md
+# Arquivos específicos do projeto
+rate_limiting_monitor.log
+monitoring_report_*.json
+
+# Arquivos temporários de teste
+teste_*.html
+debug_*.html
+dashboard_*.html
+
+# TypeScript
+*.tsbuildinfo
+
+# Cache
+.cache
+.parcel-cache
+.npm
+.eslintcache
+
+# Temporary folders
+tmp/
+temp/
+# RELATORIO_*.md - Documentação importante
+# TESTE_*.md - Documentação de testes
+
+# Vite cache
+.vite/
+
+# Node modules antigo
+node_modules_old/

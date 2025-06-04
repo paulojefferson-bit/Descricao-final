@@ -17,7 +17,8 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:"],
-      scriptSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrcAttr: ["'unsafe-inline'"],
       connectSrc: ["'self'"],
     },
   },
@@ -25,7 +26,12 @@ app.use(helmet({
 
 // CORS
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://127.0.0.1:5500',
+    'null' // Para arquivos locais (file://)
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -120,6 +126,21 @@ app.use('/api/pedidos', require('./rotas/pedidos'));
 app.use('/api/promocoes', require('./rotas/promocoes'));
 app.use('/api/admin', require('./rotas/admin'));
 app.use('/api/admin/metrics', require('./rotas/admin-metrics'));
+
+// Servir dashboard de testes
+app.get('/dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dashboard_teste.html'));
+});
+
+// Servir dashboard simples
+app.get('/teste', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dashboard_simples.html'));
+});
+
+// Servir dashboard de debug
+app.get('/debug', (req, res) => {
+  res.sendFile(path.join(__dirname, '../debug_dashboard.html'));
+});
 
 // Rota de saúde
 app.get('/api/health', (req, res) => {

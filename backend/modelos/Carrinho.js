@@ -272,30 +272,8 @@ class Carrinho {  constructor(dados) {
       
       const valorDesconto = dadosPagamento.desconto || 0;
       const valorFrete = dadosPagamento.frete || 0;
-      const valorTotal = total.valor_total + valorFrete - valorDesconto;
-
-      // Gerar ID único para o pedido
+      const valorTotal = total.valor_total + valorFrete - valorDesconto;      // Gerar ID único para o pedido
       const pedidoId = `PED-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-
-      // Criar tabela de pedidos simples se não existir
-      try {
-        await conexao.executarConsulta(`
-          CREATE TABLE IF NOT EXISTS pedidos_simples (
-            id VARCHAR(50) PRIMARY KEY,
-            usuario_id INT NOT NULL,
-            valor_total DECIMAL(10, 2) NOT NULL,
-            valor_desconto DECIMAL(10, 2) DEFAULT 0,
-            valor_frete DECIMAL(10, 2) DEFAULT 0,
-            forma_pagamento VARCHAR(50),
-            observacoes TEXT,
-            status_pedido VARCHAR(20) DEFAULT 'pendente',
-            data_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            itens_json TEXT
-          )
-        `);
-      } catch (erroTabela) {
-        console.log('⚠️ Tabela já existe ou erro menor:', erroTabela.message);
-      }
 
       // Preparar dados dos itens para JSON
       const itensParaSalvar = validacao.itens.map(item => ({

@@ -317,14 +317,13 @@ class Produto {  constructor(dados) {
       throw new Error('Erro interno do servidor ao buscar produtos relacionados');
     }
   }
-
   // Buscar estatísticas de produtos
   static async obterEstatisticas() {
     try {
       const totalProdutos = await conexao.executarConsulta('SELECT COUNT(*) as total FROM produtos');
-      const produtosEstoque = await conexao.executarConsulta('SELECT COUNT(*) as total FROM produtos WHERE estoque > 0');
-      const produtosSemEstoque = await conexao.executarConsulta('SELECT COUNT(*) as total FROM produtos WHERE estoque = 0');
-      const valorTotalEstoque = await conexao.executarConsulta('SELECT SUM(preco_atual * estoque) as total FROM produtos');
+      const produtosEstoque = await conexao.executarConsulta('SELECT COUNT(*) as total FROM produtos WHERE quantidade_estoque > 0');
+      const produtosSemEstoque = await conexao.executarConsulta('SELECT COUNT(*) as total FROM produtos WHERE quantidade_estoque = 0');
+      const valorTotalEstoque = await conexao.executarConsulta('SELECT SUM(preco_atual * quantidade_estoque) as total FROM produtos');
       
       return {
         total_produtos: totalProdutos[0].total,

@@ -2,6 +2,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
+require('dotenv').config();
 const JWT_SECRET = process.env.JWT_SECRET || 'chave_super_secreta_loja_tenis_2024';
 const SALT_ROUNDS = 12;
 
@@ -36,8 +37,7 @@ async function verificarSenha(senha, hash) {
 
 // Gerar token JWT
 function gerarToken(usuario) {
-    try {        
-        const payload = { 
+    try {          const payload = { 
             userId: usuario.id, 
             email: usuario.email, 
             nivelAcesso: usuario.tipo_usuario,

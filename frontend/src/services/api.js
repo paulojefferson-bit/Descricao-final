@@ -7,7 +7,6 @@ class ApiService {
     this.baseURL = API_BASE_URL;
     this.token = localStorage.getItem('token');
   }
-
   // Método para fazer requisições HTTP
   async request(endpoint, options = {}) {
     const url = `${this.baseURL}${endpoint}`;
@@ -18,9 +17,7 @@ class ApiService {
         ...options.headers,
       },
       ...options,
-    };
-
-    // Adicionar token de autenticação se disponível
+    };    // Adicionar token de autenticação se disponível
     if (this.token) {
       config.headers.Authorization = `Bearer ${this.token}`;
     }
@@ -94,11 +91,9 @@ class ApiService {
   clearToken() {
     this.token = null;
     localStorage.removeItem('token');
-  }
-
-  // Verificar se está autenticado
+  }  // Verificar se está autenticado
   isAuthenticated() {
-    return !!this.getToken();
+    return !!(this.token || localStorage.getItem('token'));
   }
 }
 
