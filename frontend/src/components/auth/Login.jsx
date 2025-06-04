@@ -75,7 +75,7 @@ const Login = () => {
       
       if (response.sucesso) {
         // Login bem-sucedido, usuário será redirecionado pelo useEffect
-        console.log('Login realizado com sucesso');
+
       }
     } catch (err) {
       console.error('Erro no login:', err);

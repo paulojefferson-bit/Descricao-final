@@ -165,6 +165,39 @@ CREATE TABLE avaliacoes_produtos (
     UNIQUE KEY unique_user_product (produto_id, usuario_id)
 );
 
+-- Tabela de pedidos simples (sistema de compras)
+CREATE TABLE pedidos_simples (
+    id VARCHAR(50) PRIMARY KEY COMMENT 'ID único do pedido no formato PED-timestamp-random',
+    usuario_id INT NOT NULL COMMENT 'ID do usuário que fez o pedido',
+    valor_total DECIMAL(10, 2) NOT NULL COMMENT 'Valor total do pedido incluindo frete e desconto',
+    valor_desconto DECIMAL(10, 2) DEFAULT 0 COMMENT 'Valor do desconto aplicado',
+    valor_frete DECIMAL(10, 2) DEFAULT 0 COMMENT 'Valor do frete',
+    forma_pagamento VARCHAR(50) DEFAULT 'cartao_credito' COMMENT 'Método de pagamento utilizado',
+    observacoes TEXT COMMENT 'Observações adicionais do pedido',
+    status_pedido VARCHAR(20) DEFAULT 'pendente' COMMENT 'Status atual do pedido',
+    data_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Data e hora da criação do pedido',
+    data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data da última atualização',
+    itens_json TEXT NOT NULL COMMENT 'JSON com os itens do pedido',
+    
+    -- Índices para melhor performance
+    INDEX idx_usuario_id (usuario_id),
+    INDEX idx_status_pedido (status_pedido),
+    INDEX idx_data_pedido (data_pedido),
+    INDEX idx_forma_pagamento (forma_pagamento),
+    INDEX idx_usuario_status (usuario_id, status_pedido),
+    INDEX idx_periodo (data_pedido, status_pedido),
+    
+    -- Foreign key
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    
+    -- Constraints
+    CONSTRAINT chk_valor_total CHECK (valor_total >= 0),
+    CONSTRAINT chk_valor_desconto CHECK (valor_desconto >= 0),
+    CONSTRAINT chk_valor_frete CHECK (valor_frete >= 0),
+    CONSTRAINT chk_status_pedido CHECK (status_pedido IN ('pendente', 'confirmado', 'processando', 'enviado', 'entregue', 'cancelado')),
+    CONSTRAINT chk_forma_pagamento CHECK (forma_pagamento IN ('cartao_credito', 'cartao_debito', 'pix', 'boleto', 'dinheiro'))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Índices para melhorar performance
 CREATE INDEX idx_produtos_categoria ON produtos(categoria);
 CREATE INDEX idx_produtos_marca ON produtos(marca);
@@ -186,3 +219,4 @@ ALTER TABLE carrinho COMMENT = 'Carrinho de compras dos usuários';
 ALTER TABLE promocoes_relampago COMMENT = 'Promoções temporárias com desconto';
 ALTER TABLE logs_sistema COMMENT = 'Logs de auditoria para conformidade LGPD';
 ALTER TABLE consentimentos_lgpd COMMENT = 'Consentimentos dos usuários conforme LGPD';
+ALTER TABLE pedidos_simples COMMENT = 'Pedidos finalizados do sistema de e-commerce';

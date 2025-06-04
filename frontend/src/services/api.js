@@ -1,4 +1,3 @@
-// 🚨 ARQUIVO MODIFICADO PARA MODO TESTE - REVISAR ANTES DA PRODUÇÃO! 🚨
 // Configuração da API
 const API_BASE_URL = 'http://localhost:5000/api';
 
@@ -18,14 +17,9 @@ class ApiService {
         ...options.headers,
       },
       ...options,
-    };
-
-    // Adicionar token de autenticação se disponível
+    };    // Adicionar token de autenticação se disponível
     if (this.token) {
       config.headers.Authorization = `Bearer ${this.token}`;
-    } else {
-      // Se não há token, usar modo de teste
-      config.headers['X-Test-Mode'] = 'true';
     }
 
     try {
@@ -97,13 +91,9 @@ class ApiService {
   clearToken() {
     this.token = null;
     localStorage.removeItem('token');
-  }  // Verificar se está autenticado (modo de teste sempre considera autenticado)
+  }  // Verificar se está autenticado
   isAuthenticated() {
-    // Em modo de desenvolvimento/teste, sempre consideramos autenticado para facilitar testes
-    // Mas verificamos se há token para decidir o tipo de autenticação
-    const hasToken = this.token || localStorage.getItem('token');
-    console.log('🔐 Verificando autenticação:', { hasToken: !!hasToken, token: hasToken });
-    return !!hasToken; // Retorna true apenas se houver token
+    return !!(this.token || localStorage.getItem('token'));
   }
 }
 

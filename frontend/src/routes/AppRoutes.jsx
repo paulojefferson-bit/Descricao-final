@@ -7,7 +7,6 @@ import PaginaDetalhesProduto from '../pages/PaginaDetalhesProduto/PaginaDetalhes
 import PaginaCarrinho from '../pages/PaginaCarrinho/PaginaCarrinho';
 import CheckoutPage from '../pages/Checkout/CheckoutPage';
 import SucessoPage from '../pages/Checkout/SucessoPage';
-import TesteAPI from '../components/TesteAPI/TesteAPI';
 
 // Novos componentes integrados
 import Login from '../components/auth/Login';
@@ -104,10 +103,8 @@ const AppRoutes = () => {
       
       {/* Rota de sucesso */}
       <Route path="/sucesso" element={<SucessoPage />} />
-      
-      {/* Rotas de desenvolvimento */}
+        {/* Rotas de desenvolvimento */}
       <Route path="/categorias" element={<h1 className="text-center mt-5">Página em desenvolvimento</h1>} />
-      <Route path="/teste-api" element={<TesteAPI />} />
       
       {/* Página 404 */}
       <Route path="*" element={<h1 className="text-center mt-5">Página não encontrada</h1>} /> 

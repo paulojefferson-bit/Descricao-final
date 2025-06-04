@@ -314,7 +314,7 @@ const PerfilUsuario = () => {
                                 className="btn btn-outline-primary btn-sm"
                                 onClick={() => {
                                   // Implementar visualização detalhada do pedido
-                                  console.log('Ver detalhes do pedido:', pedido.id);
+
                                 }}
                               >
                                 <i className="bi bi-eye me-1"></i>

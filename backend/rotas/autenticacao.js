@@ -38,13 +38,11 @@ router.post('/registrar', async (req, res) => {
         sucesso: false,
         mensagem: 'Email inválido'
       });
-    }
-
-    const dadosUsuario = {
+    }    const dadosUsuario = {
       nome: nome.trim(),
       email: email.toLowerCase().trim(),
       senha,
-      nivel_acesso: 'usuario', // Usuário padrão
+      nivel_acesso: req.body.nivel_acesso || 'usuario', // Usuário padrão se não especificado
       telefone: req.body.telefone,
       data_nascimento: req.body.data_nascimento,
       endereco_completo: req.body.endereco_completo,

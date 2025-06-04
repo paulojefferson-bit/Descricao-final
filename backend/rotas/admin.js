@@ -408,4 +408,131 @@ router.get('/sistema/info', verificarAutenticacao, verificarPermissao('diretor')
   }
 });
 
+// POST /api/admin/reset-rate-limit/:email - Reset rate limiting e desbloqueio (apenas diretor)
+router.post('/reset-rate-limit/:email', verificarAutenticacao, verificarPermissao('diretor'), async (req, res) => {
+  try {
+    const { email } = req.params;
+    const { nova_senha } = req.body;
+    
+    console.log(`🔓 Reset de rate limiting solicitado para: ${email}`);
+    
+    // 1. Resetar rate limiting global
+    if (global.tentativasLogin) {
+      global.tentativasLogin.clear();
+      console.log('✅ Rate limiting global resetado');
+    }
+    
+    // 2. Buscar e resetar usuário no banco
+    const usuario = await Usuario.buscarPorEmail(email);
+    if (!usuario) {
+      return res.status(404).json({
+        sucesso: false,
+        mensagem: 'Usuário não encontrado'
+      });
+    }
+    
+    // 3. Resetar tentativas de login do usuário
+    await usuario.resetarTentativasLogin();
+    console.log('✅ Tentativas de login do usuário resetadas');
+    
+    // 4. Se fornecida nova senha, atualizar
+    if (nova_senha && nova_senha.length >= 6) {
+      await usuario.atualizar({ senha: nova_senha });
+      console.log('✅ Senha do usuário atualizada');
+    }
+    
+    // 5. Log da ação
+    req.logAcao('rate_limit_resetado', { 
+      email_resetado: email,
+      nova_senha_definida: !!nova_senha
+    });
+    
+    res.json({
+      sucesso: true,
+      mensagem: 'Rate limit resetado e usuário desbloqueado com sucesso',
+      dados: {
+        email: usuario.email,
+        nome: usuario.nome,
+        senha_resetada: !!nova_senha
+      }
+    });
+    
+  } catch (erro) {
+    console.error('Erro ao resetar rate limit:', erro);
+    res.status(500).json({
+      sucesso: false,
+      mensagem: erro.message || 'Erro interno do servidor'
+    });
+  }
+});
+
+// POST /api/admin/criar-usuario-equivalente - Criar usuário equivalente a maria@loja.com
+router.post('/criar-usuario-equivalente', verificarAutenticacao, verificarPermissao('diretor'), async (req, res) => {
+  try {
+    const { email_base } = req.body;
+    
+    // Buscar usuário base
+    const usuarioBase = await Usuario.buscarPorEmail(email_base);
+    if (!usuarioBase) {
+      return res.status(404).json({
+        sucesso: false,
+        mensagem: 'Usuário base não encontrado'
+      });
+    }
+    
+    // Criar email alternativo
+    const emailAlternativo = email_base.replace('@', '.teste@');
+    const nomeAlternativo = `${usuarioBase.nome} (Teste)`;
+    
+    // Criar usuário equivalente
+    const dadosNovoUsuario = {
+      nome: nomeAlternativo,
+      email: emailAlternativo,
+      senha: '123456',
+      nivel_acesso: usuarioBase.nivel_acesso || usuarioBase.tipo_usuario
+    };
+    
+    const novoUsuario = await Usuario.criar(dadosNovoUsuario);
+    
+    // Log da ação
+    req.logAcao('usuario_equivalente_criado', {
+      usuario_base: email_base,
+      usuario_novo: emailAlternativo
+    });
+    
+    res.json({
+      sucesso: true,
+      mensagem: 'Usuário equivalente criado com sucesso',
+      dados: {
+        usuario_original: {
+          email: usuarioBase.email,
+          nome: usuarioBase.nome,
+          nivel: usuarioBase.nivel_acesso || usuarioBase.tipo_usuario
+        },
+        usuario_novo: {
+          email: novoUsuario.email,
+          nome: novoUsuario.nome,
+          senha: '123456',
+          nivel: novoUsuario.nivel_acesso || novoUsuario.tipo_usuario
+        }
+      }
+    });
+    
+  } catch (erro) {
+    console.error('Erro ao criar usuário equivalente:', erro);
+    
+    if (erro.message === 'Email já está em uso') {
+      return res.status(409).json({
+        sucesso: false,
+        mensagem: 'Usuário equivalente já existe'
+      });
+    }
+    
+    res.status(500).json({
+      sucesso: false,
+      mensagem: erro.message || 'Erro interno do servidor'
+    });
+  }
+});
+
 module.exports = router;

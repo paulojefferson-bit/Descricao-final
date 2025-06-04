@@ -188,7 +188,7 @@ class Usuario {
         { 
           userId: usuario.id, 
           email: usuario.email, 
-          tipo: usuario.tipo_usuario 
+          nivelAcesso: usuario.tipo_usuario 
         },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_EXPIRES_IN || '24h' }
@@ -394,23 +394,22 @@ class Usuario {
 
     return nivelUsuario >= nivelMinimo;
   }
-
   // Obter estatísticas de usuários
   static async obterEstatisticas() {
     try {
       const totalUsuarios = await conexao.executarConsulta('SELECT COUNT(*) as total FROM usuarios');
-      const usuariosAtivos = await conexao.executarConsulta('SELECT COUNT(*) as total FROM usuarios WHERE ativo = 1');
+      const usuariosAtivos = await conexao.executarConsulta('SELECT COUNT(*) as total FROM usuarios WHERE status = "ativo"');
       const usuariosPorNivel = await conexao.executarConsulta(`
-        SELECT nivel_acesso, COUNT(*) as total 
+        SELECT tipo_usuario, COUNT(*) as total 
         FROM usuarios 
-        GROUP BY nivel_acesso
+        GROUP BY tipo_usuario
       `);
       
       return {
         total_usuarios: totalUsuarios[0].total,
         usuarios_ativos: usuariosAtivos[0].total,
         usuarios_por_nivel: usuariosPorNivel.reduce((acc, item) => {
-          acc[item.nivel_acesso] = item.total;
+          acc[item.tipo_usuario] = item.total;
           return acc;
         }, {})
       };
