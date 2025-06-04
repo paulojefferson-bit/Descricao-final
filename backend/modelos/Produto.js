@@ -42,21 +42,21 @@ class Produto {  constructor(dados) {
       }
 
       // Filtro por marca
-      if (filtros.marcas && filtros.marcas.length > 0) {
+      if (Array.isArray(filtros.marcas) && filtros.marcas.length > 0) {
         const placeholders = filtros.marcas.map(() => '?').join(',');
         sql += ` AND marca IN (${placeholders})`;
         parametros.push(...filtros.marcas);
       }
 
       // Filtro por categoria
-      if (filtros.categorias && filtros.categorias.length > 0) {
+      if (Array.isArray(filtros.categorias) && filtros.categorias.length > 0) {
         const placeholders = filtros.categorias.map(() => '?').join(',');
         sql += ` AND categoria IN (${placeholders})`;
         parametros.push(...filtros.categorias);
       }
 
       // Filtro por gênero
-      if (filtros.generos && filtros.generos.length > 0) {
+      if (Array.isArray(filtros.generos) && filtros.generos.length > 0) {
         const placeholders = filtros.generos.map(() => '?').join(',');
         sql += ` AND genero IN (${placeholders})`;
         parametros.push(...filtros.generos);
@@ -85,7 +85,7 @@ class Produto {  constructor(dados) {
         parametros.push(filtros.avaliacao_minima);
       }      // Filtro por estoque disponível
       if (filtros.apenas_em_estoque) {
-        sql += ` AND estoque > 0`;
+        sql += ` AND quantidade_estoque > 0`;
       }
 
       // Ordenação

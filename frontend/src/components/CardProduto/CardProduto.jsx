@@ -26,7 +26,7 @@ import './CardProduto.css';
  * @param {number} valor - Valor a ser formatado
  * @returns {string} Preço formatado
  */
-const formatarPreco = (valor) => `R$${valor.toFixed(2).replace('.', ',')}`;
+const formatarPreco = (valor) => `R$${Number(valor).toFixed(2).replace('.', ',')}`;
 
 /**
  * Componente que renderiza as estrelas de avaliação
@@ -59,18 +59,18 @@ const EstrelasAvaliacao = ({ avaliacao }) => {
 const CardProduto = ({ produto, estaSelecionado = false, aoAlternarComparacao }) => {
   const { adicionarAoCarrinho } = useCarrinho();
   const [mostrarToast, setMostrarToast] = useState(false);
-
-  // Desestruturação das propriedades do produto
+  // Desestruturação das propriedades do produto com fallback para ambos os modelos
+  // para garantir compatibilidade durante a transição
   const {
     id,
-    brand: marca,
-    name: nome,
-    image: imagem,
-    oldPrice: precoAntigo,
-    currentPrice: precoAtual,
-    discount: desconto,
-    rating: avaliacao,
-    reviewCount: numeroAvaliacoes
+    marca,
+    nome,
+    imagem,
+    preco_antigo: precoAntigo,
+    preco_atual: precoAtual,
+    desconto,
+    avaliacao,
+    numero_avaliacoes: numeroAvaliacoes
   } = produto;
 
   /**
@@ -101,12 +101,12 @@ const CardProduto = ({ produto, estaSelecionado = false, aoAlternarComparacao })
           )}
 
           {/* Área da Imagem com Overlay */}
-          <div className="card_produto__area_imagem">
-            <Link to={`/produtos/${id}`}>
+          <div className="card_produto__area_imagem">            <Link to={`/produto/${id}`}>
               <img 
-                src={imagem} 
+                src={imagem || '/tenis_produtos.png'} 
                 alt={nome} 
-                className="card_produto__imagem" 
+                className="card_produto__imagem"
+                onError={(e) => {e.target.src = '/tenis_produtos.png'}}
               />
               <div className="card_produto__imagem_overlay">
                 <span className="card_produto__visualizacao_rapida">
@@ -119,9 +119,8 @@ const CardProduto = ({ produto, estaSelecionado = false, aoAlternarComparacao })
           {/* Corpo do Card */}
           <div className="card_produto__corpo">
             {/* Informações do Produto */}
-            <p className="card_produto__marca">{marca}</p>
-            <h3 className="card_produto__titulo">
-              <Link to={`/produtos/${id}`} className="text-decoration-none text-dark">
+            <p className="card_produto__marca">{marca}</p>            <h3 className="card_produto__titulo">
+              <Link to={`/produto/${id}`} className="text-decoration-none text-dark">
                 {nome}
               </Link>
             </h3>

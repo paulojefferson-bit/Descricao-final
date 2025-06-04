@@ -1,0 +1,137 @@
+.conteudoForm {
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+    font-weight: 600;
+
+}
+
+.backgroundFormulario {
+    background-color: #f8f6ff;
+    padding: 3rem;
+     
+}
+
+.backgroundConteudo {
+    width: 90%;
+    margin: 0 auto;
+    background-color: white;
+    
+}
+
+h4, h5 {
+    font-weight: 700;
+}
+
+.conteudoForm input {
+    background-color: #ececec;
+    padding: 1rem;
+    margin-top: 0.5rem;
+}
+
+.conteudoForm label {
+    margin-top: 0.5rem;
+}
+
+small {
+    font-size: 0.7rem;
+
+}
+
+.imgResumo{
+    background-color: #E2E3FF;
+    padding: 1rem;
+}
+
+.resumoTotal{
+    background-color:#fef6e8;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-radius: 1.0rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Remove as setas do input number no Chrome, Safari, Edge e Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove as setas do input number no Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* CONFIGURAÇÃO DO MOBILE */
+.backgroundConteudo {
+  font-size: 1rem;
+}
+
+.backgroundConteudo img {
+  max-width: 300px;
+  height: auto;
+}
+
+/* Responsivo para mobile */
+@media (max-width: 768px) {
+  .backgroundConteudo {
+    font-size: 0.9rem;
+    padding: 1rem;
+  }
+
+  .backgroundConteudo h3 {
+    font-size: 1.2rem;
+  }
+
+  .backgroundConteudo h5 {
+    font-size: 1rem;
+  }
+
+  .backgroundConteudo img {
+    max-width: 180px;
+  }
+}
+
+/* FormCadastro.module.css */
+
+.backgroundFormulario {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding-bottom: 3rem;
+}
+
+.conteudoForm {
+  font-size: 1rem;
+}
+
+/* Ajustes para mobile */
+@media (max-width: 768px) {
+  .conteudoForm {
+    font-size: 0.9rem; /* Reduz tamanho da fonte */
+    padding: 1rem;
+  }
+
+  .conteudoForm h2 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .conteudoForm h3 {
+    font-size: 1.3rem;
+  }
+
+  .conteudoForm p {
+    font-size: 0.95rem;
+  }
+
+  .conteudoForm small {
+    font-size: 0.8rem;
+  }
+
+  .conteudoForm button {
+    font-size: 0.95rem;
+    padding: 0.75rem;
+  }
+}

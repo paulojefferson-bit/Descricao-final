@@ -34,11 +34,16 @@ const FiltroProduto = ({ onFilterChange }) => {
   const previousFilters = useRef(null);
 
   const aplicarFiltros = () => {
+    // Mapeamento de condição para o backend
+    let condicaoBackend = condicao;
+    if (condicao === 'new') condicaoBackend = 'novo';
+    else if (condicao === 'used') condicaoBackend = 'usado';
+
     const filtros = {
       brands: Object.entries(marcas).filter(([_, v]) => v).map(([k]) => k.toLowerCase()),
       categories: Object.entries(categorias).filter(([_, v]) => v).map(([k]) => k),
       genders: Object.entries(generos).filter(([_, v]) => v).map(([k]) => k),
-      condition: condicao,
+      condition: condicaoBackend,
       priceRange: { min: precoMinimo, max: precoMaximo },
       minRating: avaliacaoMinima,
     };

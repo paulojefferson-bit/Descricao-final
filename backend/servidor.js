@@ -7,67 +7,68 @@ const morgan = require('morgan');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
+// ⚠️  ATENÇÃO: MODO DE TESTE ATIVO ⚠️ 
+// Mecanismos de segurança DESABILITADOS para facilitar testes
+// CORS, Rate Limiting, Helmet e Compression estão desativados
+// NÃO usar em produção!
+
 const app = express();
 
-// Middleware de segurança
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      imgSrc: ["'self'", "data:", "https:"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrcAttr: ["'unsafe-inline'"],
-      connectSrc: ["'self'"],
-    },
-  },
-}));
+// Middleware de segurança - DESABILITADO PARA TESTES
+// app.use(helmet({
+//   contentSecurityPolicy: {
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+//       fontSrc: ["'self'", "https://fonts.gstatic.com"],
+//       imgSrc: ["'self'", "data:", "https:"],
+//       scriptSrc: ["'self'", "'unsafe-inline'"],
+//       scriptSrcAttr: ["'unsafe-inline'"],
+//       connectSrc: ["'self'"],
+//     },
+//   },
+// }));
 
-// CORS
+// CORS - PERMITIR TODAS AS ORIGENS PARA TESTES
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'http://127.0.0.1:5500',
-    'null' // Para arquivos locais (file://)
-  ],
+  origin: true, // Permite todas as origens
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+  optionsSuccessStatus: 200
 }));
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100, // máximo 100 requests por IP
-  message: {
-    sucesso: false,
-    mensagem: 'Muitas tentativas. Tente novamente em 15 minutos.'
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+// Rate limiting - DESABILITADO PARA TESTES
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutos
+//   max: 100, // máximo 100 requests por IP
+//   message: {
+//     sucesso: false,
+//     mensagem: 'Muitas tentativas. Tente novamente em 15 minutos.'
+//   },
+//   standardHeaders: true,
+//   legacyHeaders: false,
+// });
 
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 5, // máximo 5 tentativas de login por IP
-  message: {
-    sucesso: false,
-    mensagem: 'Muitas tentativas de login. Tente novamente em 15 minutos.'
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+// const authLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutos
+//   max: 5, // máximo 5 tentativas de login por IP
+//   message: {
+//     sucesso: false,
+//     mensagem: 'Muitas tentativas de login. Tente novamente em 15 minutos.'
+//   },
+//   standardHeaders: true,
+//   legacyHeaders: false,
+// });
 
-app.use('/api/', limiter);
-app.use('/api/auth/login', authLimiter);
+// app.use('/api/', limiter);
+// app.use('/api/auth/login', authLimiter);
 
-// Middleware de compressão
-app.use(compression());
+// Middleware de compressão - DESABILITADO PARA TESTES
+// app.use(compression());
 
-// Logging
-app.use(morgan('combined'));
+// Logging - SIMPLIFICADO PARA TESTES
+// app.use(morgan('combined'));
 
 // Parse JSON
 app.use(express.json({ limit: '10mb' }));

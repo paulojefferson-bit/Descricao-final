@@ -43,6 +43,12 @@ export const authService = {
     api.clearToken();
     return Promise.resolve({ sucesso: true });
   },
+
+  // Verificar se o usuário está autenticado
+  isAuthenticated: () => {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    return !!token && token !== 'null' && token !== 'undefined';
+  },
   
   // Verificar token
   verificarToken: (token) => api.post('/auth/verificar-token', { token }),
