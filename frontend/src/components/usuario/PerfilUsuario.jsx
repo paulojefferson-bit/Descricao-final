@@ -1,5 +1,5 @@
 // Componente de Perfil do Usuário integrado
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useAuth as useUsuarioHooks, usePedidos } from '../../hooks/useApiIntegration';
 import LoadingSpinner from '../common/LoadingSpinner';
@@ -54,9 +54,8 @@ const PerfilUsuario = () => {
     if (activeTab === 'pedidos') {
       carregarPedidos();
     }
-  }, [activeTab]);
-
-  const carregarPedidos = async () => {
+  }, [activeTab, carregarPedidos]);
+  const carregarPedidos = useCallback(async () => {
     try {
       const response = await listarPedidos();
       if (response.sucesso) {
@@ -65,7 +64,7 @@ const PerfilUsuario = () => {
     } catch (error) {
       console.error('Erro ao carregar pedidos:', error);
     }
-  };
+  }, [listarPedidos]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

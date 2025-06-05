@@ -4,11 +4,8 @@ import './Cadastro.css';
 export default function Login() {
   const [login, setLogin] = useState('');
   const [senha, setSenha] = useState('');
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Login:', login);
-    console.log('Senha:', senha);
     // Aqui você pode chamar uma API ou fazer validação
   };
 

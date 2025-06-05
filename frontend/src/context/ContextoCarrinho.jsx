@@ -37,11 +37,10 @@ export const ProvedorCarrinho = ({ children }) => {
         if (estaMontado) {
           // Fallback para localStorage
           try {
-            const carrinhoArmazenado = localStorage.getItem('carrinho');
-            if (carrinhoArmazenado) {
+            const carrinhoArmazenado = localStorage.getItem('carrinho');          if (carrinhoArmazenado) {
               setItensCarrinho(JSON.parse(carrinhoArmazenado));
             }
-          } catch (erroLocal) {
+          } catch {
             setItensCarrinho([]);
           }
         }
@@ -98,8 +97,7 @@ export const ProvedorCarrinho = ({ children }) => {
           }
         }
       }
-      
-      // Fallback para operação local
+        // Fallback para operação local
       setItensCarrinho(itensPrevios => {
         const indiceItemExistente = itensPrevios.findIndex(item => item.id === produto.id);
         if (indiceItemExistente >= 0) {
@@ -110,7 +108,18 @@ export const ProvedorCarrinho = ({ children }) => {
           };
           return novosItens;
         } else {
-          return [...itensPrevios, { ...produto, quantidade: quantidade }];
+          // Normalizar estrutura do produto para garantir compatibilidade
+          const produtoNormalizado = {
+            ...produto,
+            quantidade: quantidade,
+            // Garantir que currentPrice esteja disponível
+            currentPrice: produto.currentPrice || produto.preco_atual || produto.preco_unitario || 0,
+            // Garantir que o nome esteja disponível
+            name: produto.name || produto.nome || "Produto sem nome",
+            // Garantir que a imagem esteja disponível
+            image: produto.image || produto.imagem || produto.imagem_url || "/tenis_produtos.png"
+          };
+          return [...itensPrevios, produtoNormalizado];
         }
       });
 
@@ -190,16 +199,26 @@ export const ProvedorCarrinho = ({ children }) => {
       console.error('Erro ao limpar o carrinho:', erro);
       return false;
     }
-  };
-
-  // Calcular o total de itens no carrinho
+  };  // Calcular o total de itens no carrinho
   const obterQuantidadeItensCarrinho = () => {
-    return itensCarrinho.reduce((total, item) => total + item.quantidade, 0);
-  };
-
-  // Calcular o valor total do carrinho
+    return itensCarrinho.reduce((total, item) => {
+      const quantidade = item.quantidade === undefined ? 0 : Number(item.quantidade);
+      return total + (isNaN(quantidade) ? 0 : quantidade);
+    }, 0);
+  };  // Calcular o valor total do carrinho
   const obterTotalCarrinho = () => {
-    return itensCarrinho.reduce((total, item) => total + (item.currentPrice * item.quantidade), 0);
+    return itensCarrinho.reduce((total, item) => {
+      const preco = Number(item.currentPrice || item.preco_atual || item.preco_unitario || 0);
+      const quantidade = item.quantidade === undefined ? 0 : Number(item.quantidade);
+      
+      // Verificar se os valores são válidos
+      if (isNaN(preco) || isNaN(quantidade)) {
+        console.warn('Produto com valores inválidos no carrinho:', item);
+        return total;
+      }
+      
+      return total + (preco * quantidade);
+    }, 0);
   };
 
   // Obter todos os itens do carrinho

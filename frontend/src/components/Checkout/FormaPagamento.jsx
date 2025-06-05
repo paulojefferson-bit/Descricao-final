@@ -67,12 +67,8 @@ const FormaPagamento = ({ formDados, setFormDados}) => {
 
     }))
 
-    
-
-    const detectada = detectarBandeira(valor)
+        const detectada = detectarBandeira(valor)
     setBandeira(detectada)
-    
-    console.log('Número:', valor, 'Bandeira detectada:', detectada); // Para debug
   };
 
   const handleNomeCartaoChange = (e) => {

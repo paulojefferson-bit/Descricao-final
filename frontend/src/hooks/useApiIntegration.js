@@ -37,10 +37,7 @@ export const useAuth = () => {
         setIsAuthenticated(true);
         setUsuario(response.usuario);
       }
-      
-      return response;
-    } catch (error) {
-      throw error;
+        return response;
     } finally {
       setLoading(false);
     }
@@ -50,8 +47,6 @@ export const useAuth = () => {
     try {
       setLoading(true);
       return await authService.register(dadosUsuario);
-    } catch (error) {
-      throw error;
     } finally {
       setLoading(false);
     }
@@ -156,9 +151,8 @@ export const useCarrinho = () => {
   const adicionarItem = async (produtoId, quantidade = 1, tamanho = null) => {
     try {
       setLoading(true);
-      
-      // Verificar autenticação
-      const isAuthenticated = api.isAuthenticated();
+        // Verificar autenticação
+      const isAuthenticated = authService.isLoggedIn();
       
       if (isAuthenticated) {
         // Se autenticado, usar API
@@ -349,21 +343,15 @@ export const usePedidos = (filtros = {}) => {
       if (response.sucesso) {
         await buscarPedidos(); // Recarregar lista
       }
-      
-      return response;
-    } catch (err) {
-      throw err;
+        return response;
     } finally {
       setLoading(false);
     }
   };
-
   const finalizarPedido = async (dadosCheckout) => {
     try {
       setLoading(true);
       return await pedidosService.finalizarPedido(dadosCheckout);
-    } catch (err) {
-      throw err;
     } finally {
       setLoading(false);
     }
@@ -423,13 +411,8 @@ export const usePromocoes = () => {
       console.error('Erro ao verificar promoção relâmpago:', err);
     }
   }, []);
-
   const aplicarCupom = async (codigo) => {
-    try {
-      return await promocoesService.aplicarCupom(codigo);
-    } catch (err) {
-      throw err;
-    }
+    return await promocoesService.aplicarCupom(codigo);
   };
 
   useEffect(() => {

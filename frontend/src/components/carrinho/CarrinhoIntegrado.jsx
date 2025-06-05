@@ -180,16 +180,14 @@ const CarrinhoIntegrado = () => {
                           <i className="bi bi-plus"></i>
                         </button>
                       </div>
-                    </div>
-
-                    {/* Preço e ações */}
+                    </div>                    {/* Preço e ações */}
                     <div className="col-md-3 col-6 text-end">
                       <div className="d-flex align-items-center justify-content-end">                        <div className="me-3">
                           <div className="fw-bold">
-                            R$ {Number(item.preco * item.quantidade).toFixed(2)}
+                            R$ {Number((item.preco_atual || item.preco_unitario || item.preco || 0) * item.quantidade).toFixed(2)}
                           </div>
                           <small className="text-muted">
-                            R$ {Number(item.preco).toFixed(2)} cada
+                            R$ {Number(item.preco_atual || item.preco_unitario || item.preco || 0).toFixed(2)} cada
                           </small>
                         </div>
                         <button

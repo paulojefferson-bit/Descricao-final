@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import FiltroAvaliacao from '../FiltroAvaliacao/FiltroAvaliacao';
 import './FiltroProduto.css';
@@ -33,16 +33,16 @@ const FiltroProduto = ({ onFilterChange }) => {
 
   const previousFilters = useRef(null);
 
-  const aplicarFiltros = () => {
+    const aplicarFiltros = useCallback(() => {
     // Mapeamento de condição para o backend
     let condicaoBackend = condicao;
     if (condicao === 'new') condicaoBackend = 'novo';
     else if (condicao === 'used') condicaoBackend = 'usado';
 
     const filtros = {
-      brands: Object.entries(marcas).filter(([_, v]) => v).map(([k]) => k.toLowerCase()),
-      categories: Object.entries(categorias).filter(([_, v]) => v).map(([k]) => k),
-      genders: Object.entries(generos).filter(([_, v]) => v).map(([k]) => k),
+      brands: Object.entries(marcas).filter(([, v]) => v).map(([k]) => k.toLowerCase()),
+      categories: Object.entries(categorias).filter(([, v]) => v).map(([k]) => k),
+      genders: Object.entries(generos).filter(([, v]) => v).map(([k]) => k),
       condition: condicaoBackend,
       priceRange: { min: precoMinimo, max: precoMaximo },
       minRating: avaliacaoMinima,
@@ -53,11 +53,9 @@ const FiltroProduto = ({ onFilterChange }) => {
       previousFilters.current = stringFiltros;
       onFilterChange(filtros);
     }
-  };
-
-  useEffect(() => {
+  }, [marcas, categorias, generos, condicao, precoMinimo, precoMaximo, avaliacaoMinima, onFilterChange]);  useEffect(() => {
     aplicarFiltros();
-  }, [marcas, categorias, generos, condicao, precoMinimo, precoMaximo, avaliacaoMinima]);
+  }, [aplicarFiltros]);
 
   const limparFiltros = () => {
     setMarcas({

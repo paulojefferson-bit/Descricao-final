@@ -102,10 +102,8 @@ export const AuthProvider = ({ children }) => {
               // Token inválido, fazer logout
               authService.logout();
               dispatch({ type: AUTH_ACTIONS.LOGOUT });
-            }
-          } catch (tokenError) {
+            }          } catch {
             // Se a verificação falhar, considerar como não autenticado
-            console.warn('Token inválido ou expirado:', tokenError);
             authService.logout();
             dispatch({ type: AUTH_ACTIONS.LOGOUT });
           }
