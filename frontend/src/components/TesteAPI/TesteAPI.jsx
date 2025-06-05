@@ -53,10 +53,8 @@ const TesteAPI = () => {
       setCarregando(true);
       setErro(null);
       
-      // Teste direto com fetch
-      console.log(`Testando produto ID: ${id}`);
+      // Teste direto com fetch      // Testar produto específico
       const resposta = await fetch(`http://localhost:5000/api/produtos/${id}`);
-      console.log('Status da resposta:', resposta.status);
       
       if (!resposta.ok) {
         const textoErro = await resposta.text();
@@ -64,7 +62,6 @@ const TesteAPI = () => {
       }
       
       const dados = await resposta.json();
-      console.log('Dados recebidos:', dados);
       
       if (dados.sucesso) {
         setSucesso(`Produto ${id} carregado: ${dados.dados?.nome || 'sem nome'}`);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Container, Row, Col, Pagination, Button, Spinner, Modal } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import FiltroProduto from '../../components/FiltroProduto/FiltroProduto';
@@ -9,12 +9,11 @@ import OrdenacaoProdutos from '../../components/OrdenacaoProdutos/OrdenacaoProdu
 import { produtosService } from '../../services';
 import './PaginaProdutos.css';
 
-const PaginaProdutos = () => {
-  const location = useLocation();
+const PaginaProdutos = () => {  const location = useLocation();
   const navigate = useNavigate();
   
   // Obter o termo de pesquisa da URL
-  const parametrosURL = new URLSearchParams(location.search);
+  const parametrosURL = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const termoPesquisa = parametrosURL.get('search') || '';
   
   // Estados para gerenciar os produtos e a paginação
@@ -65,10 +64,8 @@ const PaginaProdutos = () => {
           parametrosAPI.avaliacao_minima = filtros.minRating;
         }
         if (ordenacaoAtual && ordenacaoAtual !== 'featured') {
-          parametrosAPI.ordenar_por = ordenacaoAtual;
-        }
+          parametrosAPI.ordenar_por = ordenacaoAtual;        }
 
-        console.log('Parâmetros enviados para API:', parametrosAPI);
         const resposta = await produtosService.buscarTodos(parametrosAPI);
         
         if (estaMontado && resposta.sucesso) {
@@ -148,13 +145,12 @@ const PaginaProdutos = () => {
     if (avaliacaoURL) {
       filtrosURL.minRating = parseFloat(avaliacaoURL);
     }
-    
-    // Aplicar filtros apenas se houver parâmetros adicionais além do termo de pesquisa
+      // Aplicar filtros apenas se houver parâmetros adicionais além do termo de pesquisa
     if (Object.keys(filtrosURL).length > 1 || 
         (Object.keys(filtrosURL).length === 1 && !filtrosURL.searchTerm)) {
       setFiltros(filtrosURL);
     }
-  }, []);
+  }, [termoPesquisa, location.search, parametrosURL]);
 
   // Função para adicionar/remover produto da lista de comparação
   const alternarComparacaoProduto = (produto) => {
@@ -405,57 +401,52 @@ const PaginaProdutos = () => {
       onHide={() => setMostrarModalComparacao(false)}
       size="xl"
       centered
-    >
-      <Modal.Header closeButton>
+    >      <Modal.Header closeButton>
         <Modal.Title>Comparação de Produtos</Modal.Title>
-      </Modal.Header>      <Modal.Body>
+      </Modal.Header>
+      <Modal.Body>
         {produtosSelecionados.length > 0 ? (
-          <div className="table-responsive">
-            <table className="tabela-comparacao table table-bordered table-striped">
-              <thead>
-                <tr>
+          <div className="table-responsive">            <table className="tabela-comparacao table table-bordered table-striped">
+              <thead>                <tr>
                   <th>Características</th>
                   {produtosSelecionados.map(produto => (
                     <th key={produto.id} className="text-center">
-                      {produto.name}
+                      {produto.nome}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody>
-                <tr>
+              <tbody>                <tr>
                   <td>Imagem</td>
                   {produtosSelecionados.map(produto => (
                     <td key={`img-${produto.id}`} className="text-center">
                       <img 
-                        src={produto.image} 
-                        alt={produto.name} 
+                        src={produto.imagem} 
+                        alt={produto.nome} 
                         className="img-fluid"
                         style={{ maxHeight: '100px' }}
                       />
                     </td>
                   ))}
-                </tr>
-                <tr>
+                </tr>                <tr>
                   <td>Marca</td>
                   {produtosSelecionados.map(produto => (
                     <td key={`brand-${produto.id}`} className="text-center">
-                      {produto.brand}
+                      {produto.marca}
                     </td>
                   ))}
-                </tr>
-                <tr>                  <td>Preço</td>
+                </tr><tr>
+                  <td>Preço</td>
                   {produtosSelecionados.map(produto => (
                     <td key={`price-${produto.id}`} className="text-center font-weight-bold">
-                      R$ {Number(produto.currentPrice).toFixed(2)}
+                      R$ {Number(produto.preco_atual).toFixed(2)}
                     </td>
                   ))}
-                </tr>
-                <tr>
+                </tr>                <tr>
                   <td>Desconto</td>
                   {produtosSelecionados.map(produto => (
                     <td key={`discount-${produto.id}`} className="text-center">
-                      {produto.discount ? `${produto.discount}%` : 'Sem desconto'}
+                      {produto.desconto ? `${produto.desconto}%` : 'Sem desconto'}
                     </td>
                   ))}
                 </tr>
@@ -463,7 +454,7 @@ const PaginaProdutos = () => {
                   <td>Avaliação</td>
                   {produtosSelecionados.map(produto => (
                     <td key={`rating-${produto.id}`} className="text-center">
-                      {produto.rating} / 5 ({produto.reviewCount} avaliações)
+                      {produto.avaliacao} / 5 ({produto.numero_avaliacoes} avaliações)
                     </td>
                   ))}
                 </tr>
@@ -471,7 +462,7 @@ const PaginaProdutos = () => {
                   <td>Categoria</td>
                   {produtosSelecionados.map(produto => (
                     <td key={`category-${produto.id}`} className="text-center">
-                      {produto.category}
+                      {produto.categoria}
                     </td>
                   ))}
                 </tr>
@@ -479,7 +470,7 @@ const PaginaProdutos = () => {
                   <td>Gênero</td>
                   {produtosSelecionados.map(produto => (
                     <td key={`gender-${produto.id}`} className="text-center">
-                      {produto.gender}
+                      {produto.genero}
                     </td>
                   ))}
                 </tr>
@@ -512,9 +503,10 @@ const PaginaProdutos = () => {
             <p className="mb-0">
               Resultados para: <strong>{termoPesquisa}</strong>
             </p>
-          </div>
-        )}
-      </div>      {/* Botão de comparação fixo (aparece quando há produtos selecionados) */}
+          </div>        )}
+      </div>
+
+      {/* Botão de comparação fixo (aparece quando há produtos selecionados) */}
       {produtosSelecionados.length > 0 && (
         <div className="botao-comparacao-produtos">
           <Button 
@@ -549,9 +541,9 @@ const PaginaProdutos = () => {
           />
 
           {/* Opções de ordenação para dispositivos móveis */}
-          <div className="d-block d-md-none mb-3">
-            <div className="d-flex justify-content-between align-items-center bg-light p-2 rounded">
-              <span className="text-muted small">Ordenar produtos:</span>              <OrdenacaoProdutos 
+          <div className="d-block d-md-none mb-3">            <div className="d-flex justify-content-between align-items-center bg-light p-2 rounded">
+              <span className="text-muted small">Ordenar produtos:</span>
+              <OrdenacaoProdutos
                 ordenacaoAtual={ordenacaoAtual}
                 aoMudarOrdenacao={aoMudarOrdenacao}
                 className="ordenacao-mobile"

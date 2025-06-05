@@ -1,13 +1,13 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
+import { fileURLToPath, URL } from 'node:url'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src'),
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   publicDir: 'public',
@@ -19,12 +19,11 @@ export default defineConfig({
     },
     port: 3000,
     open: true,
-  },
-  // Configuração para produção
+  },  // Configuração para produção
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
+        main: fileURLToPath(new URL('./index.html', import.meta.url)),
       },
     },
   },

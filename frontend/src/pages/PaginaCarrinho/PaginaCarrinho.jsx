@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Container, Row, Col, Button, Table, Form, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useCarrinho } from '../../context/ContextoCarrinho';
@@ -21,7 +21,11 @@ const PaginaCarrinho = () => {
     };
   }, []);
 
-  const subtotal = carrinho.reduce((total, item) => total + (item.currentPrice * item.quantidade), 0);
+  const subtotal = carrinho.reduce((total, item) => {
+    const preco = Number(item.currentPrice || item.preco_atual || item.preco_unitario || 0);
+    const quantidade = item.quantidade === undefined ? 0 : Number(item.quantidade);
+    return total + (preco * quantidade);
+  }, 0);
   const frete = subtotal > 0 ? 15.90 : 0;
   const total = subtotal + frete;
 
@@ -67,12 +71,11 @@ const PaginaCarrinho = () => {
                   </thead>
                   <tbody>
                     {carrinho.map((item) => (
-                      <tr key={item.id} className="align-middle">
-                        <td className="text-center">
+                      <tr key={item.id} className="align-middle">                        <td className="text-center">
                           <Link to={`/produtos/${item.id}`}>
                             <img 
-                              src={item.image} 
-                              alt={item.name} 
+                              src={item.imagem || item.image || '/tenis_produtos.png'} 
+                              alt={item.nome || item.name} 
                               className="cart-item-img" 
                               style={{ maxWidth: '80px', height: 'auto' }}
                             />
@@ -80,11 +83,11 @@ const PaginaCarrinho = () => {
                         </td>
                         <td>
                           <Link to={`/produtos/${item.id}`} className="text-decoration-none text-dark fw-bold">
-                            {item.name}
+                            {item.nome || item.name}
                           </Link>
-                          <div className="text-muted small">{item.brand}</div>
+                          <div className="text-muted small">{item.marca || item.brand}</div>
                         </td>                        
-                        <td className="text-center">{formatarMoeda(item.currentPrice)}</td>
+                        <td className="text-center">{formatarMoeda(item.preco_atual || item.currentPrice || item.preco_unitario || 0)}</td>
                         <td className="text-center" style={{ width: '150px' }}>
                           <div className="d-flex align-items-center justify-content-center">
                             <Button 
@@ -112,7 +115,7 @@ const PaginaCarrinho = () => {
                             </Button>
                           </div>
                         </td>
-                        <td className="text-center fw-bold">{formatarMoeda(item.currentPrice * item.quantidade)}</td>
+                        <td className="text-center fw-bold">{formatarMoeda((item.preco_atual || item.currentPrice || item.preco_unitario || 0) * item.quantidade)}</td>
                         <td className="text-center">
                           <Button 
                             variant="outline-danger" 

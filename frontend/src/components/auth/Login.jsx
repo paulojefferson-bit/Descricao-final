@@ -117,12 +117,10 @@ const Login = () => {
       // Credenciais de usuário demo
       const response = await login('demo@lojafgt.com', 'demo123');
       
-      if (response.sucesso) {
-        // Salvar como lembrado para próxima vez
+      if (response.sucesso) {        // Salvar como lembrado para próxima vez
         localStorage.setItem('saved_email', 'demo@lojafgt.com');
         localStorage.setItem('saved_password', 'demo123');
         localStorage.setItem('remember_me', 'true');
-        console.log('Login demo realizado com sucesso');
       }
     } catch (err) {
       console.error('Erro no login demo:', err);

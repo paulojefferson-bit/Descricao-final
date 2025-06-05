@@ -20,19 +20,11 @@ let PaginaDetalhesProduto = () => {
     const buscarProduto = async () => {
       try {
         setCarregando(true);
-        
-        // Tentar buscar da API primeiro
+          // Tentar buscar da API primeiro
         const resposta = await produtosService.buscarPorId(id);
-        
-        if (resposta.sucesso && resposta.dados && estaMontado) {
-          setProduto(resposta.dados);
-        } else if (estaMontado) {
-          // Fallback para dados locais se a API falhar
-          const dadosProdutoLocal = obterProdutoPorId(id);
-          if (dadosProdutoLocal) {
-            setProduto(dadosProdutoLocal);
-          }
-        }      } catch (error) {
+          if (resposta.sucesso && resposta.dados && estaMontado) {
+          setProduto(resposta.dados.produto);
+        }} catch (error) {
         console.error("Erro ao buscar produto da API:", error);
         
         if (estaMontado) {
@@ -122,17 +114,16 @@ let PaginaDetalhesProduto = () => {
     }
     
     return estrelas;
-  };
-  // Galeria de imagens - usar galeria real se disponível, ou criar uma simulada
+  };  // Galeria de imagens - usar galeria real se disponível, ou criar uma simulada
   const imagensProduto = produto ? 
     (produto.galeria_imagens && produto.galeria_imagens.length > 0) ? 
       produto.galeria_imagens :
       // Se não houver galeria, criar uma com a imagem principal repetida
       [
-        produto.image,
-        produto.image,
-        produto.image,
-        produto.image,
+        produto.imagem,
+        produto.imagem,
+        produto.imagem,
+        produto.imagem,
       ] 
     : [];
 
@@ -163,21 +154,19 @@ let PaginaDetalhesProduto = () => {
 
   return (
     <Container className="my-5 pagina-detalhes-produto">
-      {/* Breadcrumb */}
-      <Breadcrumb className="mb-4">
+      {/* Breadcrumb */}      <Breadcrumb className="mb-4">
         <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/" }}>Home</Breadcrumb.Item>
         <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/produtos" }}>Produtos</Breadcrumb.Item>
-        <Breadcrumb.Item active>{produto.name}</Breadcrumb.Item>
+        <Breadcrumb.Item active>{produto.nome}</Breadcrumb.Item>
       </Breadcrumb>
 
       <Row>
         {/* Galeria de imagens */}
         <Col lg={6} md={6} className="mb-4">
-          <div className="galeria-produto">
-            <div className="imagem-principal-produto">
+          <div className="galeria-produto">            <div className="imagem-principal-produto">
               <img 
                 src={imagensProduto[imagemAtiva]} 
-                alt={produto.name} 
+                alt={produto.nome} 
                 className="img-fluid imagem-produto-principal"
               />
               {produto.discount > 0 && (
@@ -201,30 +190,26 @@ let PaginaDetalhesProduto = () => {
         </Col>
 
         {/* Detalhes do produto */}
-        <Col lg={6} md={6}>
-          <div className="info-produto">
-            <p className="marca-produto mb-1">{produto.brand}</p>
-            <h1 className="titulo-produto mb-3">{produto.name}</h1>
-            
-            <div className="avaliacao-produto mb-4">
+        <Col lg={6} md={6}>          <div className="info-produto">
+            <p className="marca-produto mb-1">{produto.marca}</p>
+            <h1 className="titulo-produto mb-3">{produto.nome}</h1>
+              <div className="avaliacao-produto mb-4">
               <div className="estrelas-produto">
-                {renderizarEstrelas(produto.rating)}
-              </div>
-              <span className="contagem-avaliacao-produto">({produto.reviewCount} avaliações)</span>
+                {renderizarEstrelas(produto.avaliacao)}
+              </div>              <span className="contagem-avaliacao-produto">({produto.numero_avaliacoes} avaliações)</span>
             </div>
               <div className="preco-produto mb-4">
-              {produto.oldPrice && (
-                <span className="preco-antigo-produto">R$ {Number(produto.oldPrice).toFixed(2).replace('.', ',')}</span>
+              {produto.preco_antigo && (
+                <span className="preco-antigo-produto">R$ {Number(produto.preco_antigo).toFixed(2).replace('.', ',')}</span>
               )}
-              <span className="preco-atual-produto">R$ {Number(produto.currentPrice).toFixed(2).replace('.', ',')}</span>
+              <span className="preco-atual-produto">R$ {Number(produto.preco_atual).toFixed(2).replace('.', ',')}</span>
               <span className="parcelas-produto">
-                ou 10x de R$ {Number(produto.currentPrice / 10).toFixed(2).replace('.', ',')}
+                ou 10x de R$ {Number(produto.preco_atual / 10).toFixed(2).replace('.', ',')}
               </span>
             </div>
-            
-            <div className="descricao-produto mb-4">
+              <div className="descricao-produto mb-4">
               <p>Este produto é perfeito para o seu estilo. Confortável, durável e com design moderno, 
-              o {produto.name} da {produto.brand} é ideal para diversas ocasiões.</p>
+              o {produto.nome} da {produto.marca} é ideal para diversas ocasiões.</p>
             </div>
             
             <div className="acoes-produto mb-4">
@@ -303,10 +288,9 @@ let PaginaDetalhesProduto = () => {
           defaultActiveKey="description"
           className="mb-4"
         >
-          <Tab eventKey="description" title="Descrição">
-            <div className="p-4 bg-light rounded">
+          <Tab eventKey="description" title="Descrição">            <div className="p-4 bg-light rounded">
               <h4>Sobre o Produto</h4>
-              <p>O {produto.name} da {produto.brand} é a escolha perfeita para quem busca conforto e estilo. 
+              <p>O {produto.nome} da {produto.marca} é a escolha perfeita para quem busca conforto e estilo. 
               Fabricado com materiais de alta qualidade, proporciona aderência excepcional e suporte para seus pés.</p>
               
               <h5 className="mt-4">Características</h5>
@@ -322,25 +306,24 @@ let PaginaDetalhesProduto = () => {
           <Tab eventKey="specifications" title="Especificações">
             <div className="p-4 bg-light rounded">
               <h4>Especificações Técnicas</h4>
-              <div className="tabela-especificacoes">
-                <div className="linha-especificacoes">
+              <div className="tabela-especificacoes">                <div className="linha-especificacoes">
                   <div className="rotulo-especificacoes">Marca</div>
-                  <div className="valor-especificacoes">{produto.brand}</div>
+                  <div className="valor-especificacoes">{produto.marca}</div>
                 </div>
                 <div className="linha-especificacoes">
                   <div className="rotulo-especificacoes">Modelo</div>
-                  <div className="valor-especificacoes">{produto.name}</div>
+                  <div className="valor-especificacoes">{produto.nome}</div>
                 </div>
                 <div className="linha-especificacoes">
                   <div className="rotulo-especificacoes">Categoria</div>
-                  <div className="valor-especificacoes">{produto.category}</div>
+                  <div className="valor-especificacoes">{produto.categoria}</div>
                 </div>
                 <div className="linha-especificacoes">
                   <div className="rotulo-especificacoes">Gênero</div>
-                  <div className="valor-especificacoes">{produto.gender === 'male' ? 'Masculino' : 'Feminino'}</div>
+                  <div className="valor-especificacoes">{produto.genero === 'male' ? 'Masculino' : 'Feminino'}</div>
                 </div>                <div className="linha-especificacoes">
                   <div className="rotulo-especificacoes">Condição</div>
-                  <div className="valor-especificacoes">{produto.condition === 'new' ? 'Novo' : 'Usado'}</div>
+                  <div className="valor-especificacoes">{produto.condicao === 'new' ? 'Novo' : 'Usado'}</div>
                 </div>
                 <div className="linha-especificacoes">
                   <div className="rotulo-especificacoes">Código do Produto</div>
@@ -349,14 +332,13 @@ let PaginaDetalhesProduto = () => {
               </div>
             </div>
           </Tab>
-          <Tab eventKey="reviews" title={`Avaliações (${produto.reviewCount})`}>
-            <div className="p-4 bg-light rounded">
-              <div className="d-flex align-items-center mb-4">                <div className="avaliacao-geral me-4">
-                  <div className="numero-avaliacao">{Number(produto.rating).toFixed(1)}</div>
+          <Tab eventKey="reviews" title={`Avaliações (${produto.numero_avaliacoes})`}>
+            <div className="p-4 bg-light rounded">              <div className="d-flex align-items-center mb-4">                <div className="avaliacao-geral me-4">
+                  <div className="numero-avaliacao">{Number(produto.avaliacao).toFixed(1)}</div>
                   <div className="estrelas-avaliacao">
-                    {renderizarEstrelas(produto.rating)}
+                    {renderizarEstrelas(produto.avaliacao)}
                   </div>
-                  <div className="contagem-avaliacao">({produto.reviewCount} avaliações)</div>
+                  <div className="contagem-avaliacao">({produto.numero_avaliacoes} avaliações)</div>
                 </div>
                 <div className="resumo-avaliacao flex-grow-1">
                   <div className="barra-avaliacao">

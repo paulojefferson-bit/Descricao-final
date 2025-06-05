@@ -33,10 +33,8 @@ export const NotificationProvider = ({ children }) => {
       setTimeout(() => {
         removeNotification(id);
       }, newNotification.duration);
-    }
-
-    return id;
-  }, []);
+    }    return id;
+  }, [removeNotification]);
 
   const removeNotification = useCallback((id) => {
     setNotifications(prev => prev.filter(notification => notification.id !== id));

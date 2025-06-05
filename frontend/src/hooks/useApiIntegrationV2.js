@@ -1,7 +1,6 @@
 // Hooks personalizados aprimorados com sistema de notificações
 import { useState, useCallback } from 'react';
 import { 
-  authService, 
   produtosService, 
   carrinhoService, 
   pedidosService, 
@@ -14,7 +13,7 @@ import { useNotifications } from '../context/NotificationContext';
 export const useProdutosHooks = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { showError, showSuccess } = useNotifications();
+  const { showError } = useNotifications();
 
   const listarProdutos = useCallback(async (filtros = {}) => {
     try {
@@ -306,8 +305,7 @@ export const useUsuarioHooks = () => {
       setLoading(false);
     }
   }, [showError, showSuccess]);
-
-  const alterarSenha = useCallback(async (senhaAtual, novaSenha) => {
+  const alterarSenha = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);

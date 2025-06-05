@@ -1,143 +1,82 @@
-# ========================================
-# DOCUMENTAÇÃO E SCRIPTS (MANTER REPO LIMPO)
-# ========================================
-
-# Documentação em Markdown
-*.md
-!README.md
-!LICENSE
-DOCUMENTACAO_*.md
-RELATORIO_*.md
-GUIA_*.md
-MANUAL_*.md
-RESUMO_*.md
-CONCLUSAO_*.md
-CORRECAO_*.md
-RESOLUCAO_*.md
-SISTEMA_*.md
-AUDITORIA_*.md
-ORGANIZACAO.md
-TESTE_*.md
-
-# Scripts PowerShell
-*.ps1
-iniciar_*.ps1
-teste_*.ps1
-executar_*.ps1
-demonstrar_*.ps1
-limpar_*.ps1
-relatorio_*.ps1
-guia_*.ps1
-manter_*.ps1
-limpeza_*.ps1
-remover_*.ps1
-validacao_*.ps1
-verificar_*.ps1
-
-# Scripts JavaScript auxiliares
-atualizar_*.js
-criar_*.js
-debug_*.js
-desbloquear_*.js
-investigar_*.js
-limpar_*.js
-monitoramento_*.js
-reset_*.js
-sistema_*.js
-solucao_*.js
-teste_*.js
-verificar_*.js
-verificacao_*.js
-validar_*.js
-
-# Arquivos HTML de teste
-*.html
-dashboard_*.html
-debug_*.html
-teste_*.html
-
-# Pastas organizacionais
-docs/
-logs/
-tests/
-scripts/
-relatorios/
-
-# Dependências
+# === DEPENDÊNCIAS ===
 node_modules/
-backend/node_modules/
-frontend/node_modules/
+*/node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
-# Logs
-*.log
-*.logs
-
-# Ambiente
+# === AMBIENTE E CONFIGURAÇÕES SENSÍVEIS ===
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+*.env
 
-# Build
+# === BUILD E DIST ===
 dist/
 build/
 coverage/
+*.tsbuildinfo
 
-# IDE
-.vscode/
-.idea/
+# === CACHE ===
+.cache/
+.vite/
+.parcel-cache/
+.npm/
+.eslintcache/
+
+# === LOGS ===
+*.log
+*.logs
+logs/
+
+# === ARQUIVOS TEMPORÁRIOS ===
+*.tmp
+*.temp
+*.bak
 *.swp
 *.swo
+*~
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Backup e temporários
-*.bak
-*.tmp
+# === PASTAS DE BACKUP ===
+backup*/
+*_backup*/
 backups/
-backend_backup_*/
-backup_teste_files/
-backup_*/
 
-# MySQL dumps
+# === DOCUMENTAÇÃO TEMPORÁRIA (DESENVOLVIMENTO) ===
+docs/
+relatorios/
+scripts/
+tests/
+
+# === OS ESPECÍFICOS ===
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# === IDE ===
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# === DATABASE ===
+*.sqlite
+*.db
 *.sql.gz
 *.sql.backup
 
-# Arquivos específicos do projeto
+# === ARQUIVOS ESPECÍFICOS DO PROJETO ===
 rate_limiting_monitor.log
 monitoring_report_*.json
-
-# Arquivos temporários de teste
+dashboard_*.html
 teste_*.html
 debug_*.html
-dashboard_*.html
-
-# TypeScript
-*.tsbuildinfo
-
-# Cache
-.cache
-.parcel-cache
-.npm
-.eslintcache
-
-# Temporary folders
-tmp/
-temp/
-# RELATORIO_*.md - Documentação importante
-# TESTE_*.md - Documentação de testes
-
-# Vite cache
-.vite/
-
-# Node modules antigo
-node_modules_old/
-
-# paginas de testes
-tests/
+index-teste.html

@@ -1,5 +1,5 @@
 // Componente de Lista de Produtos integrado com backend
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useProdutos } from '../../hooks/useApiIntegration';
 import { useUtils } from '../../hooks/useApiIntegration';
