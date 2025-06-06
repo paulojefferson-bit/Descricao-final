@@ -16,13 +16,13 @@ const Login = () => {
   const { login, register, isAuthenticated, loading, error, clearError } = useAuth();
   const { validarEmail } = useUtils();
   const navigate = useNavigate();
-
   // Redirecionar se já estiver logado
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/dashboard', { replace: true });
     }
   }, [isAuthenticated, navigate]);
+
   // Limpar erro ao montar componente e carregar credenciais salvas
   useEffect(() => {
     clearError();
@@ -40,14 +40,10 @@ const Login = () => {
       }));
       setLembrarMe(true);
       
-      // Se tiver senha salva, fazer login automático
-      if (savedPassword) {
-        setTimeout(() => {
-          login(savedEmail, savedPassword);
-        }, 500);
-      }
+      // REMOVIDO: Login automático que causava loop
+      // Agora apenas preenche os campos, usuário deve clicar para entrar
     }
-  }, [clearError, login]);
+  }, []); // Executar apenas uma vez ao montar o componente
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -110,37 +106,69 @@ const Login = () => {
     } catch (err) {
       console.error('Erro no login:', err);
     }
-  };
-  // Função para login demo/automático
+  };  // Função para login demo/automático
   const handleDemoLogin = async () => {
     try {
+      // Verificações múltiplas para evitar loop
+      const loginEmProgresso = localStorage.getItem('login_em_progresso');
+      const timestampProgresso = localStorage.getItem('login_timestamp');
+      const agora = Date.now();
+      
+      // Se login está em progresso, verificar se não está muito antigo
+      if (loginEmProgresso === 'true') {
+        if (timestampProgresso && (agora - parseInt(timestampProgresso)) < 5000) {
+          console.log('Login já em progresso, ignorando tentativa duplicada');
+          return;
+        } else {
+          // Limpar estado antigo
+          localStorage.removeItem('login_em_progresso');
+          localStorage.removeItem('login_timestamp');
+        }
+      }
+      
+      localStorage.setItem('login_em_progresso', 'true');
+      localStorage.setItem('login_timestamp', agora.toString());
+      
       // Credenciais de usuário demo
       const response = await login('demo@lojafgt.com', 'demo123');
       
-      if (response.sucesso) {        // Salvar como lembrado para próxima vez
+      if (response.sucesso) {
+        // Salvar como lembrado para próxima vez
         localStorage.setItem('saved_email', 'demo@lojafgt.com');
         localStorage.setItem('saved_password', 'demo123');
         localStorage.setItem('remember_me', 'true');
       }
+      
     } catch (err) {
       console.error('Erro no login demo:', err);
-      // Se falhar, tentar criar o usuário demo
-      try {
-        await register({
-          nome: 'Usuário Demo',
-          email: 'demo@lojafgt.com',
-          senha: 'demo123',
-          confirmar_senha: 'demo123'
-        });
-        // Tentar fazer login novamente
-        await login('demo@lojafgt.com', 'demo123');
-        // Salvar como lembrado
-        localStorage.setItem('saved_email', 'demo@lojafgt.com');
-        localStorage.setItem('saved_password', 'demo123');
-        localStorage.setItem('remember_me', 'true');
-      } catch (createErr) {
-        console.error('Erro ao criar usuário demo:', createErr);
+      
+      // Se falhar, tentar criar o usuário demo (apenas uma vez)
+      const tentativaCriacao = localStorage.getItem('demo_criacao_tentativa');
+      if (!tentativaCriacao) {
+        try {
+          localStorage.setItem('demo_criacao_tentativa', 'true');
+          await register({
+            nome: 'Usuário Demo',
+            email: 'demo@lojafgt.com',
+            senha: 'demo123',
+            confirmar_senha: 'demo123'
+          });
+          // Tentar fazer login novamente
+          await login('demo@lojafgt.com', 'demo123');
+          // Salvar como lembrado
+          localStorage.setItem('saved_email', 'demo@lojafgt.com');
+          localStorage.setItem('saved_password', 'demo123');
+          localStorage.setItem('remember_me', 'true');
+        } catch (createErr) {
+          console.error('Erro ao criar usuário demo:', createErr);
+        }
       }
+    } finally {
+      // Sempre limpar flags após um timeout
+      setTimeout(() => {
+        localStorage.removeItem('login_em_progresso');
+        localStorage.removeItem('login_timestamp');
+      }, 2000);
     }
   };
 

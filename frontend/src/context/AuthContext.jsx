@@ -1,5 +1,5 @@
 // Contexto de autenticação integrado com o backend
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
 import { authService } from '../services/integracaoService';
 
 // Estados da autenticação
@@ -118,9 +118,8 @@ export const AuthProvider = ({ children }) => {
 
     checkAuthStatus();
   }, []);
-
   // Função de login
-  const login = async (email, senha) => {
+  const login = useCallback(async (email, senha) => {
     try {
       dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: true });
       
@@ -147,10 +146,9 @@ export const AuthProvider = ({ children }) => {
       });
       return { sucesso: false, mensagem: errorMessage };
     }
-  };
-
+  }, []);
   // Função de registro
-  const register = async (dadosUsuario) => {
+  const register = useCallback(async (dadosUsuario) => {
     try {
       dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: true });
       
@@ -183,21 +181,18 @@ export const AuthProvider = ({ children }) => {
       });
       return { sucesso: false, mensagem: errorMessage };
     }
-  };
-
+  }, []);
   // Função de logout
-  const logout = () => {
+  const logout = useCallback(() => {
     authService.logout();
     dispatch({ type: AUTH_ACTIONS.LOGOUT });
-  };
-
+  }, []);
   // Limpar erro
-  const clearError = () => {
+  const clearError = useCallback(() => {
     dispatch({ type: AUTH_ACTIONS.CLEAR_ERROR });
-  };
-
+  }, []);
   // Atualizar dados do usuário
-  const updateUser = (dadosAtualizados) => {
+  const updateUser = useCallback((dadosAtualizados) => {
     dispatch({
       type: AUTH_ACTIONS.UPDATE_USER,
       payload: dadosAtualizados
@@ -209,10 +204,9 @@ export const AuthProvider = ({ children }) => {
       const usuarioAtualizado = { ...usuarioAtual, ...dadosAtualizados };
       localStorage.setItem('usuario', JSON.stringify(usuarioAtualizado));
     }
-  };
-
+  }, []);
   // Verificar se usuário tem permissão
-  const hasPermission = (permissao) => {
+  const hasPermission = useCallback((permissao) => {
     if (!state.usuario) return false;
     
     const { tipo_usuario, permissoes } = state.usuario;
@@ -226,17 +220,16 @@ export const AuthProvider = ({ children }) => {
     }
     
     return false;
-  };
-
+  }, [state.usuario]);
   // Verificar se é admin
-  const isAdmin = () => {
+  const isAdmin = useCallback(() => {
     return state.usuario?.tipo_usuario === 'admin';
-  };
+  }, [state.usuario]);
 
   // Verificar se é cliente
-  const isCliente = () => {
+  const isCliente = useCallback(() => {
     return state.usuario?.tipo_usuario === 'cliente';
-  };
+  }, [state.usuario]);
 
   const value = {
     // Estado

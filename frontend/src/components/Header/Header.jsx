@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCarrinho } from '../../context/ContextoCarrinho';
+import { useAuth } from '../../context/AuthContext';
 import './Header.css';
 
 
@@ -9,7 +10,14 @@ const Header = () => {
   const navigate = useNavigate();
   const path = location.pathname;
   const [searchTerm, setSearchTerm] = useState('');
-  const { obterQuantidadeItensCarrinho } = useCarrinho();
+  const { obterQuantidadeItensCarrinho } = useCarrinho();  const { isAuthenticated, usuario, hasPermission } = useAuth();
+
+  // Verificar se o usuário tem permissões administrativas baseado no novo sistema
+  const isAdmin = usuario?.tipo_usuario && ['colaborador', 'supervisor', 'diretor'].includes(usuario.tipo_usuario);
+  const isColaborador = usuario?.tipo_usuario === 'colaborador';
+  const isSupervisor = usuario?.tipo_usuario === 'supervisor';
+  const isDiretor = usuario?.tipo_usuario === 'diretor';
+  const isUsuarioCompleto = usuario?.tipo_usuario === 'usuario';
 
   // Função para lidar com a pesquisa
   const handleSearch = (e) => {
@@ -39,13 +47,62 @@ const Header = () => {
           <button type="submit" className="header-search-button" aria-label="Buscar">
             <i className="bi bi-search header-search-icon"></i>
           </button>
-        </form>       
-         {/* Botões de acesso: Cadastro, Login e Carrinho */}
+        </form>         {/* Botões de acesso: Cadastro, Login e Carrinho */}
         <div className="header-actions">
-          <Link to="/cadastro" className="header-register">Cadastre-se</Link>
-          <Link to='/cadastro'><button  className="header-login">Entrar</button></Link>
+          {!isAuthenticated ? (
+            <>
+              <Link to="/cadastro" className="header-register">Cadastre-se</Link>
+              <Link to='/login'><button  className="header-login">Entrar</button></Link>
+            </>
+          ) : (            <>              {isAdmin && (
+                <div className="dropdown">
+                  <Link 
+                    to="#" 
+                    className="header-admin dropdown-toggle" 
+                    data-bs-toggle="dropdown"
+                    title="Painel Administrativo"
+                  >
+                    <i className="bi bi-gear-fill"></i>
+                    <span className="d-none d-md-inline ms-1">
+                      {isDiretor ? 'Diretor' : isSupervisor ? 'Supervisor' : 'Colaborador'}
+                    </span>
+                  </Link>
+                  <ul className="dropdown-menu">
+                    <li><Link className="dropdown-item" to="/dashboard">Dashboard Geral</Link></li>
+                    {hasPermission('GERENCIAR_PRODUTOS') && (
+                      <li><Link className="dropdown-item" to="/admin/colaborador">Produtos & Estoque</Link></li>
+                    )}
+                    {hasPermission('GERENCIAR_MARKETING') && (
+                      <li><Link className="dropdown-item" to="/admin/supervisor">Marketing & Equipe</Link></li>
+                    )}
+                    {hasPermission('CONFIGURAR_SISTEMA') && (
+                      <li><Link className="dropdown-item" to="/admin/diretor">Sistema & Finanças</Link></li>
+                    )}
+                  </ul>
+                </div>
+              )}
+              
+              {/* Botão específico para finalizar compras - apenas usuários nível 2+ */}
+              {(isUsuarioCompleto || isAdmin) && (
+                <Link to="/meus-pedidos" className="header-orders" title="Meus Pedidos">
+                  <i className="bi bi-bag-check-fill"></i>
+                  <span className="d-none d-lg-inline ms-1">Pedidos</span>
+                </Link>
+              )}
+                <span className="header-user-name d-none d-md-inline">
+                Olá, {usuario?.nome?.split(' ')[0] || 'Usuário'}
+                {usuario?.tipo === 'visitante' && (
+                  <small className="text-warning ms-1">
+                    <Link to="/completar-cadastro" className="text-decoration-none">
+                      (Complete seu cadastro)
+                    </Link>
+                  </small>
+                )}
+              </span>
+            </>
+          )}
           <Link to="/carrinho" className="header-cart position-relative">
-            <i className="bi bi-cart-fill"></i>            {obterQuantidadeItensCarrinho() > 0 && (
+            <i className="bi bi-cart-fill"></i>{obterQuantidadeItensCarrinho() > 0 && (
               <span className="header-cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 {obterQuantidadeItensCarrinho()}
               </span>
@@ -84,8 +141,7 @@ const Header = () => {
               data-bs-dismiss="offcanvas"
               aria-label="Fechar"
             ></button>
-          </div>
-          <div className="offcanvas-body">
+          </div>          <div className="offcanvas-body">
             <ul className="nav flex-column">
               <li className="nav-item">
                 <Link to="/" className={`nav-link ${path === '/' ? 'active' : ''}`}>Home</Link>
@@ -99,11 +155,17 @@ const Header = () => {
               <li className="nav-item">
                 <Link to="/meus-pedidos" className={`nav-link ${path === '/meus-pedidos' ? 'active' : ''}`}>Meus Pedidos</Link>
               </li>
+              {isAuthenticated && isAdmin && (
+                <li className="nav-item">
+                  <Link to="/dashboard" className={`nav-link ${path === '/dashboard' ? 'active' : ''}`}>
+                    <i className="bi bi-gear-fill me-2"></i>
+                    Painel Administrativo
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
-        </div>
-
-        {/* Menu fixo - apenas desktop */}
+        </div>        {/* Menu fixo - apenas desktop */}
         <nav className="d-none d-md-block bg-white px-3 py-2 border-bottom">
           <ul className="nav justify-content-start">
             <li className="nav-item">
@@ -118,6 +180,14 @@ const Header = () => {
             <li className="nav-item">
               <Link to="/meus-pedidos" className={`nav-link ${path === '/meus-pedidos' ? 'active' : ''}`}>Meus Pedidos</Link>
             </li>
+            {isAuthenticated && isAdmin && (
+              <li className="nav-item">
+                <Link to="/dashboard" className={`nav-link ${path === '/dashboard' ? 'active' : ''}`}>
+                  <i className="bi bi-gear-fill me-2"></i>
+                  Painel Admin
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
       </>

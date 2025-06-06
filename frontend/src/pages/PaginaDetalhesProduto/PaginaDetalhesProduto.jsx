@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Badge, Breadcrumb, Tabs, Tab } from 'react-bootstrap';
 import { useCarrinho } from '../../context/ContextoCarrinho';
 import { produtosService } from '../../services';
+import ComentariosProduto from '../../components/produtos/ComentariosProduto';
 import './PaginaDetalhesProduto.css';
 
 let PaginaDetalhesProduto = () => {
@@ -383,14 +384,10 @@ let PaginaDetalhesProduto = () => {
                 <i className="bi bi-pencil me-2"></i>
                 Escrever avaliação
               </Button>
+                <hr className="my-4" />
               
-              <hr className="my-4" />
-              
-              <div className="lista-avaliacoes">
-                <p className="text-center text-muted">
-                  As avaliações serão carregadas em breve...
-                </p>
-              </div>
+              {/* Integração do sistema de comentários */}
+              <ComentariosProduto produtoId={id} />
             </div>
           </Tab>
         </Tabs>

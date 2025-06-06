@@ -24,12 +24,11 @@ router.get('/dashboard', verificarAutenticacao, verificarPermissao('colaborador'
 
     // Dados específicos por nível de acesso
     let dadosAdicionais = {};
-    
-    if (req.usuario.nivel_acesso === 'diretor') {
+      if (req.usuario.nivel_acesso === 'diretor') {
       // Logs recentes para diretores
       const logsRecentes = await conexao.executarConsulta(`
         SELECT * FROM logs_sistema 
-        ORDER BY data_criacao DESC 
+        ORDER BY data_acao DESC 
         LIMIT 20
       `);
       dadosAdicionais.logs_recentes = logsRecentes;
@@ -207,19 +206,17 @@ router.get('/logs', verificarAutenticacao, verificarPermissao('diretor'), async 
     if (req.query.acao) {
       sql += ' AND l.acao = ?';
       parametros.push(req.query.acao);
-    }
-
-    if (req.query.data_inicio) {
-      sql += ' AND l.data_criacao >= ?';
+    }    if (req.query.data_inicio) {
+      sql += ' AND l.data_acao >= ?';
       parametros.push(req.query.data_inicio);
     }
 
     if (req.query.data_fim) {
-      sql += ' AND l.data_criacao <= ?';
+      sql += ' AND l.data_acao <= ?';
       parametros.push(req.query.data_fim);
     }
 
-    sql += ' ORDER BY l.data_criacao DESC';
+    sql += ' ORDER BY l.data_acao DESC';
 
     // Paginação
     if (req.query.limite) {

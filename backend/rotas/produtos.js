@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Produto = require('../modelos/Produto');
 const { verificarAutenticacao, verificarPermissao } = require('../middleware/autenticacao');
+const { middleware, PERMISSOES } = require('../utils/sistema-permissoes');
 
 // GET /api/produtos - Buscar produtos (público)
 router.get('/', async (req, res) => {
@@ -80,7 +81,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /api/produtos - Criar produto (apenas colaborador+)
-router.post('/', verificarAutenticacao, verificarPermissao('colaborador'), async (req, res) => {
+router.post('/', verificarAutenticacao, middleware.verificarAcessoAdmin(PERMISSOES.ADICIONAR_PRODUTOS), async (req, res) => {
   try {
     const produtoData = {
       marca: req.body.marca,
@@ -179,7 +180,7 @@ router.put('/:id', verificarAutenticacao, verificarPermissao('colaborador'), asy
 });
 
 // PATCH /api/produtos/:id/estoque - Atualizar estoque (apenas colaborador+)
-router.patch('/:id/estoque', verificarAutenticacao, verificarPermissao('colaborador'), async (req, res) => {
+router.patch('/:id/estoque', verificarAutenticacao, middleware.verificarAcessoAdmin(PERMISSOES.ATUALIZAR_ESTOQUE), async (req, res) => {
   try {
     const produto = await Produto.buscarPorId(req.params.id);
     
@@ -222,8 +223,8 @@ router.patch('/:id/estoque', verificarAutenticacao, verificarPermissao('colabora
   }
 });
 
-// DELETE /api/produtos/:id - Deletar produto (apenas diretor)
-router.delete('/:id', verificarAutenticacao, verificarPermissao('diretor'), async (req, res) => {
+// DELETE /api/produtos/:id - Deletar produto (apenas colaborador+)
+router.delete('/:id', verificarAutenticacao, middleware.verificarAcessoAdmin(PERMISSOES.REMOVER_PRODUTOS), async (req, res) => {
   try {
     const produto = await Produto.buscarPorId(req.params.id);
     
@@ -253,7 +254,7 @@ router.delete('/:id', verificarAutenticacao, verificarPermissao('diretor'), asyn
 });
 
 // GET /api/produtos/estatisticas - Obter estatísticas (apenas colaborador+)
-router.get('/admin/estatisticas', verificarAutenticacao, verificarPermissao('colaborador'), async (req, res) => {
+router.get('/admin/estatisticas', verificarAutenticacao, middleware.verificarAcessoAdmin(PERMISSOES.VERIFICAR_ESTOQUE), async (req, res) => {
   try {
     const estatisticas = await Produto.obterEstatisticas();
     
@@ -263,6 +264,148 @@ router.get('/admin/estatisticas', verificarAutenticacao, verificarPermissao('col
     });
   } catch (erro) {
     console.error('Erro ao obter estatísticas:', erro);
+    res.status(500).json({
+      sucesso: false,
+      mensagem: 'Erro interno do servidor ao obter estatísticas'
+    });
+  }
+});
+
+// === ROTAS DE COMENTÁRIOS ===
+
+// GET /api/produtos/:id/comentarios - Buscar comentários de um produto (público)
+router.get('/:id/comentarios', async (req, res) => {
+  try {
+    const { id: produtoId } = req.params;
+    const Comentario = require('../modelos/Comentario');
+    
+    const resultado = await Comentario.buscarPorProduto(produtoId);
+    
+    if (resultado.sucesso) {
+      res.json({
+        sucesso: true,
+        dados: resultado.dados
+      });
+    } else {
+      res.status(500).json({
+        sucesso: false,
+        mensagem: resultado.mensagem
+      });
+    }
+  } catch (error) {
+    console.error('Erro ao buscar comentários:', error);
+    res.status(500).json({
+      sucesso: false,
+      mensagem: 'Erro interno do servidor ao buscar comentários'
+    });
+  }
+});
+
+// POST /api/produtos/:id/comentarios - Criar novo comentário (requer autenticação e compra)
+router.post('/:id/comentarios', 
+  verificarAutenticacao, 
+  middleware.verificarComentario,
+  async (req, res) => {
+    try {
+      const { id: produtoId } = req.params;
+      const { comentario, avaliacao } = req.body;
+      const usuarioId = req.usuario.id;
+      const Comentario = require('../modelos/Comentario');
+
+      // Validações básicas
+      if (!comentario || comentario.trim().length < 10) {
+        return res.status(400).json({
+          sucesso: false,
+          mensagem: 'Comentário deve ter pelo menos 10 caracteres'
+        });
+      }
+
+      if (!avaliacao || avaliacao < 1 || avaliacao > 5) {
+        return res.status(400).json({
+          sucesso: false,
+          mensagem: 'Avaliação deve ser entre 1 e 5 estrelas'
+        });
+      }
+
+      // Verificar se usuário já comentou
+      const jaComentou = await Comentario.jaComentou(usuarioId, produtoId);
+      if (jaComentou.jaComentou) {
+        return res.status(400).json({
+          sucesso: false,
+          mensagem: 'Você já comentou este produto'
+        });
+      }
+
+      // Verificar se usuário comprou o produto
+      const podeAvaliar = await Comentario.podeAvaliar(usuarioId, produtoId);
+      if (!podeAvaliar.podeAvaliar) {
+        return res.status(403).json({
+          sucesso: false,
+          mensagem: 'Apenas usuários que compraram o produto podem comentar'
+        });
+      }
+
+      // Criar comentário
+      const dadosComentario = {
+        usuario_id: usuarioId,
+        produto_id: produtoId,
+        comentario: comentario.trim(),
+        avaliacao: parseInt(avaliacao),
+        compra_verificada: true
+      };
+
+      const resultado = await Comentario.criar(dadosComentario);
+
+      if (resultado.sucesso) {
+        // Log da ação
+        req.logAcao('comentario_criado', {
+          produto_id: produtoId,
+          usuario_id: usuarioId,
+          avaliacao: avaliacao
+        });
+
+        res.status(201).json({
+          sucesso: true,
+          dados: { id: resultado.id },
+          mensagem: 'Comentário criado com sucesso'
+        });
+      } else {
+        res.status(500).json({
+          sucesso: false,
+          mensagem: resultado.mensagem
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao criar comentário:', error);
+      res.status(500).json({
+        sucesso: false,
+        mensagem: 'Erro interno do servidor ao criar comentário'
+      });
+    }
+  }
+);
+
+// GET /api/produtos/:id/estatisticas-comentarios - Obter estatísticas de comentários
+router.get('/:id/estatisticas-comentarios', async (req, res) => {
+  try {
+    const { id: produtoId } = req.params;
+    const Comentario = require('../modelos/Comentario');
+    
+    const resultado = await Comentario.estatisticasAvaliacao(produtoId);
+    
+    if (resultado.sucesso) {
+      res.json({
+        sucesso: true,
+        dados: resultado.dados
+      });
+    } else {
+      res.status(500).json({
+        sucesso: false,
+        mensagem: resultado.mensagem
+      });
+    }
+  } catch (error) {
+    console.error('Erro ao obter estatísticas de comentários:', error);
     res.status(500).json({
       sucesso: false,
       mensagem: 'Erro interno do servidor ao obter estatísticas'

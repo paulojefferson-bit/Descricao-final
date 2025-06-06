@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const conexao = require('../banco/conexao');
 const Usuario = require('../modelos/Usuario');
 const { verificarAutenticacao, verificarPermissao } = require('../middleware/autenticacao');
 
@@ -231,6 +232,125 @@ router.put('/perfil', verificarAutenticacao, async (req, res) => {
     res.status(500).json({
       sucesso: false,
       mensagem: 'Erro interno do servidor ao atualizar perfil'
+    });  }
+});
+
+// POST /api/auth/completar-cadastro - Completar cadastro de visitante para usuário
+router.post('/completar-cadastro', verificarAutenticacao, async (req, res) => {
+  try {
+    const usuarioId = req.usuario.id;
+    
+    // Log para depuração mais detalhado
+    console.log('Completar cadastro - Body completo:', JSON.stringify(req.body));
+    console.log('Completar cadastro - Headers:', JSON.stringify(req.headers));
+    console.log('Usuário atual:', JSON.stringify(req.usuario));
+    
+    // Tentar extrair dados com mais tolerância
+    const telefone = req.body.telefone;
+    const cpf = req.body.cpf;
+    const dataNascimento = req.body.dataNascimento;
+    const endereco = req.body.endereco;
+      // Verificar se é visitante
+    if (req.usuario.tipo_usuario !== 'visitante' && req.usuario.nivel_acesso !== 'visitante') {
+      return res.status(400).json({
+        sucesso: false,
+        mensagem: 'Apenas visitantes podem completar cadastro'
+      });
+    }    // Validações básicas
+    const camposFaltantes = [];
+    if (!telefone) camposFaltantes.push('telefone');
+    if (!cpf) camposFaltantes.push('cpf');
+    if (!dataNascimento) camposFaltantes.push('dataNascimento');
+    if (!endereco) camposFaltantes.push('endereco');
+    
+    if (camposFaltantes.length > 0) {
+      return res.status(400).json({
+        sucesso: false,
+        mensagem: `Campos obrigatórios faltando: ${camposFaltantes.join(', ')}`,
+        campos_faltantes: camposFaltantes
+      });
+    }
+
+    if (!endereco.rua || !endereco.numero || !endereco.bairro || !endereco.cidade || !endereco.estado || !endereco.cep) {
+      return res.status(400).json({
+        sucesso: false,
+        mensagem: 'Endereço completo é obrigatório'
+      });
+    }
+
+    // Buscar usuário atual
+    const usuario = await Usuario.buscarPorId(usuarioId);
+    if (!usuario) {
+      return res.status(404).json({
+        sucesso: false,
+        mensagem: 'Usuário não encontrado'
+      });
+    }    // Atualizar dados do usuário
+    const dadosAtualizados = {
+      telefone: telefone.trim(),
+      cpf: cpf.trim(),
+      data_nascimento: dataNascimento,
+      endereco_completo: `${endereco.rua}, ${endereco.numero}${endereco.complemento ? ', ' + endereco.complemento : ''}`,
+      bairro: endereco.bairro.trim(),
+      cidade: endereco.cidade.trim(),
+      estado: endereco.estado.trim(),
+      cep: endereco.cep.trim()
+    };
+
+    // Atualizar o tipo de usuário diretamente na tabela
+    console.log('Atualizando tipo de usuário para:', usuarioId);
+    const resultadoUpdate = await conexao.executarConsulta(
+      'UPDATE usuarios SET tipo_usuario = ?, nivel_acesso = ? WHERE id = ?',
+      ['usuario', 'usuario', usuarioId]
+    );
+    console.log('Resultado da atualização de nível:', resultadoUpdate);
+
+    // Atualizar os demais dados do usuário
+    await usuario.atualizar(dadosAtualizados);
+    
+    // Buscar dados atualizados
+    const usuarioAtualizado = await Usuario.buscarPorId(usuarioId);
+      // Gerar novo token com tipo atualizado
+    const novoToken = jwt.sign(
+      { 
+        userId: usuarioAtualizado.id, 
+        email: usuarioAtualizado.email,
+        nivelAcesso: usuarioAtualizado.tipo_usuario || 'usuario'
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    // Log da ação
+    if (req.logAcao) {
+      req.logAcao('cadastro_completado', { 
+        usuario_id: usuarioId,
+        tipo_anterior: 'visitante',
+        tipo_novo: 'usuario'
+      });
+    }
+
+    res.json({
+      sucesso: true,
+      mensagem: 'Cadastro completado com sucesso',
+      dados: {
+        token: novoToken,
+        usuario: {
+          id: usuarioAtualizado.id,
+          nome: usuarioAtualizado.nome,
+          email: usuarioAtualizado.email,
+          nivel_acesso: usuarioAtualizado.tipo_usuario,
+          tipo_usuario: usuarioAtualizado.tipo_usuario,
+          telefone: usuarioAtualizado.telefone,
+          endereco_completo: usuarioAtualizado.endereco_completo
+        }
+      }
+    });
+  } catch (erro) {
+    console.error('Erro ao completar cadastro:', erro);
+    res.status(500).json({
+      sucesso: false,
+      mensagem: 'Erro interno do servidor'
     });
   }
 });
