@@ -37,10 +37,14 @@ async function verificarSenha(senha, hash) {
 
 // Gerar token JWT
 function gerarToken(usuario) {
-    try {          const payload = { 
+    try {
+        // Usar nivel_acesso se existir, senão usar tipo_usuario
+        const nivelAcesso = usuario.nivel_acesso || usuario.tipo_usuario;
+          
+        const payload = { 
             userId: usuario.id, 
             email: usuario.email, 
-            nivelAcesso: usuario.tipo_usuario,
+            nivelAcesso: nivelAcesso,
             nome: usuario.nome
         };
         
@@ -69,11 +73,10 @@ async function verificarAutenticacao(req, res, next) {
         }
 
         const decoded = jwt.verify(token, JWT_SECRET);
-        
-        // Buscar usuário diretamente no banco
+          // Buscar usuário diretamente no banco
         const bancoDados = require('../banco/conexao');
         const rows = await bancoDados.executarConsulta(
-            'SELECT * FROM usuarios WHERE id = ? AND status = "ativo"',
+            'SELECT id, nome, email, tipo_usuario, status, telefone, data_nascimento FROM usuarios WHERE id = ? AND status = "ativo"',
             [decoded.userId]
         );
         
@@ -83,9 +86,14 @@ async function verificarAutenticacao(req, res, next) {
                 erro: 'Usuário não encontrado ou inativo',
                 codigo: 'USUARIO_NAO_ENCONTRADO'
             });
-        }
-
+        }        // Atribuir o usuário à requisição
         req.usuario = rows[0];
+        
+        // Garantir que nivel_acesso está presente (para compatibilidade)
+        if (!req.usuario.nivel_acesso && req.usuario.tipo_usuario) {
+            req.usuario.nivel_acesso = req.usuario.tipo_usuario;
+        }
+        
         next();
     } catch (erro) {
         console.error('❌ Erro na verificação de autenticação:', erro);
@@ -122,9 +130,9 @@ function verificarPermissao(nivelMinimo) {
                     erro: 'Usuário não autenticado',
                     codigo: 'NAO_AUTENTICADO'
                 });
-            }
-
-            const nivelUsuario = NIVEIS_PERMISSAO[req.usuario.tipo_usuario] || 1;
+            }            // Verificar tanto tipo_usuario quanto nivel_acesso para garantir compatibilidade
+            const tipoUsuario = req.usuario.tipo_usuario || req.usuario.nivel_acesso || 'visitante';
+            const nivelUsuario = NIVEIS_PERMISSAO[tipoUsuario] || 1;
             const nivelRequerido = NIVEIS_PERMISSAO[nivelMinimo] || 1;
 
             if (nivelUsuario < nivelRequerido) {

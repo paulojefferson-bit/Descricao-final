@@ -123,6 +123,37 @@
   justify-content: center;
 }
 
+.header-admin {
+  display: flex;
+  align-items: center;
+  color: #C92071;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+}
+
+.header-admin:hover {
+  color: white;
+  background-color: #C92071;
+  border-color: #C92071;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(201, 32, 113, 0.2);
+}
+
+.header-admin i {
+  font-size: 1.1rem;
+}
+
+.header-user-name {
+  color: #666;
+  font-weight: 500;
+  font-size: 14px;
+}
+
 /* Estilos para o menu de navegação */
 .nav-main {
   background-color: white;

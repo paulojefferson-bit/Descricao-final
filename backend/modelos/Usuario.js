@@ -188,34 +188,38 @@ class Usuario {
         { 
           userId: usuario.id, 
           email: usuario.email, 
-          nivelAcesso: usuario.tipo_usuario 
+          nivelAcesso: usuario.tipo_usuario || usuario.nivel_acesso
         },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_EXPIRES_IN || '24h' }
       );
 
       delete usuario.senha_hash; // Não retornar hash da senha
+        // Para compatibilidade com código que espera nivel_acesso
+      usuario.nivel_acesso = usuario.tipo_usuario;
+      
       return { usuario, token };
     } catch (erro) {
       console.error('Erro na autenticação:', erro);
       throw erro;
     }
   }
-
   // Atualizar usuário
   async atualizar(dadosAtualizacao) {
     try {
       const campos = [];
       const parametros = [];
-
+      
       // Campos que podem ser atualizados
       const camposPermitidos = [
         'nome', 'telefone', 'data_nascimento', 'endereco_completo',
-        'cidade', 'estado', 'cep', 'aceita_marketing'
+        'cidade', 'estado', 'cep', 'aceita_marketing', 'tipo_usuario', 'nivel_acesso', 'cpf', 'bairro'
       ];
 
-      camposPermitidos.forEach(campo => {
-        if (dadosAtualizacao[campo] !== undefined) {
+      // Debug para visualizar o que está sendo atualizado
+      console.log('Campos a atualizar:', dadosAtualizacao);      camposPermitidos.forEach(campo => {
+        // Verificamos se o campo existe na tabela, filtrando 'nivel_acesso' que não existe
+        if (dadosAtualizacao[campo] !== undefined && campo !== 'nivel_acesso') {
           campos.push(`${campo} = ?`);
           parametros.push(dadosAtualizacao[campo]);
         }
@@ -224,7 +228,7 @@ class Usuario {
       // Atualização de senha (se fornecida)
       if (dadosAtualizacao.senha) {
         const senhaHash = await bcrypt.hash(dadosAtualizacao.senha, 12);
-        campos.push('senha = ?');
+        campos.push('senha_hash = ?');  // Corrigido para senha_hash em vez de senha
         parametros.push(senhaHash);
       }
 
@@ -233,6 +237,8 @@ class Usuario {
       }
 
       parametros.push(this.id);
+      
+      console.log('SQL campos:', campos);
 
       const sql = `
         UPDATE usuarios 
@@ -240,11 +246,14 @@ class Usuario {
         WHERE id = ?
       `;
 
+      console.log('SQL Query:', sql);
+      console.log('Parâmetros:', parametros);
+
       await conexao.executarConsulta(sql, parametros);
       return await Usuario.buscarPorId(this.id);
     } catch (erro) {
       console.error('Erro ao atualizar usuário:', erro);
-      throw new Error('Erro interno do servidor ao atualizar usuário');
+      throw new Error('Erro interno do servidor ao atualizar usuário: ' + erro.message);
     }
   }
 

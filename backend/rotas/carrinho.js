@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Carrinho = require('../modelos/Carrinho');
 const { verificarAutenticacao } = require('../middleware/autenticacao');
+const { middleware } = require('../utils/sistema-permissoes');
 
 // GET /api/carrinho - Obter carrinho do usuário logado
 router.get('/', verificarAutenticacao, async (req, res) => {
@@ -252,7 +253,7 @@ router.post('/atualizar-precos', verificarAutenticacao, async (req, res) => {
 });
 
 // POST /api/carrinho/finalizar - Finalizar compra
-router.post('/finalizar', verificarAutenticacao, async (req, res) => {
+router.post('/finalizar', verificarAutenticacao, middleware.verificarCompra, async (req, res) => {
   try {
     const { metodo_pagamento, parcelas, endereco_entrega, frete, desconto, observacoes } = req.body;
 

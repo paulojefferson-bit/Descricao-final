@@ -71,7 +71,19 @@ app.use(cors({
 // app.use(morgan('combined'));
 
 // Parse JSON
-app.use(express.json({ limit: '10mb' }));
+// Parse JSON with debug
+app.use((req, res, next) => {
+  console.log('Recebido corpo de requisição:', req.url, req.body);
+  const oldJson = express.json({ limit: '10mb' });
+  oldJson(req, res, (err) => {
+    if (err) {
+      console.error('Erro ao parsear JSON:', err);
+      return res.status(400).json({ sucesso: false, mensagem: 'Formato JSON inválido' });
+    }
+    console.log('JSON parseado:', req.url, req.body);
+    next();
+  });
+});
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Servir arquivos estáticos
@@ -125,8 +137,10 @@ app.use('/api/auth', require('./rotas/autenticacao'));
 app.use('/api/carrinho', require('./rotas/carrinho'));
 app.use('/api/pedidos', require('./rotas/pedidos'));
 app.use('/api/promocoes', require('./rotas/promocoes'));
+app.use('/api/comentarios', require('./rotas/comentarios'));
 app.use('/api/admin', require('./rotas/admin'));
 app.use('/api/admin/metrics', require('./rotas/admin-metrics'));
+app.use('/api/upgrade', require('./rotas/upgrade'));
 
 // Servir dashboard de testes
 app.get('/dashboard', (req, res) => {
@@ -195,8 +209,7 @@ app.use('*', (req, res) => {
     sucesso: false,
     mensagem: 'Endpoint não encontrado',
     endpoint_solicitado: req.originalUrl,
-    metodo: req.method,
-    endpoints_disponiveis: [
+    metodo: req.method,    endpoints_disponiveis: [
       'GET /api/health',
       'GET /api/info',
       'GET /api/produtos',
@@ -204,6 +217,8 @@ app.use('*', (req, res) => {
       'POST /api/auth/login',
       'GET /api/carrinho',
       'GET /api/promocoes',
+      'GET /api/comentarios/produtos/:id/comentarios',
+      'POST /api/comentarios/produtos/:id/comentarios',
       'GET /api/admin/dashboard'
     ]
   });
