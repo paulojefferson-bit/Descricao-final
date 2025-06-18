@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const conexao = require('../banco/conexao');
 
+
+
 class Usuario {
   constructor(dados) {
     this.id = dados.id;

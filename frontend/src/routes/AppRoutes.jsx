@@ -8,7 +8,7 @@ import PaginaCarrinho from '../pages/PaginaCarrinho/PaginaCarrinho';
 import CheckoutProtegido from '../pages/Checkout/CheckoutProtegido';
 import SucessoPage from '../pages/Checkout/SucessoPage';
 import TesteAPI from '../components/TesteAPI/TesteAPI';
-import Login from '../components/auth/Login';
+// import Login from '../components/auth/Login';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import ProtecaoRota from '../components/common/ProtecaoRota';
 import CompletarCadastro from '../pages/Auth/CompletarCadastro';
@@ -16,6 +16,7 @@ import PaginaColaborador from '../pages/Admin/PaginaColaborador';
 import PaginaSupervisor from '../pages/Admin/PaginaSupervisor';
 import PaginaDiretor from '../pages/Admin/PaginaDiretor';
 import CriarConta from '../pages/CriarConta';
+import Entrar from '../pages/Entrar';
 
 
 const AppRoutes = () => {
@@ -23,7 +24,9 @@ const AppRoutes = () => {
     <Routes>
       {/* Rotas Públicas */}
       <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<Login />} />
+      {/* <Route path="/login" element={<Login />} /> */}
+
+      <Route path="/entrar" element={<Entrar/>} />
       <Route path="/cadastro" element={<Cadastro />} />
       <Route path="/criarConta" element={<CriarConta/>} />
       <Route path="/produtos" element={<PaginaProdutos />} />

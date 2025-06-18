@@ -10,6 +10,8 @@ import { FormProvider } from './context/FormContext'
 import { AuthProvider } from './context/AuthContext'
 import LoginAutomaticoBanner from './components/auth/LoginAutomaticoBanner'
 
+
+
 function App() {
   return (
     <AuthProvider>
