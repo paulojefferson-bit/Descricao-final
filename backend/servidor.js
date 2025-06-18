@@ -250,15 +250,11 @@ const iniciarServidor = async () => {  try {
     // Testar conexão com banco de dados
     const conexao = require('./banco/conexao');
     await conexao.executarConsulta('SELECT 1');
-    console.log('✅ Conexão com banco de dados estabelecida');
-
-    // Desativar promoções expiradas ao iniciar
+    console.log('✅ Conexão com banco de dados estabelecida');    // Desativar promoções expiradas ao iniciar
     const PromocaoRelampago = require('./modelos/PromocaoRelampago');
     await PromocaoRelampago.desativarExpiradas();
-    console.log('✅ Promoções expiradas desativadas');
-
-    const PORT = process.env.PORT || 5000;
-    const HOST = process.env.HOST || 'localhost';
+    console.log('✅ Promoções expiradas desativadas');    const PORT = process.env.PORT || 9999; // Alterado para porta 9999 para evitar conflito
+    const HOST = process.env.HOST || '127.0.0.1'; // Usando IPv4 explicitamente
     
     app.listen(PORT, HOST, () => {
       console.log(`🚀 Servidor rodando em http://${HOST}:${PORT}`);

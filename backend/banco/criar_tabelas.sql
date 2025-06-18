@@ -4,26 +4,27 @@
 CREATE DATABASE IF NOT EXISTS projetofgt;
 USE projetofgt;
 
--- Tabela principal de produtos (baseada na estrutura existente)
+-- Tabela principal de produtos
 CREATE TABLE produtos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    marca VARCHAR(100) NOT NULL,
-    nome VARCHAR(255) NOT NULL,
-    imagem VARCHAR(500) NOT NULL DEFAULT '/tenis_produtos.png',
-    preco_antigo DECIMAL(10, 2) NOT NULL,
-    preco_atual DECIMAL(10, 2) NOT NULL,
-    desconto INT NOT NULL,
-    avaliacao DECIMAL(2, 1) NOT NULL DEFAULT 0,
-    total_avaliacoes INT NOT NULL DEFAULT 0,
-    categoria VARCHAR(50) NOT NULL,
-    genero ENUM('masculino', 'feminino', 'unissex') NOT NULL,
-    condicao ENUM('novo', 'usado') NOT NULL DEFAULT 'novo',
-    disponivel BOOLEAN DEFAULT TRUE,
-    quantidade_estoque INT DEFAULT 0,
-    descricao TEXT,
-    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+  id INT NOT NULL AUTO_INCREMENT,
+  marca VARCHAR(100) NOT NULL,
+  nome VARCHAR(255) NOT NULL,
+  imagem VARCHAR(500) NOT NULL DEFAULT '/tenis_produtos.png',
+  preco_antigo DECIMAL(10,2) NOT NULL,
+  preco_atual DECIMAL(10,2) NOT NULL,
+  desconto INT NOT NULL,
+  avaliacao DECIMAL(2,1) NOT NULL DEFAULT '0.0',
+  total_avaliacoes INT NOT NULL DEFAULT '0',
+  categoria VARCHAR(50) NOT NULL,
+  genero ENUM('masculino','feminino','unissex') NOT NULL,
+  condicao ENUM('novo','usado') NOT NULL DEFAULT 'novo',
+  disponivel TINYINT(1) DEFAULT '1',
+  quantidade_estoque INT DEFAULT '0',
+  descricao TEXT,
+  criado_em TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  atualizado_em TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Tabela principal de produtos da loja';
 
 -- Tabela de usuários
 CREATE TABLE usuarios (
@@ -153,17 +154,20 @@ CREATE TABLE consentimentos_lgpd (
 
 -- Tabela de avaliações de produtos
 CREATE TABLE avaliacoes_produtos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    produto_id INT,
-    usuario_id INT,
-    nota INT NOT NULL CHECK (nota >= 1 AND nota <= 5),
-    comentario TEXT,
-    data_avaliacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    aprovado BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE CASCADE,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
-    UNIQUE KEY unique_user_product (produto_id, usuario_id)
-);
+  id INT NOT NULL AUTO_INCREMENT,
+  produto_id INT DEFAULT NULL,
+  usuario_id INT DEFAULT NULL,
+  nota INT NOT NULL,
+  comentario TEXT,
+  data_avaliacao TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  aprovado TINYINT(1) DEFAULT '0',
+  PRIMARY KEY (id),
+  UNIQUE KEY unique_user_product (produto_id, usuario_id),
+  KEY usuario_id (usuario_id),
+  CONSTRAINT avaliacoes_produtos_ibfk_1 FOREIGN KEY (produto_id) REFERENCES produtos (id) ON DELETE CASCADE,
+  CONSTRAINT avaliacoes_produtos_ibfk_2 FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE CASCADE,
+  CONSTRAINT avaliacoes_produtos_chk_1 CHECK ((nota >= 1) AND (nota <= 5))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Tabela de pedidos simples (sistema de compras)
 CREATE TABLE pedidos_simples (
@@ -220,3 +224,10 @@ ALTER TABLE promocoes_relampago COMMENT = 'Promoções temporárias com desconto
 ALTER TABLE logs_sistema COMMENT = 'Logs de auditoria para conformidade LGPD';
 ALTER TABLE consentimentos_lgpd COMMENT = 'Consentimentos dos usuários conforme LGPD';
 ALTER TABLE pedidos_simples COMMENT = 'Pedidos finalizados do sistema de e-commerce';
+ALTER TABLE avaliacoes_produtos COMMENT = 'Avaliações numéricas dos produtos pelos usuários';
+
+-- Nota: A tabela comentarios_produtos é definida no arquivo criar_tabela_comentarios.sql
+-- Essa tabela permite que os usuários façam comentários detalhados sobre os produtos
+
+-- Para criar a tabela comentarios_produtos e log_acoes, execute o script:
+-- SOURCE criar_tabela_comentarios.sql;

@@ -2,10 +2,10 @@
   "name": "loja-tenis-fgt-backend",
   "version": "1.0.0",
   "description": "Backend completo para loja de tênis com sistema de autenticação, diferentes níveis de acesso e compliance LGPD",
-  "main": "servidor.js",
-  "scripts": {
+  "main": "servidor.js",  "scripts": {
     "start": "node servidor.js",
     "dev": "nodemon servidor.js",
+    "dev:alt": "PORT=7777 nodemon servidor.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",

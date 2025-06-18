@@ -1,56 +1,30 @@
 -- Script para criar tabela de comentários de produtos
 -- Execute este script para adicionar suporte ao sistema de comentários
--- NOTA: Esta tabela já existe no banco de dados atual
 
--- Estrutura da tabela comentarios_produtos (EXISTENTE):
--- Esta é a estrutura atual da tabela no banco de dados:
-/*
+USE projetofgt;
+
+-- Estrutura da tabela comentarios_produtos (ATUALIZADO conforme banco de dados atual):
+DROP TABLE IF EXISTS comentarios_produtos;
 CREATE TABLE comentarios_produtos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    produto_id INT NOT NULL,
-    comentario TEXT NOT NULL,
-    avaliacao TINYINT NOT NULL,
-    compra_verificada TINYINT(1) DEFAULT 0,
-    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    ativo TINYINT(1) DEFAULT 1,
-    
-    -- Índices para performance
-    INDEX idx_produto_id (produto_id),
-    INDEX idx_usuario_id (usuario_id),
-    INDEX idx_data_criacao (data_criacao),
-    INDEX idx_avaliacao (avaliacao),
-    
-    -- Garantir que cada usuário só pode comentar uma vez por produto
-    UNIQUE KEY unique_usuario_produto (usuario_id, produto_id)
-);
-*/
-
--- A tabela já existe com 6 registros de exemplo
--- Para recriar a tabela (se necessário), descomente o código abaixo:
-
--- DROP TABLE IF EXISTS comentarios_produtos;
--- CREATE TABLE comentarios_produtos (
---     id INT AUTO_INCREMENT PRIMARY KEY,
---     usuario_id INT NOT NULL,
---     produto_id INT NOT NULL,
---     comentario TEXT NOT NULL,
---     avaliacao TINYINT NOT NULL CHECK (avaliacao >= 1 AND avaliacao <= 5),
---     compra_verificada TINYINT(1) DEFAULT 0,
---     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---     data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
---     ativo TINYINT(1) DEFAULT 1,
---     
---     -- Índices para performance
---     INDEX idx_produto_id (produto_id),
---     INDEX idx_usuario_id (usuario_id),
---     INDEX idx_data_criacao (data_criacao),
---     INDEX idx_avaliacao (avaliacao),
---     
---     -- Garantir que cada usuário só pode comentar uma vez por produto
---     UNIQUE KEY unique_usuario_produto (usuario_id, produto_id)
--- );
+  id INT NOT NULL AUTO_INCREMENT,
+  usuario_id INT NOT NULL,
+  produto_id INT NOT NULL,
+  comentario TEXT NOT NULL,
+  avaliacao TINYINT NOT NULL,
+  compra_verificada TINYINT(1) DEFAULT '0',
+  data_criacao TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  data_atualizacao TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  ativo TINYINT(1) DEFAULT '1',
+  PRIMARY KEY (id),
+  UNIQUE KEY unique_usuario_produto (usuario_id, produto_id),
+  KEY idx_produto_id (produto_id),
+  KEY idx_usuario_id (usuario_id),
+  KEY idx_data_criacao (data_criacao),
+  KEY idx_avaliacao (avaliacao),
+  CONSTRAINT comentarios_produtos_ibfk_1 FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE CASCADE,
+  CONSTRAINT comentarios_produtos_ibfk_2 FOREIGN KEY (produto_id) REFERENCES produtos (id) ON DELETE CASCADE,
+  CONSTRAINT comentarios_produtos_chk_1 CHECK ((avaliacao >= 1) AND (avaliacao <= 5))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Verificação das colunas na tabela usuarios:
 -- As seguintes colunas já existem no banco atual:
@@ -98,22 +72,22 @@ PREPARE stmt_idx FROM @sql_idx;
 EXECUTE stmt_idx;
 DEALLOCATE PREPARE stmt_idx;
 
--- Adicionar tabela de auditoria para logs de ações (opcional)
-CREATE TABLE IF NOT EXISTS log_acoes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NULL,
-    acao VARCHAR(100) NOT NULL,
-    detalhes JSON NULL,
-    ip_address VARCHAR(45) NULL,
-    user_agent TEXT NULL,
-    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    INDEX idx_usuario_id (usuario_id),
-    INDEX idx_acao (acao),
-    INDEX idx_data_criacao (data_criacao),
-    
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL
-);
+-- Adicionar tabela de auditoria para logs de ações
+DROP TABLE IF EXISTS log_acoes;
+CREATE TABLE log_acoes (
+  id INT NOT NULL AUTO_INCREMENT,
+  usuario_id INT DEFAULT NULL,
+  acao VARCHAR(100) NOT NULL,
+  detalhes JSON DEFAULT NULL,
+  ip_address VARCHAR(45) DEFAULT NULL,
+  user_agent TEXT,
+  data_criacao TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_usuario_id (usuario_id),
+  KEY idx_acao (acao),
+  KEY idx_data_criacao (data_criacao),
+  CONSTRAINT log_acoes_ibfk_1 FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Inserir alguns comentários de exemplo (opcional)
 INSERT IGNORE INTO comentarios_produtos (usuario_id, produto_id, comentario, avaliacao, compra_verificada) VALUES
