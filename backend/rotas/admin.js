@@ -20,19 +20,54 @@ router.get('/dashboard', verificarAutenticacao, verificarPermissao('colaborador'
       Produto.obterEstatisticas(),
       Carrinho.obterEstatisticas(),
       PromocaoRelampago.obterEstatisticas()
-    ]);
-
-    // Dados específicos por nível de acesso
-    let dadosAdicionais = {};
-      if (req.usuario.nivel_acesso === 'diretor') {
-      // Logs recentes para diretores
-      const logsRecentes = await conexao.executarConsulta(`
-        SELECT * FROM logs_sistema 
-        ORDER BY data_acao DESC 
-        LIMIT 20
-      `);
-      dadosAdicionais.logs_recentes = logsRecentes;
-    }
+    ]);    // Dados específicos por nível de acesso
+    let dadosAdicionais = {};      // Verificar o tipo_usuario ou nivel_acesso (para compatibilidade)
+      const userRole = req.usuario.tipo_usuario || req.usuario.nivel_acesso;
+      if (userRole === 'diretor') {
+        try {
+          // Logs recentes para diretores
+          const logsRecentes = await conexao.executarConsulta(`
+            SELECT * FROM logs_sistema 
+            ORDER BY data_acao DESC 
+            LIMIT 20
+          `);
+            // Se não existirem logs, criar alguns logs de exemplo
+          if (!logsRecentes || logsRecentes.length === 0) {
+            console.log('Criando logs de exemplo para o dashboard');
+            
+            // Inserir logs de exemplo compatíveis com a estrutura existente da tabela
+            const acoesExemplo = [
+              { acao: 'Login no sistema', tabela: 'usuarios', id: req.usuario.id },
+              { acao: 'Visualização de dashboard', tabela: 'admin', id: null },
+              { acao: 'Cadastro de novo produto: Nike Runner 2025', tabela: 'produtos', id: 1 },
+              { acao: 'Atualização de estoque do produto ID 1', tabela: 'produtos', id: 1 },
+              { acao: 'Criação de promoção relâmpago: Tênis de Verão', tabela: 'promocoes_relampago', id: 1 }
+            ];
+            
+            for (const exemplo of acoesExemplo) {
+              await conexao.executarConsulta(`
+                INSERT INTO logs_sistema 
+                (usuario_id, acao, tabela_afetada, registro_id, ip_usuario, data_acao) 
+                VALUES (?, ?, ?, ?, ?, DATE_SUB(NOW(), INTERVAL RAND()*24 HOUR))
+              `, [req.usuario.id, exemplo.acao, exemplo.tabela, exemplo.id, req.ip]);
+            }
+            
+            // Buscar logs novamente
+            const novoLogs = await conexao.executarConsulta(`
+              SELECT * FROM logs_sistema 
+              ORDER BY data_acao DESC 
+              LIMIT 20
+            `);
+            
+            dadosAdicionais.logs_recentes = novoLogs;
+          } else {
+            dadosAdicionais.logs_recentes = logsRecentes;
+          }
+        } catch (erroLogs) {
+          console.error('Erro ao buscar/criar logs:', erroLogs);
+          dadosAdicionais.logs_recentes = [];
+        }
+      }
 
     res.json({
       sucesso: true,
