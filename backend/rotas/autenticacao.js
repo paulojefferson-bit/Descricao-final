@@ -134,7 +134,16 @@ router.post('/login', async (req, res) => {
 // POST /api/auth/verificar-token - Verificar se token é válido
 router.post('/verificar-token', async (req, res) => {
   try {
-    const { token } = req.body;
+    let token = null;
+    
+    // Tentar pegar o token do corpo da requisição
+    if (req.body && req.body.token) {
+      token = req.body.token;
+    }
+    // Se não existir no corpo, tentar pegar do cabeçalho
+    else {
+      token = req.header('Authorization')?.replace('Bearer ', '');
+    }
 
     if (!token) {
       return res.status(400).json({
@@ -143,13 +152,21 @@ router.post('/verificar-token', async (req, res) => {
       });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'chave_super_secreta_loja_tenis_2024');
     const usuario = await Usuario.buscarPorId(decoded.userId);
-
-    if (!usuario || !usuario.ativo) {
+    
+    // Verificar se o usuário existe e está ativo
+    if (!usuario) {
       return res.status(401).json({
         sucesso: false,
-        mensagem: 'Token inválido ou usuário desativado'
+        mensagem: 'Usuário não encontrado'
+      });
+    }
+    
+    if (usuario.status !== 'ativo') {
+      return res.status(401).json({
+        sucesso: false,
+        mensagem: 'Usuário desativado'
       });
     }
 
@@ -164,7 +181,7 @@ router.post('/verificar-token', async (req, res) => {
     console.error('Erro ao verificar token:', erro);
     res.status(401).json({
       sucesso: false,
-      mensagem: 'Token inválido'
+      mensagem: 'Token inválido ou usuário desativado'
     });
   }
 });

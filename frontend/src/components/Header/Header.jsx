@@ -10,7 +10,7 @@ const Header = () => {
   const navigate = useNavigate();
   const path = location.pathname;
   const [searchTerm, setSearchTerm] = useState('');
-  const { obterQuantidadeItensCarrinho } = useCarrinho();  const { isAuthenticated, usuario, hasPermission } = useAuth();
+  const { obterQuantidadeItensCarrinho } = useCarrinho();  const { isAuthenticated, usuario, hasPermission, logout } = useAuth();
 
   // Verificar se o usuário tem permissões administrativas baseado no novo sistema
   const isAdmin = usuario?.tipo_usuario && ['colaborador', 'supervisor', 'diretor'].includes(usuario.tipo_usuario);
@@ -18,13 +18,18 @@ const Header = () => {
   const isSupervisor = usuario?.tipo_usuario === 'supervisor';
   const isDiretor = usuario?.tipo_usuario === 'diretor';
   const isUsuarioCompleto = usuario?.tipo_usuario === 'usuario';
-
   // Função para lidar com a pesquisa
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
       navigate(`/produtos?search=${encodeURIComponent(searchTerm)}`);
     }
+  };
+  
+  // Função para lidar com o logout
+  const handleLogout = () => {
+    logout();
+    window.location.href = '/';
   };
 
   return (
@@ -88,17 +93,34 @@ const Header = () => {
                   <i className="bi bi-bag-check-fill"></i>
                   <span className="d-none d-lg-inline ms-1">Pedidos</span>
                 </Link>
-              )}
-                <span className="header-user-name d-none d-md-inline">
-                Olá, {usuario?.nome?.split(' ')[0] || 'Usuário'}
-                {usuario?.tipo === 'visitante' && (
-                  <small className="text-warning ms-1">
-                    <Link to="/completar-cadastro" className="text-decoration-none">
-                      (Complete seu cadastro)
-                    </Link>
-                  </small>
-                )}
-              </span>
+              )}                <div className="dropdown">
+                  <span 
+                    className="header-user-name d-none d-md-inline dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    role="button"
+                  >
+                    Olá, {usuario?.nome?.split(' ')[0] || 'Usuário'}
+                    {usuario?.tipo === 'visitante' && (
+                      <small className="text-warning ms-1">
+                        <Link to="/completar-cadastro" className="text-decoration-none">
+                          (Complete seu cadastro)
+                        </Link>
+                      </small>
+                    )}
+                  </span>
+                  <ul className="dropdown-menu">
+                    <li><Link className="dropdown-item" to="/meus-dados">Minha Conta</Link></li>
+                    <li><hr className="dropdown-divider" /></li>
+                    <li>
+                      <button 
+                        className="dropdown-item text-danger"                        onClick={handleLogout}
+                      >
+                        <i className="bi bi-box-arrow-right me-2"></i>
+                        Sair
+                      </button>
+                    </li>
+                  </ul>
+                </div>
             </>
           )}
           <Link to="/carrinho" className="header-cart position-relative">
@@ -141,8 +163,15 @@ const Header = () => {
               data-bs-dismiss="offcanvas"
               aria-label="Fechar"
             ></button>
-          </div>          <div className="offcanvas-body">
-            <ul className="nav flex-column">
+          </div>          <div className="offcanvas-body">            <ul className="nav flex-column">
+              {isAuthenticated && (
+                <li className="nav-item mb-2 border-bottom pb-2">
+                  <div className="d-flex align-items-center px-2">
+                    <i className="bi bi-person-circle me-2 fs-4"></i>
+                    <span>{usuario?.nome?.split(' ')[0] || 'Usuário'}</span>
+                  </div>
+                </li>
+              )}
               <li className="nav-item">
                 <Link to="/" className={`nav-link ${path === '/' ? 'active' : ''}`}>Home</Link>
               </li>
@@ -154,13 +183,23 @@ const Header = () => {
               </li>
               <li className="nav-item">
                 <Link to="/meus-pedidos" className={`nav-link ${path === '/meus-pedidos' ? 'active' : ''}`}>Meus Pedidos</Link>
-              </li>
-              {isAuthenticated && isAdmin && (
+              </li>            {isAuthenticated && isAdmin && (
                 <li className="nav-item">
                   <Link to="/dashboard" className={`nav-link ${path === '/dashboard' ? 'active' : ''}`}>
                     <i className="bi bi-gear-fill me-2"></i>
                     Painel Administrativo
                   </Link>
+                </li>
+              )}
+              {isAuthenticated && (
+                <li className="nav-item mt-3">
+                  <button 
+                    className="nav-link text-danger border-0 bg-transparent w-100 text-start" 
+                    onClick={handleLogout}
+                  >
+                    <i className="bi bi-box-arrow-right me-2"></i>
+                    Sair da conta
+                  </button>
                 </li>
               )}
             </ul>
