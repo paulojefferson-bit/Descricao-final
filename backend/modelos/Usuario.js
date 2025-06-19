@@ -26,7 +26,6 @@ class Usuario {
     this.data_criacao = dados.data_criacao;
     this.data_atualizacao = dados.data_atualizacao;
   }
-
   // Buscar todos os usuários (apenas para admins)
   static async buscarTodos(filtros = {}) {
     try {
@@ -35,14 +34,14 @@ class Usuario {
 
       // Filtro por nível de acesso
       if (filtros.nivel_acesso) {
-        sql += ' AND nivel_acesso = ?';
+        sql += ' AND tipo_usuario = ?';
         parametros.push(filtros.nivel_acesso);
       }
 
-      // Filtro por status ativo
-      if (filtros.ativo !== undefined) {
-        sql += ' AND ativo = ?';
-        parametros.push(filtros.ativo);
+      // Filtro por status
+      if (filtros.status !== undefined) {
+        sql += ' AND status = ?';
+        parametros.push(filtros.status);
       }
 
       // Filtro por termo de pesquisa
@@ -136,12 +135,11 @@ class Usuario {
           nome, email, senha_hash, tipo_usuario, status, telefone, data_nascimento
         ) VALUES (?, ?, ?, ?, ?, ?, ?)
       `;
-      
-      const parametros = [
+        const parametros = [
         dadosUsuario.nome,
         dadosUsuario.email,
         senhaHash,
-        dadosUsuario.nivel_acesso || 'usuario',
+        dadosUsuario.tipo_usuario || dadosUsuario.nivel_acesso || 'usuario',
         'ativo', // Status padrão
         dadosUsuario.telefone || null,
         dadosUsuario.data_nascimento || null
@@ -190,14 +188,14 @@ class Usuario {
         { 
           userId: usuario.id, 
           email: usuario.email, 
-          nivelAcesso: usuario.tipo_usuario || usuario.nivel_acesso
+          nivelAcesso: usuario.tipo_usuario
         },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_EXPIRES_IN || '24h' }
       );
 
       delete usuario.senha_hash; // Não retornar hash da senha
-        // Para compatibilidade com código que espera nivel_acesso
+      // Para compatibilidade com código que espera nivel_acesso
       usuario.nivel_acesso = usuario.tipo_usuario;
       
       return { usuario, token };
@@ -258,7 +256,6 @@ class Usuario {
       throw new Error('Erro interno do servidor ao atualizar usuário: ' + erro.message);
     }
   }
-
   // Alterar nível de acesso (apenas para administradores)
   async alterarNivelAcesso(novoNivel) {
     try {
@@ -268,11 +265,12 @@ class Usuario {
       }
 
       await conexao.executarConsulta(
-        'UPDATE usuarios SET nivel_acesso = ?, data_atualizacao = CURRENT_TIMESTAMP WHERE id = ?',
+        'UPDATE usuarios SET tipo_usuario = ?, data_atualizacao = CURRENT_TIMESTAMP WHERE id = ?',
         [novoNivel, this.id]
       );
 
-      this.nivel_acesso = novoNivel;
+      this.tipo_usuario = novoNivel;
+      this.nivel_acesso = novoNivel; // Para compatibilidade com código que espera nivel_acesso
       return this;
     } catch (erro) {
       console.error('Erro ao alterar nível de acesso:', erro);

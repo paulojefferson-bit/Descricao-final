@@ -44,7 +44,6 @@ export const authService = {  // Login
     const usuario = localStorage.getItem('usuario');
     return usuario ? JSON.parse(usuario) : null;
   },
-
   // Verificar se token é válido
   async verificarToken() {
     try {
@@ -53,6 +52,7 @@ export const authService = {  // Login
         return { sucesso: false, mensagem: 'Token não encontrado' };
       }
       
+      // Enviar o token no corpo da requisição como o backend espera
       const response = await api.post('/auth/verificar-token', { token });
       return response;
     } catch (error) {

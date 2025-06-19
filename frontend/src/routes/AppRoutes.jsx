@@ -55,22 +55,31 @@ const AppRoutes = () => {
           <CompletarCadastro />
         </ProtecaoRota>
       } />
-      
-      {/* Dashboards por Nível */}
+        {/* Dashboards por Nível */}
       <Route path="/dashboard" element={
-        <ProtecaoRota tipoUsuarioMinimo="usuario">
+        <ProtecaoRota tipoUsuarioMinimo="usuario" redirectTo="/entrar">
           <Dashboard />
         </ProtecaoRota>
       } />
       
       {/* Rotas Administrativas */}
-      <Route path="/admin/colaborador" element={<PaginaColaborador />} />
-      <Route path="/admin/supervisor" element={<PaginaSupervisor />} />
-      <Route path="/admin/diretor" element={<PaginaDiretor />} />
-      
-      {/* Rotas de Usuário Autenticado */}
+      <Route path="/admin/colaborador" element={
+        <ProtecaoRota tipoUsuarioMinimo="colaborador" redirectTo="/entrar">
+          <PaginaColaborador />
+        </ProtecaoRota>
+      } />      <Route path="/admin/supervisor" element={
+        <ProtecaoRota tipoUsuarioMinimo="supervisor" redirectTo="/entrar">
+          <PaginaSupervisor />
+        </ProtecaoRota>
+      } />
+      <Route path="/admin/diretor" element={
+        <ProtecaoRota tipoUsuarioMinimo="diretor" redirectTo="/entrar">
+          <PaginaDiretor />
+        </ProtecaoRota>
+      } />
+        {/* Rotas de Usuário Autenticado */}
       <Route path="/meus-pedidos" element={
-        <ProtecaoRota tipoUsuarioMinimo="usuario">
+        <ProtecaoRota tipoUsuarioMinimo="usuario" redirectTo="/entrar">
           <h1 className="text-center mt-5">Meus Pedidos</h1>
         </ProtecaoRota>
       } />

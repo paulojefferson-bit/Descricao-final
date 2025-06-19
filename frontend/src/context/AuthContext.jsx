@@ -204,15 +204,16 @@ export const AuthProvider = ({ children }) => {
       const usuarioAtualizado = { ...usuarioAtual, ...dadosAtualizados };
       localStorage.setItem('usuario', JSON.stringify(usuarioAtualizado));
     }
-  }, []);
-  // Verificar se usuário tem permissão
+  }, []);  // Verificar se usuário tem permissão
   const hasPermission = useCallback((permissao) => {
     if (!state.usuario) return false;
     
-    const { tipo_usuario, permissoes } = state.usuario;
+    // Verificar todos os campos possíveis para o tipo de usuário
+    const tipoUsuario = state.usuario.tipo_usuario || state.usuario.nivel_acesso || state.usuario.tipo;
+    const { permissoes } = state.usuario;
     
-    // Admin tem todas as permissões
-    if (tipo_usuario === 'admin') return true;
+    // Admin ou diretor tem todas as permissões
+    if (tipoUsuario === 'admin' || tipoUsuario === 'diretor') return true;
     
     // Verificar permissões específicas
     if (permissoes && Array.isArray(permissoes)) {
@@ -220,15 +221,16 @@ export const AuthProvider = ({ children }) => {
     }
     
     return false;
-  }, [state.usuario]);
-  // Verificar se é admin
+  }, [state.usuario]);  // Verificar se é admin/diretor
   const isAdmin = useCallback(() => {
-    return state.usuario?.tipo_usuario === 'admin';
+    const tipoUsuario = state.usuario?.tipo_usuario || state.usuario?.nivel_acesso || state.usuario?.tipo;
+    return tipoUsuario === 'admin' || tipoUsuario === 'diretor';
   }, [state.usuario]);
 
-  // Verificar se é cliente
+  // Verificar se é cliente/usuário
   const isCliente = useCallback(() => {
-    return state.usuario?.tipo_usuario === 'cliente';
+    const tipoUsuario = state.usuario?.tipo_usuario || state.usuario?.nivel_acesso || state.usuario?.tipo;
+    return tipoUsuario === 'cliente' || tipoUsuario === 'usuario';
   }, [state.usuario]);
 
   const value = {

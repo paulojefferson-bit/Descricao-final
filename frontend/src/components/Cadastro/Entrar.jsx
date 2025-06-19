@@ -5,32 +5,80 @@ export default function Login() {
   const [login, setLogin] = useState('');
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState('');
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    console.log('Iniciando processo de login...');
+    console.log('Endpoint de login:', 'http://localhost:9999/api/auth/login');
+    console.log('Dados de login:', { email: login });
 
     try {
-      const resposta = await fetch('http://localhost:3000/login', {
+      // Remover espaços extras dos campos antes de enviar
+      const emailLimpo = login.trim();
+      const senhaLimpa = senha.trim();
+      
+      // Usar o serviço de API em vez de fetch diretamente
+      // Isso garante que o token seja configurado corretamente
+      const resposta = await fetch('http://localhost:9999/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          email: login, // altere para "login" se o back exigir
-          senha: senha
+          email: emailLimpo,
+          senha: senhaLimpa
         })
       });
 
+      console.log('Resposta recebida:', resposta.status);
       const dados = await resposta.json();
-
-      if (!resposta.ok) {
-        throw new Error(dados.message || 'Falha no login');
+      console.log('Dados da resposta:', dados);if (!resposta.ok) {
+        throw new Error(dados.mensagem || 'Falha no login');
+      }      // Armazenar token e redirecionar
+      if (dados.dados && dados.dados.token) {
+        // Armazenar o token utilizando um método mais robusto
+        // Primeiro limpar qualquer token antigo
+        localStorage.removeItem('token');
+          // Depois armazenar o novo token
+        localStorage.setItem('token', dados.dados.token);
+        
+        // Normalizar os dados do usuário garantindo que o campo tipo seja preenchido
+        const usuario = dados.dados.usuario;
+        // Garantir que haja um campo tipo para compatibilidade
+        if (usuario && !usuario.tipo && (usuario.tipo_usuario || usuario.nivel_acesso)) {
+          usuario.tipo = usuario.tipo_usuario || usuario.nivel_acesso;
+        }
+        
+        localStorage.setItem('usuario', JSON.stringify(usuario));
+        
+        // Garantir que a API seja inicializada com o token
+        const apiService = await import('../../services/api');
+        apiService.default.setToken(dados.dados.token);
+        
+        // Redirecionar com base no nível de acesso
+        const tipoUsuario = dados.dados.usuario?.tipo_usuario || dados.dados.usuario?.nivel_acesso || 'usuario';
+        let destino = '/home';
+        
+        // Redirecionamento baseado no tipo de usuário
+        switch (tipoUsuario) {
+          case 'diretor':
+            destino = '/admin/diretor';
+            break;
+          case 'supervisor':
+            destino = '/admin/supervisor';
+            break;
+          case 'colaborador':
+            destino = '/admin/colaborador';
+            break;
+          default:
+            destino = '/home'; // usuário comum
+        }
+        
+        alert('Login realizado com sucesso!');
+        window.location.href = destino;
+      } else {
+        throw new Error('Token não encontrado na resposta');
       }
-
-      // Armazenar token e redirecionar
-      localStorage.setItem('token', dados.token);
-      alert('Login realizado com sucesso!');
-      window.location.href = '/home'; // redirecionamento após login
 
     } catch (erro) {
       console.error('Erro ao fazer login:', erro);
