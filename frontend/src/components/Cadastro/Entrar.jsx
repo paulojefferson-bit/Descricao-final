@@ -8,29 +8,41 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    console.log('Iniciando processo de login...');
+    console.log('Endpoint de login:', 'http://localhost:9999/api/auth/login');
+    console.log('Dados de login:', { email: login });
 
-    try {
-      const resposta = await fetch('http://localhost:3000/login', {
+    try {      // Remover espaços extras dos campos antes de enviar
+      const emailLimpo = login.trim();
+      const senhaLimpa = senha.trim();
+      
+      const resposta = await fetch('http://localhost:9999/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          email: login, // altere para "login" se o back exigir
-          senha: senha
+          email: emailLimpo,
+          senha: senhaLimpa
         })
       });
 
+      console.log('Resposta recebida:', resposta.status);
       const dados = await resposta.json();
-
-      if (!resposta.ok) {
-        throw new Error(dados.message || 'Falha no login');
+      console.log('Dados da resposta:', dados);if (!resposta.ok) {
+        throw new Error(dados.mensagem || 'Falha no login');
       }
 
       // Armazenar token e redirecionar
-      localStorage.setItem('token', dados.token);
-      alert('Login realizado com sucesso!');
-      window.location.href = '/home'; // redirecionamento após login
+      if (dados.dados && dados.dados.token) {
+        localStorage.setItem('token', dados.dados.token);
+        localStorage.setItem('usuario', JSON.stringify(dados.dados.usuario));
+        alert('Login realizado com sucesso!');
+        window.location.href = '/home'; // redirecionamento após login
+      } else {
+        throw new Error('Token não encontrado na resposta');
+      }
 
     } catch (erro) {
       console.error('Erro ao fazer login:', erro);

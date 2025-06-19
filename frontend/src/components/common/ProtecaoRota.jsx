@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-const ProtecaoRota = ({ children, permissaoRequerida, tipoUsuarioMinimo, redirectTo = "/login" }) => {
+const ProtecaoRota = ({ children, permissaoRequerida, tipoUsuarioMinimo, redirectTo = "/entrar" }) => {
   const { usuario, hasPermission, isAuthenticated } = useAuth();
   const location = useLocation();
 
