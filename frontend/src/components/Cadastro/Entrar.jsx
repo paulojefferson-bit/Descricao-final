@@ -1,39 +1,39 @@
 import React, { useState } from 'react';
-import './Cadastro.css';
+import './Entrar.css';
 
-export default function Cadastro() {
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
+export default function Login() {
+  const [login, setLogin] = useState('');
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErro('');
 
     try {
-      const resposta = await fetch('http://localhost:3000/usuarios', {
+      const resposta = await fetch('http://localhost:3000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          nome,
-          email,
-          senha
+          email: login, // altere para "login" se o back exigir
+          senha: senha
         })
       });
 
       const dados = await resposta.json();
 
       if (!resposta.ok) {
-        throw new Error(dados.message || 'Erro ao cadastrar');
+        throw new Error(dados.message || 'Falha no login');
       }
 
-      alert('Cadastro realizado com sucesso!');
-      window.location.href = '/login';
+      // Armazenar token e redirecionar
+      localStorage.setItem('token', dados.token);
+      alert('Login realizado com sucesso!');
+      window.location.href = '/home'; // redirecionamento após login
+
     } catch (erro) {
-      console.error('Erro ao cadastrar:', erro);
+      console.error('Erro ao fazer login:', erro);
       setErro(erro.message);
     }
   };
@@ -42,36 +42,25 @@ export default function Cadastro() {
     <div className="login-page d-flex align-items-center justify-content-center min-vh-100">
       <div className="card shadow border-0" style={{ maxWidth: '900px', width: '100%' }}>
         <div className="row g-0">
+
           {/* Formulário */}
           <div className="col-md-6 p-5">
-            <h2 className="fw-bold mb-2">Crie sua conta</h2>
+            <h2 className="fw-bold mb-2">Acesse sua conta</h2>
             <p className="text-muted mb-4">
-              Já possui conta? Entre <a href="/entrar">aqui</a>.
+              Novo cliente? Então registre-se <a href="/cadastro">aqui</a>.
             </p>
 
             {erro && <div className="alert alert-danger">{erro}</div>}
 
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label className="form-label">Nome *</label>
+                <label className="form-label">Login *</label>
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Seu nome"
-                  value={nome}
-                  onChange={(e) => setNome(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label">Email *</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Insira seu email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Insira seu login ou email"
+                  value={login}
+                  onChange={(e) => setLogin(e.target.value)}
                   required
                 />
               </div>
@@ -86,15 +75,18 @@ export default function Cadastro() {
                   onChange={(e) => setSenha(e.target.value)}
                   required
                 />
+                <div className="mt-2">
+                  <a href="#" className="small">Esqueci minha senha</a>
+                </div>
               </div>
 
               <div className="d-grid">
-                <button type="submit" className="btn btn-danger">Criar Conta</button>
+                <button type="submit" className="btn btn-danger">Acessar Conta</button>
               </div>
             </form>
 
             <div className="text-center mt-4">
-              <small className="text-muted">Ou crie sua conta com</small>
+              <small className="text-muted">Ou faça login com</small>
               <div className="d-flex justify-content-center gap-3 mt-2">
                 <img src="img/Microsoft_logo.svg.png" alt="Microsoft" height="20" />
                 <img src="img/Google__G__logo.svg.png" alt="Google" height="20" />
