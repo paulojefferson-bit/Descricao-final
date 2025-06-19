@@ -22,7 +22,7 @@ const ProtecaoRota = ({ children, permissaoRequerida, tipoUsuarioMinimo, redirec
               <p>Você não tem permissão para acessar esta página.</p>
               <p>
                 <strong>Permissão necessária:</strong> {permissaoRequerida}<br/>
-                <strong>Seu nível atual:</strong> {usuario?.tipo || 'Não autenticado'}
+                <strong>Seu nível atual:</strong> {usuario?.tipo_usuario || usuario?.nivel_acesso || usuario?.tipo || 'Não autenticado'}
               </p>
               <button 
                 className="btn btn-primary" 
@@ -36,11 +36,13 @@ const ProtecaoRota = ({ children, permissaoRequerida, tipoUsuarioMinimo, redirec
       </div>
     );
   }
-
   // Se um tipo de usuário mínimo é requerido
   if (tipoUsuarioMinimo) {
     const hierarquia = ['visitante', 'usuario', 'colaborador', 'supervisor', 'diretor'];
-    const nivelAtual = hierarquia.indexOf(usuario?.tipo || 'visitante');
+    // Verificar todos os campos possíveis para o tipo de usuário
+    const tipoUsuario = usuario?.tipo_usuario || usuario?.nivel_acesso || usuario?.tipo || 'visitante';
+    console.log('Tipo de usuário atual:', tipoUsuario);
+    const nivelAtual = hierarquia.indexOf(tipoUsuario);
     const nivelMinimo = hierarquia.indexOf(tipoUsuarioMinimo);
 
     if (nivelAtual < nivelMinimo) {
@@ -50,12 +52,11 @@ const ProtecaoRota = ({ children, permissaoRequerida, tipoUsuarioMinimo, redirec
             <div className="col-md-8">
               <div className="alert alert-info text-center">
                 <h4><i className="bi bi-person-plus"></i> Upgrade Necessário</h4>
-                <p>Para acessar esta funcionalidade, você precisa ser um <strong>{tipoUsuarioMinimo}</strong>.</p>
-                <p>
-                  <strong>Seu nível atual:</strong> {usuario?.tipo || 'visitante'}<br/>
+                <p>Para acessar esta funcionalidade, você precisa ser um <strong>{tipoUsuarioMinimo}</strong>.</p>                <p>
+                  <strong>Seu nível atual:</strong> {usuario?.tipo_usuario || usuario?.nivel_acesso || usuario?.tipo || 'visitante'}<br/>
                   <strong>Nível necessário:</strong> {tipoUsuarioMinimo}
                 </p>
-                {usuario?.tipo === 'visitante' && (
+                {(usuario?.tipo_usuario === 'visitante' || usuario?.nivel_acesso === 'visitante' || usuario?.tipo === 'visitante') && (
                   <div className="mt-3">
                     <button 
                       className="btn btn-success me-2"
