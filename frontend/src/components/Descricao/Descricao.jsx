@@ -8,34 +8,7 @@ const Descricao = () => {
 
     return (
 <>
-    <header className="topo">
-      <img alt="Digital Store" src="/projetofgt/img/logo -HEADER.svg" />
-      <div className="search-box">
-        <input placeholder="Tênis" type="text" />
-        <button>
-          <i className="icon-search" />
-        </button>
-      </div>
-      <div className="auth-cart">
-        <a className="cadastro" href="#">
-          Cadastre-se
-        </a>
-        <button className="entrar">Entrar</button>
-        <div className="carrinho">
-          <span className="carrinho">🛒</span>
-        </div>
-      </div>
-    </header>
-    <nav className="menu">
-      <a className="menu-item" href="home">
-        Home
-      </a>
-      <a className="menu-item" href="produtos">
-        Produtos{" "}
-      </a>
-      <a className="menu-item">Categorias</a>
-      <a className="menu-item">Meus Pedidos</a>
-    </nav>
+   
     <section className="produto-container">
       <div className="breadcrumb">
         <a href="#">Home /</a>
@@ -192,22 +165,7 @@ const Descricao = () => {
         </div>
       </div>
     </section>
-    <footer className="footer">
-      <div className="footer-container">
-        <div className="footer-section brand">
-          <img alt="logo final" src="/projetofgt/img/logo.svg" />
-          <br />
-           </div>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore.
-          </p>
-          <div className="social-icons">
-            <img alt="" src="/projetofgt/img/redesSociais.svg" />
-          </div>
-        </div>
-        </footer>
-       
+    
 
 
 

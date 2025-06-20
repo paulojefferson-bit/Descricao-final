@@ -30,7 +30,7 @@ const AppRoutes = () => {
     <Routes>
       {/* Rotas Públicas */}
       <Route path="/" element={<HomePage />} />
-      <Route path="/Descricao" element={<DescricaoPage />} />
+      <Route path="/Descricao'1 " element={<DescricaoPage />} />
      
       {/* <Route path="/login" element={<Login />} /> */}
 
