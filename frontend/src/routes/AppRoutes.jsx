@@ -10,8 +10,8 @@ import SucessoPage from '../pages/Checkout/SucessoPage';
 import TesteAPI from '../components/TesteAPI/TesteAPI';
 import Descricao from '../components/Descricao/Descricao';
 import '../components/Descricao/Descricao.css';
-import DescricaoPage from '../pages/DescricaoPage.jsx';
-import '../pages/components/DescricaoPage/DescricaoPage.css';
+import DescricaoPage from '../pages/DescricaoPage/Descricaopage';
+import '../pages/DescricaoPages/DescricaoPage.css';
 // import Login from '../components/auth/Login';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import ProtecaoRota from '../components/common/ProtecaoRota';
@@ -30,7 +30,7 @@ const AppRoutes = () => {
     <Routes>
       {/* Rotas Públicas */}
       <Route path="/" element={<HomePage />} />
-      <Route path="/Descricao" element={<Descricao />} />
+      <Route path="/Descricao" element={<DescricaoPage />} />
      
       {/* <Route path="/login" element={<Login />} /> */}
 
